@@ -5,4 +5,8 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
 
+    <string name="route_list_header">Eingetragene Strecken</string>
+
+    <string name="add_new_route">Neue Strecke starten...</string>
+
 </resources>
