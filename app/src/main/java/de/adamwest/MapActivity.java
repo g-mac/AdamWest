@@ -101,7 +101,7 @@ public class MapActivity extends Activity {
         map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
     }
 
-
+    //_________________________________________________________________________
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
