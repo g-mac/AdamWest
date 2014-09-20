@@ -1,9 +1,6 @@
 package de.generator;
 
-import de.greenrobot.daogenerator.DaoGenerator;
-import de.greenrobot.daogenerator.Entity;
-import de.greenrobot.daogenerator.Property;
-import de.greenrobot.daogenerator.Schema;
+import de.greenrobot.daogenerator.*;
 
 public class MyDaoGenerator {
 
@@ -16,36 +13,44 @@ public class MyDaoGenerator {
 
     public static void addEnititys(Schema schema) {
         Entity route = schema.addEntity("Route");
-
         route.addIdProperty();
+        route.addStringProperty("name").notNull();
+        route.addDateProperty("createdAt").notNull();
+        route.addStringProperty("description");
 
-        route.addStringProperty("Name").notNull();
-        route.addDateProperty("Created_at").notNull();
-        route.addStringProperty("Description");
+        Entity location = schema.addEntity("RouteLocation");
+        location.addIdProperty();
+        location.addDoubleProperty("latitude");
+        location.addDoubleProperty("longitude");
+        location.addDateProperty("createdAt");
 
-        Entity location = schema.addEntity("Location");
-        Property locationId = location.addIdProperty().getProperty();
-        location.addLongProperty("Latitude");
-        location.addLongProperty("Longitude");
-        location.addLongProperty("Timestamp");
-
-        route.addToMany(location, locationId, "Locations");
 
         Entity event = schema.addEntity("Event");
-        Property eventId = event.addIdProperty().getProperty();
-
-        event.addStringProperty("Name");
-        //event.addToOne(location, locationId, "Location");
-        event.addStringProperty("Description");
+        event.addIdProperty();
+        event.addStringProperty("name");
+        event.addStringProperty("description");
 
         Entity multimediaElement = schema.addEntity("MultimediaElement");
-        Property multimediaId = multimediaElement.addIdProperty().getProperty();
-        multimediaElement.addStringProperty("Type");
-        multimediaElement.addStringProperty("Path");
+        multimediaElement.addIdProperty();
+        multimediaElement.addStringProperty("type");
+        multimediaElement.addStringProperty("path");
+        multimediaElement.addDateProperty("createdAt");
 
-        event.addToMany(multimediaElement, multimediaId, "MultimediaElements");
+        //create Relations
+        Property eventIdProperty = location.addLongProperty("eventId").getProperty();
+        event.addToOne(location, eventIdProperty);
 
-        route.addToMany(event, eventId, "Events");
+        Property routeId = location.addLongProperty("routeId").getProperty();
+        ToMany routeToLocation = route.addToMany(location, routeId);
+
+        Property routeIdForEvent = event.addLongProperty("routeId").getProperty();
+        route.addToMany(event, routeIdForEvent);
+
+
+        Property eventId = multimediaElement.addLongProperty("eventId").getProperty();
+        event.addToMany(multimediaElement, eventId);
+
+
 
     }
 }

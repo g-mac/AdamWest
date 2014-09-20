@@ -10,12 +10,12 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.greenrobot.dao.internal.DaoConfig;
 
 import de.adamwest.database.Route;
-import de.adamwest.database.Location;
+import de.adamwest.database.RouteLocation;
 import de.adamwest.database.Event;
 import de.adamwest.database.MultimediaElement;
 
 import de.adamwest.database.RouteDao;
-import de.adamwest.database.LocationDao;
+import de.adamwest.database.RouteLocationDao;
 import de.adamwest.database.EventDao;
 import de.adamwest.database.MultimediaElementDao;
 
@@ -29,12 +29,12 @@ import de.adamwest.database.MultimediaElementDao;
 public class DaoSession extends AbstractDaoSession {
 
     private final DaoConfig routeDaoConfig;
-    private final DaoConfig locationDaoConfig;
+    private final DaoConfig routeLocationDaoConfig;
     private final DaoConfig eventDaoConfig;
     private final DaoConfig multimediaElementDaoConfig;
 
     private final RouteDao routeDao;
-    private final LocationDao locationDao;
+    private final RouteLocationDao routeLocationDao;
     private final EventDao eventDao;
     private final MultimediaElementDao multimediaElementDao;
 
@@ -45,8 +45,8 @@ public class DaoSession extends AbstractDaoSession {
         routeDaoConfig = daoConfigMap.get(RouteDao.class).clone();
         routeDaoConfig.initIdentityScope(type);
 
-        locationDaoConfig = daoConfigMap.get(LocationDao.class).clone();
-        locationDaoConfig.initIdentityScope(type);
+        routeLocationDaoConfig = daoConfigMap.get(RouteLocationDao.class).clone();
+        routeLocationDaoConfig.initIdentityScope(type);
 
         eventDaoConfig = daoConfigMap.get(EventDao.class).clone();
         eventDaoConfig.initIdentityScope(type);
@@ -55,19 +55,19 @@ public class DaoSession extends AbstractDaoSession {
         multimediaElementDaoConfig.initIdentityScope(type);
 
         routeDao = new RouteDao(routeDaoConfig, this);
-        locationDao = new LocationDao(locationDaoConfig, this);
+        routeLocationDao = new RouteLocationDao(routeLocationDaoConfig, this);
         eventDao = new EventDao(eventDaoConfig, this);
         multimediaElementDao = new MultimediaElementDao(multimediaElementDaoConfig, this);
 
         registerDao(Route.class, routeDao);
-        registerDao(Location.class, locationDao);
+        registerDao(RouteLocation.class, routeLocationDao);
         registerDao(Event.class, eventDao);
         registerDao(MultimediaElement.class, multimediaElementDao);
     }
     
     public void clear() {
         routeDaoConfig.getIdentityScope().clear();
-        locationDaoConfig.getIdentityScope().clear();
+        routeLocationDaoConfig.getIdentityScope().clear();
         eventDaoConfig.getIdentityScope().clear();
         multimediaElementDaoConfig.getIdentityScope().clear();
     }
@@ -76,8 +76,8 @@ public class DaoSession extends AbstractDaoSession {
         return routeDao;
     }
 
-    public LocationDao getLocationDao() {
-        return locationDao;
+    public RouteLocationDao getRouteLocationDao() {
+        return routeLocationDao;
     }
 
     public EventDao getEventDao() {

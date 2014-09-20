@@ -12,10 +12,10 @@ public class Route {
 
     private Long id;
     /** Not-null value. */
-    private String Name;
+    private String name;
     /** Not-null value. */
-    private java.util.Date Created_at;
-    private String Description;
+    private java.util.Date createdAt;
+    private String description;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -23,8 +23,8 @@ public class Route {
     /** Used for active entity operations. */
     private transient RouteDao myDao;
 
-    private List<Location> Locations;
-    private List<Event> Events;
+    private List<RouteLocation> routeLocationList;
+    private List<Event> eventList;
 
     public Route() {
     }
@@ -33,11 +33,11 @@ public class Route {
         this.id = id;
     }
 
-    public Route(Long id, String Name, java.util.Date Created_at, String Description) {
+    public Route(Long id, String name, java.util.Date createdAt, String description) {
         this.id = id;
-        this.Name = Name;
-        this.Created_at = Created_at;
-        this.Description = Description;
+        this.name = name;
+        this.createdAt = createdAt;
+        this.description = description;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -56,74 +56,74 @@ public class Route {
 
     /** Not-null value. */
     public String getName() {
-        return Name;
+        return name;
     }
 
     /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     /** Not-null value. */
-    public java.util.Date getCreated_at() {
-        return Created_at;
+    public java.util.Date getCreatedAt() {
+        return createdAt;
     }
 
     /** Not-null value; ensure this value is available before it is saved to the database. */
-    public void setCreated_at(java.util.Date Created_at) {
-        this.Created_at = Created_at;
+    public void setCreatedAt(java.util.Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public List<Location> getLocations() {
-        if (Locations == null) {
+    public List<RouteLocation> getRouteLocationList() {
+        if (routeLocationList == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
-            LocationDao targetDao = daoSession.getLocationDao();
-            List<Location> LocationsNew = targetDao._queryRoute_Locations(id);
+            RouteLocationDao targetDao = daoSession.getRouteLocationDao();
+            List<RouteLocation> routeLocationListNew = targetDao._queryRoute_RouteLocationList(id);
             synchronized (this) {
-                if(Locations == null) {
-                    Locations = LocationsNew;
+                if(routeLocationList == null) {
+                    routeLocationList = routeLocationListNew;
                 }
             }
         }
-        return Locations;
+        return routeLocationList;
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    public synchronized void resetLocations() {
-        Locations = null;
+    public synchronized void resetRouteLocationList() {
+        routeLocationList = null;
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public List<Event> getEvents() {
-        if (Events == null) {
+    public List<Event> getEventList() {
+        if (eventList == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             EventDao targetDao = daoSession.getEventDao();
-            List<Event> EventsNew = targetDao._queryRoute_Events(id);
+            List<Event> eventListNew = targetDao._queryRoute_EventList(id);
             synchronized (this) {
-                if(Events == null) {
-                    Events = EventsNew;
+                if(eventList == null) {
+                    eventList = eventListNew;
                 }
             }
         }
-        return Events;
+        return eventList;
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    public synchronized void resetEvents() {
-        Events = null;
+    public synchronized void resetEventList() {
+        eventList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

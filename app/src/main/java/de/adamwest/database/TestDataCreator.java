@@ -25,16 +25,31 @@ public class TestDataCreator {
 
         Route firstRoute = new Route();
         firstRoute.setName("Hamburg");
-        firstRoute.setCreated_at(new Date());
+        firstRoute.setCreatedAt(new Date());
+        Location loc = new Location();
+        loc.setLatitude((long) 10);
+        loc.setLongitude((long) 20);
+        loc.setRouteId(firstRoute.getId());
+        daoSession.insert(firstRoute);
+        daoSession.insert(loc);
 
-        Route secondRoute = new Route();
-        secondRoute.setName("Burkinafaso");
-        secondRoute.setCreated_at(new Date());
+        daoSession.refresh(firstRoute);
+        List list = daoSession.getRouteDao().load(firstRoute.getId()).getLocationList();
+        list.add(loc);
+        daoSession.update(daoSession.getRouteDao().load(firstRoute.getId()));
+
+
+
         daoSession.getRouteDao().insertOrReplace(firstRoute);
-        daoSession.getRouteDao().insertOrReplace(secondRoute);
+        Route loadedRoute = getAllRoutes(context).get(0);
+        //daoSession.getRouteDao().insertOrReplace(secondRoute);
     }
 
     public static List<Route> getAllRoutes(Context context) {
         return daoSession.getRouteDao().loadAll();
+    }
+
+    public static List<Location> getAllLocations() {
+        return daoSession.getLocationDao().loadAll();
     }
 }

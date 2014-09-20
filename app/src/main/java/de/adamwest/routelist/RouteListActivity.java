@@ -26,9 +26,12 @@ public class RouteListActivity extends Activity {
         routeListView = (ListView)findViewById(R.id.listview_route_list);
 
         TestDataCreator.setupDatabase(this);
+       // TestDataCreator.createNewRoutes(this);
         List<Route> routes = TestDataCreator.getAllRoutes(this);
-        //TestDataCreator.createNewRoutes(this);
-
+        for(Route route: routes) {
+            List letzeList = route.getLocationList();
+            Log.i("abc", "Listze: " + letzeList.toString());
+        }
 
         ArrayList<Route> testArr = new ArrayList<Route>();
         testArr.add(new Route());

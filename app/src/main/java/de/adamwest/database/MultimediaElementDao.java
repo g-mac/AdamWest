@@ -27,11 +27,13 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Type = new Property(1, String.class, "Type", false, "TYPE");
-        public final static Property Path = new Property(2, String.class, "Path", false, "PATH");
+        public final static Property Type = new Property(1, String.class, "type", false, "TYPE");
+        public final static Property Path = new Property(2, String.class, "path", false, "PATH");
+        public final static Property CreatedAt = new Property(3, java.util.Date.class, "createdAt", false, "CREATED_AT");
+        public final static Property EventId = new Property(4, Long.class, "eventId", false, "EVENT_ID");
     };
 
-    private Query<MultimediaElement> event_MultimediaElementsQuery;
+    private Query<MultimediaElement> event_MultimediaElementListQuery;
 
     public MultimediaElementDao(DaoConfig config) {
         super(config);
@@ -46,8 +48,10 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'MULTIMEDIA_ELEMENT' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'TYPE' TEXT," + // 1: Type
-                "'PATH' TEXT);"); // 2: Path
+                "'TYPE' TEXT," + // 1: type
+                "'PATH' TEXT," + // 2: path
+                "'CREATED_AT' INTEGER," + // 3: createdAt
+                "'EVENT_ID' INTEGER);"); // 4: eventId
     }
 
     /** Drops the underlying database table. */
@@ -66,14 +70,24 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
             stmt.bindLong(1, id);
         }
  
-        String Type = entity.getType();
-        if (Type != null) {
-            stmt.bindString(2, Type);
+        String type = entity.getType();
+        if (type != null) {
+            stmt.bindString(2, type);
         }
  
-        String Path = entity.getPath();
-        if (Path != null) {
-            stmt.bindString(3, Path);
+        String path = entity.getPath();
+        if (path != null) {
+            stmt.bindString(3, path);
+        }
+ 
+        java.util.Date createdAt = entity.getCreatedAt();
+        if (createdAt != null) {
+            stmt.bindLong(4, createdAt.getTime());
+        }
+ 
+        Long eventId = entity.getEventId();
+        if (eventId != null) {
+            stmt.bindLong(5, eventId);
         }
     }
 
@@ -88,8 +102,10 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
     public MultimediaElement readEntity(Cursor cursor, int offset) {
         MultimediaElement entity = new MultimediaElement( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // Type
-            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2) // Path
+            cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // type
+            cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // path
+            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // createdAt
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // eventId
         );
         return entity;
     }
@@ -100,6 +116,8 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setType(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setPath(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
+        entity.setCreatedAt(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
+        entity.setEventId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
      }
     
     /** @inheritdoc */
@@ -125,17 +143,17 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
         return true;
     }
     
-    /** Internal query to resolve the "MultimediaElements" to-many relationship of Event. */
-    public List<MultimediaElement> _queryEvent_MultimediaElements(Long id) {
+    /** Internal query to resolve the "multimediaElementList" to-many relationship of Event. */
+    public List<MultimediaElement> _queryEvent_MultimediaElementList(Long eventId) {
         synchronized (this) {
-            if (event_MultimediaElementsQuery == null) {
+            if (event_MultimediaElementListQuery == null) {
                 QueryBuilder<MultimediaElement> queryBuilder = queryBuilder();
-                queryBuilder.where(Properties.Id.eq(null));
-                event_MultimediaElementsQuery = queryBuilder.build();
+                queryBuilder.where(Properties.EventId.eq(null));
+                event_MultimediaElementListQuery = queryBuilder.build();
             }
         }
-        Query<MultimediaElement> query = event_MultimediaElementsQuery.forCurrentThread();
-        query.setParameter(0, id);
+        Query<MultimediaElement> query = event_MultimediaElementListQuery.forCurrentThread();
+        query.setParameter(0, eventId);
         return query.list();
     }
 

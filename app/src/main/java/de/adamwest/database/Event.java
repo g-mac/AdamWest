@@ -11,8 +11,9 @@ import de.greenrobot.dao.DaoException;
 public class Event {
 
     private Long id;
-    private String Name;
-    private String Description;
+    private String name;
+    private String description;
+    private Long routeId;
 
     /** Used to resolve relations */
     private transient DaoSession daoSession;
@@ -20,7 +21,10 @@ public class Event {
     /** Used for active entity operations. */
     private transient EventDao myDao;
 
-    private List<MultimediaElement> MultimediaElements;
+    private RouteLocation routeLocation;
+    private Long routeLocation__resolvedKey;
+
+    private List<MultimediaElement> multimediaElementList;
 
     public Event() {
     }
@@ -29,10 +33,11 @@ public class Event {
         this.id = id;
     }
 
-    public Event(Long id, String Name, String Description) {
+    public Event(Long id, String name, String description, Long routeId) {
         this.id = id;
-        this.Name = Name;
-        this.Description = Description;
+        this.name = name;
+        this.description = description;
+        this.routeId = routeId;
     }
 
     /** called by internal mechanisms, do not call yourself. */
@@ -50,41 +55,74 @@ public class Event {
     }
 
     public String getName() {
-        return Name;
+        return name;
     }
 
-    public void setName(String Name) {
-        this.Name = Name;
+    public void setName(String name) {
+        this.name = name;
     }
 
     public String getDescription() {
-        return Description;
+        return description;
     }
 
-    public void setDescription(String Description) {
-        this.Description = Description;
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public Long getRouteId() {
+        return routeId;
+    }
+
+    public void setRouteId(Long routeId) {
+        this.routeId = routeId;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    public RouteLocation getRouteLocation() {
+        Long __key = this.eventId;
+        if (routeLocation__resolvedKey == null || !routeLocation__resolvedKey.equals(__key)) {
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            RouteLocationDao targetDao = daoSession.getRouteLocationDao();
+            RouteLocation routeLocationNew = targetDao.load(__key);
+            synchronized (this) {
+                routeLocation = routeLocationNew;
+            	routeLocation__resolvedKey = __key;
+            }
+        }
+        return routeLocation;
+    }
+
+    public void setRouteLocation(RouteLocation routeLocation) {
+        synchronized (this) {
+            this.routeLocation = routeLocation;
+            eventId = routeLocation == null ? null : routeLocation.getId();
+            routeLocation__resolvedKey = eventId;
+        }
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public List<MultimediaElement> getMultimediaElements() {
-        if (MultimediaElements == null) {
+    public List<MultimediaElement> getMultimediaElementList() {
+        if (multimediaElementList == null) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
             }
             MultimediaElementDao targetDao = daoSession.getMultimediaElementDao();
-            List<MultimediaElement> MultimediaElementsNew = targetDao._queryEvent_MultimediaElements(id);
+            List<MultimediaElement> multimediaElementListNew = targetDao._queryEvent_MultimediaElementList(id);
             synchronized (this) {
-                if(MultimediaElements == null) {
-                    MultimediaElements = MultimediaElementsNew;
+                if(multimediaElementList == null) {
+                    multimediaElementList = multimediaElementListNew;
                 }
             }
         }
-        return MultimediaElements;
+        return multimediaElementList;
     }
 
     /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    public synchronized void resetMultimediaElements() {
-        MultimediaElements = null;
+    public synchronized void resetMultimediaElementList() {
+        multimediaElementList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

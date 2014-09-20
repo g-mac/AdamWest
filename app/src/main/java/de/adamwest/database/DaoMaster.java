@@ -9,7 +9,7 @@ import de.greenrobot.dao.AbstractDaoMaster;
 import de.greenrobot.dao.identityscope.IdentityScopeType;
 
 import de.adamwest.database.RouteDao;
-import de.adamwest.database.LocationDao;
+import de.adamwest.database.RouteLocationDao;
 import de.adamwest.database.EventDao;
 import de.adamwest.database.MultimediaElementDao;
 
@@ -23,7 +23,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Creates underlying database table using DAOs. */
     public static void createAllTables(SQLiteDatabase db, boolean ifNotExists) {
         RouteDao.createTable(db, ifNotExists);
-        LocationDao.createTable(db, ifNotExists);
+        RouteLocationDao.createTable(db, ifNotExists);
         EventDao.createTable(db, ifNotExists);
         MultimediaElementDao.createTable(db, ifNotExists);
     }
@@ -31,7 +31,7 @@ public class DaoMaster extends AbstractDaoMaster {
     /** Drops underlying database table using DAOs. */
     public static void dropAllTables(SQLiteDatabase db, boolean ifExists) {
         RouteDao.dropTable(db, ifExists);
-        LocationDao.dropTable(db, ifExists);
+        RouteLocationDao.dropTable(db, ifExists);
         EventDao.dropTable(db, ifExists);
         MultimediaElementDao.dropTable(db, ifExists);
     }
@@ -66,7 +66,7 @@ public class DaoMaster extends AbstractDaoMaster {
     public DaoMaster(SQLiteDatabase db) {
         super(db, SCHEMA_VERSION);
         registerDaoClass(RouteDao.class);
-        registerDaoClass(LocationDao.class);
+        registerDaoClass(RouteLocationDao.class);
         registerDaoClass(EventDao.class);
         registerDaoClass(MultimediaElementDao.class);
     }

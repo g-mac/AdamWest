@@ -24,9 +24,9 @@ public class RouteDao extends AbstractDao<Route, Long> {
     */
     public static class Properties {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
-        public final static Property Name = new Property(1, String.class, "Name", false, "NAME");
-        public final static Property Created_at = new Property(2, java.util.Date.class, "Created_at", false, "CREATED_AT");
-        public final static Property Description = new Property(3, String.class, "Description", false, "DESCRIPTION");
+        public final static Property Name = new Property(1, String.class, "name", false, "NAME");
+        public final static Property CreatedAt = new Property(2, java.util.Date.class, "createdAt", false, "CREATED_AT");
+        public final static Property Description = new Property(3, String.class, "description", false, "DESCRIPTION");
     };
 
     private DaoSession daoSession;
@@ -46,9 +46,9 @@ public class RouteDao extends AbstractDao<Route, Long> {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "'ROUTE' (" + //
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
-                "'NAME' TEXT NOT NULL ," + // 1: Name
-                "'CREATED_AT' INTEGER NOT NULL ," + // 2: Created_at
-                "'DESCRIPTION' TEXT);"); // 3: Description
+                "'NAME' TEXT NOT NULL ," + // 1: name
+                "'CREATED_AT' INTEGER NOT NULL ," + // 2: createdAt
+                "'DESCRIPTION' TEXT);"); // 3: description
     }
 
     /** Drops the underlying database table. */
@@ -67,11 +67,11 @@ public class RouteDao extends AbstractDao<Route, Long> {
             stmt.bindLong(1, id);
         }
         stmt.bindString(2, entity.getName());
-        stmt.bindLong(3, entity.getCreated_at().getTime());
+        stmt.bindLong(3, entity.getCreatedAt().getTime());
  
-        String Description = entity.getDescription();
-        if (Description != null) {
-            stmt.bindString(4, Description);
+        String description = entity.getDescription();
+        if (description != null) {
+            stmt.bindString(4, description);
         }
     }
 
@@ -92,9 +92,9 @@ public class RouteDao extends AbstractDao<Route, Long> {
     public Route readEntity(Cursor cursor, int offset) {
         Route entity = new Route( //
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
-            cursor.getString(offset + 1), // Name
-            new java.util.Date(cursor.getLong(offset + 2)), // Created_at
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // Description
+            cursor.getString(offset + 1), // name
+            new java.util.Date(cursor.getLong(offset + 2)), // createdAt
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // description
         );
         return entity;
     }
@@ -104,7 +104,7 @@ public class RouteDao extends AbstractDao<Route, Long> {
     public void readEntity(Cursor cursor, Route entity, int offset) {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.getString(offset + 1));
-        entity.setCreated_at(new java.util.Date(cursor.getLong(offset + 2)));
+        entity.setCreatedAt(new java.util.Date(cursor.getLong(offset + 2)));
         entity.setDescription(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
      }
     

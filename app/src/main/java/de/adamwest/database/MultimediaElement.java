@@ -7,8 +7,10 @@ package de.adamwest.database;
 public class MultimediaElement {
 
     private Long id;
-    private String Type;
-    private String Path;
+    private String type;
+    private String path;
+    private java.util.Date createdAt;
+    private Long eventId;
 
     public MultimediaElement() {
     }
@@ -17,10 +19,12 @@ public class MultimediaElement {
         this.id = id;
     }
 
-    public MultimediaElement(Long id, String Type, String Path) {
+    public MultimediaElement(Long id, String type, String path, java.util.Date createdAt, Long eventId) {
         this.id = id;
-        this.Type = Type;
-        this.Path = Path;
+        this.type = type;
+        this.path = path;
+        this.createdAt = createdAt;
+        this.eventId = eventId;
     }
 
     public Long getId() {
@@ -32,19 +36,35 @@ public class MultimediaElement {
     }
 
     public String getType() {
-        return Type;
+        return type;
     }
 
-    public void setType(String Type) {
-        this.Type = Type;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getPath() {
-        return Path;
+        return path;
     }
 
-    public void setPath(String Path) {
-        this.Path = Path;
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public java.util.Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.util.Date createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(Long eventId) {
+        this.eventId = eventId;
     }
 
 }
