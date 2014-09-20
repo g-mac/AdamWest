@@ -1,6 +1,7 @@
 package de.adamwest.routelist;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -8,6 +9,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import de.adamwest.MapActivity;
 import de.adamwest.R;
 import de.adamwest.database.Route;
 import de.adamwest.database.TestDataCreator;
@@ -33,7 +35,7 @@ public class RouteListActivity extends Activity {
             Log.i("abc", "Listze: " + letzeList.toString());
         }
 
-        ArrayList<Route> testArr = new ArrayList<Route>();
+        final ArrayList<Route> testArr = new ArrayList<Route>();
         testArr.add(new Route());
         testArr.add(new Route());
         testArr.add(new Route());
@@ -44,6 +46,12 @@ public class RouteListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Log.i("abc", "clicked: " + position);
+                if(position==testArr.size()){
+                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+//                    String message = "empty message";
+//                    intent.putExtra("message", message);
+                    startActivity(intent);
+                }
             }
         });
     }
