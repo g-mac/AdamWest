@@ -37,8 +37,8 @@ public class MyDaoGenerator {
         multimediaElement.addDateProperty("createdAt");
 
         //create Relations
-        Property eventIdProperty = location.addLongProperty("eventId").getProperty();
-        event.addToOne(location, eventIdProperty);
+        Property locationId = event.addLongProperty("locationId").getProperty();
+        event.addToOne(location, locationId);
 
         Property routeId = location.addLongProperty("routeId").getProperty();
         ToMany routeToLocation = route.addToMany(location, routeId);

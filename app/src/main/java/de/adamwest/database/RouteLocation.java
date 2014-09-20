@@ -10,7 +10,6 @@ public class RouteLocation {
     private Double latitude;
     private Double longitude;
     private java.util.Date createdAt;
-    private Long eventId;
     private Long routeId;
 
     public RouteLocation() {
@@ -20,12 +19,11 @@ public class RouteLocation {
         this.id = id;
     }
 
-    public RouteLocation(Long id, Double latitude, Double longitude, java.util.Date createdAt, Long eventId, Long routeId) {
+    public RouteLocation(Long id, Double latitude, Double longitude, java.util.Date createdAt, Long routeId) {
         this.id = id;
         this.latitude = latitude;
         this.longitude = longitude;
         this.createdAt = createdAt;
-        this.eventId = eventId;
         this.routeId = routeId;
     }
 
@@ -59,14 +57,6 @@ public class RouteLocation {
 
     public void setCreatedAt(java.util.Date createdAt) {
         this.createdAt = createdAt;
-    }
-
-    public Long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
     }
 
     public Long getRouteId() {

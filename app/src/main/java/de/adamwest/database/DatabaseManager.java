@@ -68,9 +68,8 @@ public final class DatabaseManager {
         location.setCreatedAt(new Date());
         location.setRouteId(route.getId());
 
+        getDaoSession(context).insert(location);
         route.getRouteLocationList().add(location);
-
-        getDaoSession(context).getRouteLocationDao().insert(location);
         getDaoSession(context).getRouteDao().update(route);
     }
 
@@ -93,7 +92,6 @@ public final class DatabaseManager {
         event.setRouteId(route.getId());
 
         long eventId = getDaoSession(context).getEventDao().insert(event);
-        location.setEventId(eventId);
         getDaoSession(context).getRouteLocationDao().insert(location);
 
         route.getEventList().add(event);

@@ -31,8 +31,8 @@ public class EventDao extends AbstractDao<Event, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
         public final static Property Description = new Property(2, String.class, "description", false, "DESCRIPTION");
-        public final static Property RouteId = new Property(3, Long.class, "routeId", false, "ROUTE_ID");
-        public final static Property EventId = new Property(4, Long.class, "eventId", false, "EVENT_ID");
+        public final static Property LocationId = new Property(3, Long.class, "locationId", false, "LOCATION_ID");
+        public final static Property RouteId = new Property(4, Long.class, "routeId", false, "ROUTE_ID");
     };
 
     private DaoSession daoSession;
@@ -55,8 +55,8 @@ public class EventDao extends AbstractDao<Event, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'NAME' TEXT," + // 1: name
                 "'DESCRIPTION' TEXT," + // 2: description
-                "'ROUTE_ID' INTEGER," + // 3: routeId
-                "'EVENT_ID' INTEGER);"); // 4: eventId
+                "'LOCATION_ID' INTEGER," + // 3: locationId
+                "'ROUTE_ID' INTEGER);"); // 4: routeId
     }
 
     /** Drops the underlying database table. */
@@ -85,9 +85,14 @@ public class EventDao extends AbstractDao<Event, Long> {
             stmt.bindString(3, description);
         }
  
+        Long locationId = entity.getLocationId();
+        if (locationId != null) {
+            stmt.bindLong(4, locationId);
+        }
+ 
         Long routeId = entity.getRouteId();
         if (routeId != null) {
-            stmt.bindLong(4, routeId);
+            stmt.bindLong(5, routeId);
         }
     }
 
@@ -110,7 +115,8 @@ public class EventDao extends AbstractDao<Event, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // description
-            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3) // routeId
+            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // locationId
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // routeId
         );
         return entity;
     }
@@ -121,7 +127,8 @@ public class EventDao extends AbstractDao<Event, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDescription(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setRouteId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setLocationId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
+        entity.setRouteId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
      }
     
     /** @inheritdoc */
@@ -170,7 +177,7 @@ public class EventDao extends AbstractDao<Event, Long> {
             builder.append(',');
             SqlUtils.appendColumns(builder, "T0", daoSession.getRouteLocationDao().getAllColumns());
             builder.append(" FROM EVENT T");
-            builder.append(" LEFT JOIN ROUTE_LOCATION T0 ON T.'EVENT_ID'=T0.'_id'");
+            builder.append(" LEFT JOIN ROUTE_LOCATION T0 ON T.'LOCATION_ID'=T0.'_id'");
             builder.append(' ');
             selectDeep = builder.toString();
         }

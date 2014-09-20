@@ -30,8 +30,7 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
         public final static Property Latitude = new Property(1, Double.class, "latitude", false, "LATITUDE");
         public final static Property Longitude = new Property(2, Double.class, "longitude", false, "LONGITUDE");
         public final static Property CreatedAt = new Property(3, java.util.Date.class, "createdAt", false, "CREATED_AT");
-        public final static Property EventId = new Property(4, Long.class, "eventId", false, "EVENT_ID");
-        public final static Property RouteId = new Property(5, Long.class, "routeId", false, "ROUTE_ID");
+        public final static Property RouteId = new Property(4, Long.class, "routeId", false, "ROUTE_ID");
     };
 
     private Query<RouteLocation> route_RouteLocationListQuery;
@@ -52,8 +51,7 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
                 "'LATITUDE' REAL," + // 1: latitude
                 "'LONGITUDE' REAL," + // 2: longitude
                 "'CREATED_AT' INTEGER," + // 3: createdAt
-                "'EVENT_ID' INTEGER," + // 4: eventId
-                "'ROUTE_ID' INTEGER);"); // 5: routeId
+                "'ROUTE_ID' INTEGER);"); // 4: routeId
     }
 
     /** Drops the underlying database table. */
@@ -87,14 +85,9 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
             stmt.bindLong(4, createdAt.getTime());
         }
  
-        Long eventId = entity.getEventId();
-        if (eventId != null) {
-            stmt.bindLong(5, eventId);
-        }
- 
         Long routeId = entity.getRouteId();
         if (routeId != null) {
-            stmt.bindLong(6, routeId);
+            stmt.bindLong(5, routeId);
         }
     }
 
@@ -112,8 +105,7 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getDouble(offset + 1), // latitude
             cursor.isNull(offset + 2) ? null : cursor.getDouble(offset + 2), // longitude
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // createdAt
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4), // eventId
-            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5) // routeId
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // routeId
         );
         return entity;
     }
@@ -125,8 +117,7 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
         entity.setLatitude(cursor.isNull(offset + 1) ? null : cursor.getDouble(offset + 1));
         entity.setLongitude(cursor.isNull(offset + 2) ? null : cursor.getDouble(offset + 2));
         entity.setCreatedAt(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setEventId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
-        entity.setRouteId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
+        entity.setRouteId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
      }
     
     /** @inheritdoc */

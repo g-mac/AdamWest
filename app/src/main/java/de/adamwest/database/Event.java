@@ -13,6 +13,7 @@ public class Event {
     private Long id;
     private String name;
     private String description;
+    private Long locationId;
     private Long routeId;
 
     /** Used to resolve relations */
@@ -33,10 +34,11 @@ public class Event {
         this.id = id;
     }
 
-    public Event(Long id, String name, String description, Long routeId) {
+    public Event(Long id, String name, String description, Long locationId, Long routeId) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.locationId = locationId;
         this.routeId = routeId;
     }
 
@@ -70,6 +72,14 @@ public class Event {
         this.description = description;
     }
 
+    public Long getLocationId() {
+        return locationId;
+    }
+
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
+    }
+
     public Long getRouteId() {
         return routeId;
     }
@@ -80,7 +90,7 @@ public class Event {
 
     /** To-one relationship, resolved on first access. */
     public RouteLocation getRouteLocation() {
-        Long __key = this.eventId;
+        Long __key = this.locationId;
         if (routeLocation__resolvedKey == null || !routeLocation__resolvedKey.equals(__key)) {
             if (daoSession == null) {
                 throw new DaoException("Entity is detached from DAO context");
@@ -98,8 +108,8 @@ public class Event {
     public void setRouteLocation(RouteLocation routeLocation) {
         synchronized (this) {
             this.routeLocation = routeLocation;
-            eventId = routeLocation == null ? null : routeLocation.getId();
-            routeLocation__resolvedKey = eventId;
+            locationId = routeLocation == null ? null : routeLocation.getId();
+            routeLocation__resolvedKey = locationId;
         }
     }
 

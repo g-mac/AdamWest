@@ -1,6 +1,7 @@
 package de.adamwest.routelist;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -11,8 +12,9 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import de.adamwest.MapActivity;
 import de.adamwest.R;
+import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Route;
-import de.adamwest.database.TestDataCreator;
+import de.adamwest.database.RouteLocation;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,13 +29,6 @@ public class RouteListActivity extends Activity {
         setContentView(R.layout.layout_route_list);
         routeListView = (ListView)findViewById(R.id.listview_route_list);
 
-        TestDataCreator.setupDatabase(this);
-       // TestDataCreator.createNewRoutes(this);
-        List<Route> routes = TestDataCreator.getAllRoutes(this);
-        for(Route route: routes) {
-            List letzeList = route.getLocationList();
-            Log.i("abc", "Listze: " + letzeList.toString());
-        }
 
         final ArrayList<Route> testArr = new ArrayList<Route>();
         testArr.add(new Route());
@@ -45,15 +40,14 @@ public class RouteListActivity extends Activity {
         routeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Log.i("abc", "clicked: " + position);
                 if(position==testArr.size()){
-                    Intent intent = new Intent(getApplicationContext(), MapActivity.class);
-//                    String message = "empty message";
-//                    intent.putExtra("message", message);
-                    startActivity(intent);
+                    Log.i("abc", "clicked: " + position);
+                    Fragment createNewRouteFragment = new CreateNewRouteFragment();
+                    getFragmentManager().beginTransaction().add(R.id.main_layout, createNewRouteFragment).commit();
                 }
             }
         });
+        dbTest();
     }
 
 
@@ -74,5 +68,21 @@ public class RouteListActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void dbTest() {
+        List<Route> routes = DatabaseManager.getAllRoutes(getApplicationContext());
+        for(Route route : routes) {
+            List<RouteLocation> routeLocations = route.getRouteLocationList();
+            for(RouteLocation routeLocation : routeLocations) {
+                Log.i("Loc", "Locations Id: " + routeLocation.getId().toString());
+                Log.i("Loc", "Date Id: " + routeLocation.getCreatedAt().toString());
+                Log.i("Loc", "Lat: " + routeLocation.getLatitude().toString());
+                Log.i("Loc", "Lon: " + routeLocation.getLongitude().toString());
+                Log.i("Loc", "#############################################");
+
+
+            }
+        }
     }
 }

@@ -9,5 +9,10 @@
     <string name="route_list_header">Eingetragene Strecken</string>
 
     <string name="add_new_route">Neue Strecke starten...</string>
+    <string name="insert_route_name">Streckenname eingeben</string>
+    <string name="insert_route_description">Streckenbeschreibung</string>
+
+    <string name="abort">Abbrechen</string>
+    <string name="create_new_route">Neue Strecke erzeugen</string>
 
 </resources>

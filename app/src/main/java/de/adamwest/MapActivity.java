@@ -23,6 +23,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import de.adamwest.database.DatabaseManager;
+import de.adamwest.helper.Constants;
 
 
 public class MapActivity extends Activity implements
@@ -31,6 +33,7 @@ public class MapActivity extends Activity implements
         LocationListener {
 
     static final String LOG_TAG = "Simon";
+    private long currentRouteId = -1;
 
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
@@ -64,7 +67,7 @@ public class MapActivity extends Activity implements
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 
-
+        currentRouteId = getIntent().getLongExtra(Constants.KEY_ROUTE_ID, -1);
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
         if (map != null) {
@@ -212,6 +215,9 @@ public class MapActivity extends Activity implements
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+        DatabaseManager.addLocationToRoute(getApplicationContext(), currentRouteId, loc);
+
 //        Log.d(LOG_TAG, msg);
     }
 }
