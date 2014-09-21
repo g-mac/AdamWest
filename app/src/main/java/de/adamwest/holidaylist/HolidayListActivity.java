@@ -1,4 +1,4 @@
-package de.adamwest.routelist;
+package de.adamwest.holidaylist;
 
 import android.app.Activity;
 import android.app.Fragment;
@@ -10,44 +10,50 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import de.adamwest.MapActivity;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
+import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.database.RouteLocation;
+import de.adamwest.helper.Constants;
+import de.adamwest.holiday.MapActivity;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
-public class RouteListActivity extends Activity {
+public class HolidayListActivity extends Activity {
 
-    private ListView routeListView;
+    private ListView holidayListView;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_route_list);
-        routeListView = (ListView)findViewById(R.id.listview_route_list);
+        holidayListView = (ListView)findViewById(R.id.listview_route_list);
 
-
-        final ArrayList<Route> testArr = new ArrayList<Route>();
-        testArr.add(new Route());
-        testArr.add(new Route());
-        testArr.add(new Route());
-        testArr.add(new Route());
-
-        routeListView.setAdapter(new RouteListAdapter(testArr, this));
-        routeListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        final List<Holiday> holidayList = DatabaseManager.getAllHoliday(getApplicationContext());
+        holidayListView.setAdapter(new HolidayListAdapter(holidayList, this));
+        holidayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(position==testArr.size()){
+                if (position == holidayList.size()) {
                     Log.i("abc", "clicked: " + position);
-                    Fragment createNewRouteFragment = new CreateNewRouteFragment();
+                    Fragment createNewRouteFragment = new CreateNewHolidayFragment();
                     getFragmentManager().beginTransaction().add(R.id.main_layout, createNewRouteFragment).commit();
+                }
+                else {
+                    long holidayId = ((Holiday)holidayListView.getAdapter().getItem(position)).getId();
+                    if(-1 == holidayId) {
+                        //creation of new route failed
+                        //TODO error msg
+                    }
+                    else {
+                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+                        intent.putExtra(Constants.KEY_HOLIDAY_ID, holidayId);
+                        startActivity(intent);
+                    }
                 }
             }
         });
-        dbTest();
     }
 
 

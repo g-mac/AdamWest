@@ -7,16 +7,16 @@
               android:layout_height="match_parent">
 
     <EditText
-            android:id="@+id/edit_text_route_name"
+            android:id="@+id/edit_text_holiday_name"
             android:layout_marginTop="10dp"
-            android:hint="@string/insert_route_name"
+            android:hint="@string/insert_holiday_name"
             android:layout_width="match_parent"
             android:singleLine="true"
             android:layout_height="wrap_content"/>
 
     <EditText
-            android:id="@+id/edit_text_route_description"
-            android:hint="@string/insert_route_description"
+            android:id="@+id/edit_text_holiday_description"
+            android:hint="@string/insert_holiday_description"
             android:layout_marginTop="20dp"
             android:layout_width="match_parent"
             android:lines="10"
@@ -31,7 +31,7 @@
     <Button
             android:id="@+id/button_submit"
             android:layout_marginTop="10dp"
-            android:text="@string/create_new_route"
+            android:text="@string/create_new_holiday"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -36,21 +36,35 @@ public class MyDaoGenerator {
         multimediaElement.addStringProperty("path");
         multimediaElement.addDateProperty("createdAt");
 
+        Entity holiday = schema.addEntity("Holiday");
+        holiday.addIdProperty();
+        holiday.addStringProperty("name");
+        holiday.addStringProperty("description");
+        holiday.addDateProperty("createdAt");
+
+        Entity activeHoliday = schema.addEntity("ActiveHoliday");
+        activeHoliday.addStringProperty("active").primaryKey();
+
         //create Relations
         Property locationId = event.addLongProperty("locationId").getProperty();
         event.addToOne(location, locationId);
 
         Property routeId = location.addLongProperty("routeId").getProperty();
-        ToMany routeToLocation = route.addToMany(location, routeId);
+        route.addToMany(location, routeId);
 
         Property routeIdForEvent = event.addLongProperty("routeId").getProperty();
         route.addToMany(event, routeIdForEvent);
 
-
         Property eventId = multimediaElement.addLongProperty("eventId").getProperty();
         event.addToMany(multimediaElement, eventId);
 
+        Property holidayId = route.addLongProperty("holidayId").getProperty();
+        holiday.addToMany(route, holidayId);
 
+        Property currentRoute = holiday.addLongProperty("currentRouteId").getProperty();
+        holiday.addToOne(route, currentRoute);
 
+        Property activeHolidayId = activeHoliday.addLongProperty("holidayId").getProperty();
+        activeHoliday.addToOne(holiday, activeHolidayId);
     }
 }

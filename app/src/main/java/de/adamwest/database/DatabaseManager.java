@@ -30,9 +30,31 @@ public final class DatabaseManager {
         return daoSession;
     }
 
-    public static long createNewRoute(Context context, String name, String description) {
-
+    public static long createNewHoliday(Context context, String name, String description) {
         if(name == null) {
+            //TODO Exception handling
+            return -1;
+        }
+        Holiday holiday = new Holiday();
+        holiday.setName(name);
+        holiday.setCreatedAt(new Date());
+        if(description != null) holiday.setDescription(description);
+
+        return getDaoSession(context).insert(holiday);
+    }
+
+    public static Holiday getHolidayFromId(Context context, long holidayId) {
+        return getDaoSession(context).getHolidayDao().load(holidayId);
+    }
+
+    public static List<Holiday> getAllHoliday(Context context) {
+        return getDaoSession(context).getHolidayDao().loadAll();
+    }
+
+    public static long createNewRoute(Context context, long holidayId, String name, String description) {
+        Holiday holiday = getHolidayFromId(context, holidayId);
+
+        if(name == null || holiday == null) {
             //TODO Exception handling
             return -1;
         }
@@ -40,8 +62,11 @@ public final class DatabaseManager {
         route.setName(name);
         route.setCreatedAt(new Date());
         if(description != null) route.setDescription(description);
-
-        return getDaoSession(context).insert(route);
+        route.setHolidayId(holiday.getId());
+        long routeId = getDaoSession(context).insert(route);
+        holiday.getRouteList().add(route);
+        getDaoSession(context).update(holiday);
+        return routeId;
     }
 
     public static Route getRouteFromId(Context context, long routeId) {

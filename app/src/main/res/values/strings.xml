@@ -6,13 +6,13 @@
     <string name="action_settings">Settings</string>
     <string name="title_activity_map">MapActivity</string>
 
-    <string name="route_list_header">Eingetragene Strecken</string>
+    <string name="holiday_list_header">Eingetragene Urlaube</string>
 
-    <string name="add_new_route">Neue Strecke starten...</string>
-    <string name="insert_route_name">Streckenname eingeben</string>
-    <string name="insert_route_description">Streckenbeschreibung</string>
+    <string name="add_new_holiday">Neues Abenteuer starten...</string>
+    <string name="insert_holiday_name">Urlaubsziel/Namen eingeben</string>
+    <string name="insert_holiday_description">Beschreibung(optional)</string>
 
     <string name="abort">Abbrechen</string>
-    <string name="create_new_route">Neue Strecke erzeugen</string>
+    <string name="create_new_holiday">Neuen Urlaub/Ausflug erzeugen</string>
 
 </resources>

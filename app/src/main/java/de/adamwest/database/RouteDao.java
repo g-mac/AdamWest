@@ -1,5 +1,6 @@
 package de.adamwest.database;
 
+import java.util.List;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
@@ -7,6 +8,8 @@ import android.database.sqlite.SQLiteStatement;
 import de.greenrobot.dao.AbstractDao;
 import de.greenrobot.dao.Property;
 import de.greenrobot.dao.internal.DaoConfig;
+import de.greenrobot.dao.query.Query;
+import de.greenrobot.dao.query.QueryBuilder;
 
 import de.adamwest.database.Route;
 
@@ -27,10 +30,12 @@ public class RouteDao extends AbstractDao<Route, Long> {
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
         public final static Property CreatedAt = new Property(2, java.util.Date.class, "createdAt", false, "CREATED_AT");
         public final static Property Description = new Property(3, String.class, "description", false, "DESCRIPTION");
+        public final static Property HolidayId = new Property(4, Long.class, "holidayId", false, "HOLIDAY_ID");
     };
 
     private DaoSession daoSession;
 
+    private Query<Route> holiday_RouteListQuery;
 
     public RouteDao(DaoConfig config) {
         super(config);
@@ -48,7 +53,8 @@ public class RouteDao extends AbstractDao<Route, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'NAME' TEXT NOT NULL ," + // 1: name
                 "'CREATED_AT' INTEGER NOT NULL ," + // 2: createdAt
-                "'DESCRIPTION' TEXT);"); // 3: description
+                "'DESCRIPTION' TEXT," + // 3: description
+                "'HOLIDAY_ID' INTEGER);"); // 4: holidayId
     }
 
     /** Drops the underlying database table. */
@@ -73,6 +79,11 @@ public class RouteDao extends AbstractDao<Route, Long> {
         if (description != null) {
             stmt.bindString(4, description);
         }
+ 
+        Long holidayId = entity.getHolidayId();
+        if (holidayId != null) {
+            stmt.bindLong(5, holidayId);
+        }
     }
 
     @Override
@@ -94,7 +105,8 @@ public class RouteDao extends AbstractDao<Route, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.getString(offset + 1), // name
             new java.util.Date(cursor.getLong(offset + 2)), // createdAt
-            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3) // description
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // description
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // holidayId
         );
         return entity;
     }
@@ -106,6 +118,7 @@ public class RouteDao extends AbstractDao<Route, Long> {
         entity.setName(cursor.getString(offset + 1));
         entity.setCreatedAt(new java.util.Date(cursor.getLong(offset + 2)));
         entity.setDescription(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setHolidayId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
      }
     
     /** @inheritdoc */
@@ -131,4 +144,18 @@ public class RouteDao extends AbstractDao<Route, Long> {
         return true;
     }
     
+    /** Internal query to resolve the "routeList" to-many relationship of Holiday. */
+    public List<Route> _queryHoliday_RouteList(Long holidayId) {
+        synchronized (this) {
+            if (holiday_RouteListQuery == null) {
+                QueryBuilder<Route> queryBuilder = queryBuilder();
+                queryBuilder.where(Properties.HolidayId.eq(null));
+                holiday_RouteListQuery = queryBuilder.build();
+            }
+        }
+        Query<Route> query = holiday_RouteListQuery.forCurrentThread();
+        query.setParameter(0, holidayId);
+        return query.list();
+    }
+
 }

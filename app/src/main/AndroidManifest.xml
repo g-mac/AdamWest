@@ -14,7 +14,7 @@
             android:theme="@style/AppTheme">
 
         <activity
-                android:name=".routelist.RouteListActivity"
+                android:name=".holidaylist.HolidayListActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -23,7 +23,7 @@
         </activity>
 
         <activity
-                android:name=".MapActivity"
+                android:name=".holiday.MapActivity"
                 android:label="@string/title_activity_map">
         </activity>
 
