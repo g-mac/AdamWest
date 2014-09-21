@@ -37,8 +37,8 @@ public class HolidayListActivity extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == holidayList.size()) {
                     Log.i("abc", "clicked: " + position);
-                    Fragment createNewRouteFragment = new CreateNewHolidayFragment();
-                    getFragmentManager().beginTransaction().add(R.id.main_layout, createNewRouteFragment).commit();
+                    Fragment createNewHolidayFragment = new CreateNewHolidayFragment();
+                    getFragmentManager().beginTransaction().add(R.id.main_layout, createNewHolidayFragment).commit();
                 }
                 else {
                     long holidayId = ((Holiday)holidayListView.getAdapter().getItem(position)).getId();
@@ -76,19 +76,5 @@ public class HolidayListActivity extends Activity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void dbTest() {
-        List<Route> routes = DatabaseManager.getAllRoutes(getApplicationContext());
-        for(Route route : routes) {
-            List<RouteLocation> routeLocations = route.getRouteLocationList();
-            for(RouteLocation routeLocation : routeLocations) {
-                Log.i("Loc", "Locations Id: " + routeLocation.getId().toString());
-                Log.i("Loc", "Date Id: " + routeLocation.getCreatedAt().toString());
-                Log.i("Loc", "Lat: " + routeLocation.getLatitude().toString());
-                Log.i("Loc", "Lon: " + routeLocation.getLongitude().toString());
-                Log.i("Loc", "#############################################");
 
-
-            }
-        }
-    }
 }

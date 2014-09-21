@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.EditText;
 import de.adamwest.holiday.MapActivity;
 import de.adamwest.R;
@@ -18,8 +19,10 @@ import de.adamwest.helper.Constants;
  */
 public class CreateNewHolidayFragment extends Fragment {
 
-    private EditText holidayNameEditText;
-    private EditText holidayDescriptionEditText;
+    public EditText holidayNameEditText;
+    public EditText holidayDescriptionEditText;
+
+    public Button submitButton;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,7 +40,8 @@ public class CreateNewHolidayFragment extends Fragment {
             }
         });
 
-        view.findViewById(R.id.button_submit).setOnClickListener(new View.OnClickListener() {
+        submitButton = (Button)view.findViewById(R.id.button_submit);
+        submitButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String routeName = holidayNameEditText.getText().toString();

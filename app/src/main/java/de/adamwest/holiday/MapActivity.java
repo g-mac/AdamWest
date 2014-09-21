@@ -1,6 +1,7 @@
 package de.adamwest.holiday;
 
 import android.app.Activity;
+import android.content.res.Configuration;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
@@ -8,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.*;
+import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
@@ -24,7 +26,11 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
+import de.adamwest.database.Holiday;
+import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
+
+import java.util.List;
 
 
 public class MapActivity extends Activity implements
@@ -34,15 +40,16 @@ public class MapActivity extends Activity implements
 
     static final String LOG_TAG = "Simon";
     private long currentHolidayId = -1;
-
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
     private GoogleMap map;
     private LocationClient mLocationClient;
     private LocationRequest mLocationRequest;
 
-    private ActionBarDrawerToggle mDrawerToggle;
     private DrawerLayout mDrawerLayout;
+    private ListView mDrawerList;
+    private ActionBarDrawerToggle mDrawerToggle;
+
     // Update frequency in milliseconds
     private static final long UPDATE_INTERVAL = 5000;
     // A fast frequency ceiling in milliseconds
@@ -59,10 +66,7 @@ public class MapActivity extends Activity implements
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
 
-
-        createLeftDrawerList();
 
         mLocationClient = new LocationClient(this, this, this);
         mLocationClient.connect(); //ToDo: move to onStart?!
@@ -72,7 +76,9 @@ public class MapActivity extends Activity implements
         mLocationRequest.setInterval(UPDATE_INTERVAL);
         mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 
+
         currentHolidayId = getIntent().getLongExtra(Constants.KEY_HOLIDAY_ID, -1);
+        initRouteDrawerList();
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
         if (map != null) {
@@ -96,31 +102,6 @@ public class MapActivity extends Activity implements
 //        map.animateCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 50));
 
         setUpMap();
-
-    }
-
-    public void createLeftDrawerList() {
-
-        //mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        //getActionBar().setDisplayHomeAsUpEnabled(true);
-        //getActionBar().setHomeButtonEnabled(true);
-
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, 1, 2) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        // Set the adapter for the list view
 
     }
 
@@ -178,6 +159,58 @@ public class MapActivity extends Activity implements
         map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
     }
 
+
+    private void initRouteDrawerList() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle("Closed");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle("open");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        Holiday currentHoliday = DatabaseManager.getHolidayFromId(this, currentHolidayId);
+        if(currentHoliday != null) {
+            mDrawerList.setAdapter(new RouteListAdapter(currentHoliday.getRouteList(), this, currentHolidayId));
+        }
+
+    }
+
+    public void updateRouteList() {
+        RouteListAdapter adapter = (RouteListAdapter)mDrawerList.getAdapter();
+        adapter.notifyDataSetChanged();
+
+    }
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
+
+
     public void createEvent(){
 
         //TODO: if user has not moved much from previous point, do not let him create new event, but edit previous instead
@@ -207,6 +240,11 @@ public class MapActivity extends Activity implements
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
+        if (mDrawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        // Handle your other action bar items...
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;

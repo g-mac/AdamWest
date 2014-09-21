@@ -73,7 +73,7 @@ public final class DatabaseManager {
         return getDaoSession(context).getRouteDao().load(routeId);
     }
 
-    public static List<Route> getAllRoutes(Context context) {
+    private static List<Route> getAllRoutes(Context context) {
         return getDaoSession(context).getRouteDao().loadAll();
     }
 

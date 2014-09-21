@@ -9,7 +9,7 @@
     <TextView
             android:text="@string/add_new_holiday"
             android:textSize="25dp"
-
+            android:id="@+id/text_view_new_holiday_item"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 </LinearLayout>
