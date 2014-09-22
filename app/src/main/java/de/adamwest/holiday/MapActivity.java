@@ -106,7 +106,7 @@ public class MapActivity extends Activity implements
 //        // Zoom in, animating the camera.
 //        map.animateCamera(CameraUpdateFactory.newLatLngZoom(HAMBURG, 50));
 
-        setUpMap();
+        //setUpMap();
 
     }
 
@@ -285,7 +285,7 @@ public class MapActivity extends Activity implements
         String msg = "Updated Location: " +
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
-        Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
         if(currentHoliday != null) {
             Route route =currentHoliday.getRoute();
             if(route != null) {
