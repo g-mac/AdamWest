@@ -69,6 +69,14 @@ public final class DatabaseManager {
         return routeId;
     }
 
+    public static void setActiveRouteForHoliday(Context context, long holidayId, long routeId) {
+        Holiday holiday = getHolidayFromId(context, holidayId);
+        holiday.setCurrentRouteId(routeId);
+        Route route = getRouteFromId(context, routeId);
+        if(route != null) holiday.setCurrentRoute(route);
+        getDaoSession(context).update(holiday);
+    }
+
     public static Route getRouteFromId(Context context, long routeId) {
         return getDaoSession(context).getRouteDao().load(routeId);
     }

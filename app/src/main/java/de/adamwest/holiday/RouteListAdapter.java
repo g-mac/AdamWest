@@ -9,10 +9,8 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.adamwest.R;
-import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
-import de.adamwest.holidaylist.CreateNewHolidayFragment;
 
 import java.util.List;
 

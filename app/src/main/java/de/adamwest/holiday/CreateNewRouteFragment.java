@@ -1,11 +1,11 @@
 package de.adamwest.holiday;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.holidaylist.CreateNewHolidayFragment;
@@ -20,8 +20,9 @@ public class CreateNewRouteFragment  extends CreateNewHolidayFragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        View view = super.onCreateView(inflater, container, savedInstanceState);
+        final View view = super.onCreateView(inflater, container, savedInstanceState);
 
+        view.findViewById(R.id.layout_active_route).setVisibility(View.VISIBLE);
         currentHolidayId = getArguments().getLong(Constants.KEY_ROUTE_ID, -1);
 
         submitButton.setOnClickListener(new View.OnClickListener() {
@@ -40,6 +41,10 @@ public class CreateNewRouteFragment  extends CreateNewHolidayFragment{
                 }
                 else {
                     ((MapActivity)getActivity()).updateRouteList();
+                    boolean active = ((CheckBox)view.findViewById(R.id.checkbox_route_active)).isChecked();
+                    if(active) {
+                        DatabaseManager.setActiveRouteForHoliday(getActivity(), currentHolidayId, routeId);
+                    }
                     getActivity().getFragmentManager().beginTransaction().remove(CreateNewRouteFragment.this).commit();
                 }
             }

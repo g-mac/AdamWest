@@ -22,6 +22,25 @@
             android:lines="10"
             android:layout_height="wrap_content"/>
 
+    <LinearLayout
+            android:id="@+id/layout_active_route"
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        <TextView
+                android:text="@string/set_route_as_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+        <CheckBox
+                android:id="@+id/checkbox_route_active"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+    </LinearLayout>
+
     <Button
             android:id="@+id/button_abort"
             android:text="@string/abort"

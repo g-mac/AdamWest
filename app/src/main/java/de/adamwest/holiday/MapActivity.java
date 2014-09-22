@@ -45,6 +45,7 @@ public class MapActivity extends Activity implements
     private GoogleMap map;
     private LocationClient mLocationClient;
     private LocationRequest mLocationRequest;
+    private Holiday currentHoliday;
 
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
@@ -78,6 +79,9 @@ public class MapActivity extends Activity implements
 
 
         currentHolidayId = getIntent().getLongExtra(Constants.KEY_HOLIDAY_ID, -1);
+        if(currentHolidayId != -1) {
+            currentHoliday = DatabaseManager.getHolidayFromId(getApplicationContext(), currentHolidayId);
+        }
         initRouteDrawerList();
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
 
@@ -272,8 +276,6 @@ public class MapActivity extends Activity implements
     public void onConnectionFailed(ConnectionResult connectionResult) {
 
     }
-
-
     //-------------------- (GooglePlay) Location Client -----------------------
 
     @Override
@@ -283,7 +285,15 @@ public class MapActivity extends Activity implements
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+
+        if(currentHoliday != null) {
+            Route route =currentHoliday.getRoute();
+            if(route != null) {
+                LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+                DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+            }
+        }
+
         //DatabaseManager.addLocationToRoute(getApplicationContext(), currentRouteId, loc);
 
 //        Log.d(LOG_TAG, msg);
