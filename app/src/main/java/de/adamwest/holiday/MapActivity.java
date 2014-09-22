@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
 import android.view.*;
-import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
@@ -28,7 +27,9 @@ import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
+import de.adamwest.database.RouteLocation;
 import de.adamwest.helper.Constants;
+import de.adamwest.helper.HelpingMethods;
 
 import java.util.List;
 
@@ -285,12 +286,27 @@ public class MapActivity extends Activity implements
                 Double.toString(location.getLatitude()) + "," +
                 Double.toString(location.getLongitude());
         Toast.makeText(this, msg, Toast.LENGTH_SHORT).show();
-
         if(currentHoliday != null) {
             Route route =currentHoliday.getRoute();
             if(route != null) {
                 LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
-                DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+
+                if(route.getRouteLocationList().size() == 0) {
+                    DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+                }
+                else {
+                    RouteLocation lastLocation = route.getRouteLocationList().get(route.getRouteLocationList().size() -1);
+                    Location lastLoc = new Location("dummyprovider");
+                    lastLoc.setLatitude(lastLocation.getLatitude());
+                    lastLoc.setLongitude(lastLocation.getLongitude());
+                    double distance = location.distanceTo(lastLoc);
+
+                    HelpingMethods.log("Distance: " + distance);
+                    if(distance > Constants.MINIMUM_DISTANCE_BETWEEN_LOCATIONS) {
+                        DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+                    }
+                }
+
             }
         }
 
