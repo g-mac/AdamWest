@@ -339,6 +339,7 @@ public class MapActivity extends Activity implements
 
                 if (route.getRouteLocationList().size() == 0) {
                     DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+                    map.addMarker(new MarkerOptions().position(loc).title("Start!"));
                 } else {
                     RouteLocation lastLocation = route.getRouteLocationList().get(route.getRouteLocationList().size() - 1);
                     Location lastLoc = new Location("dummyprovider");

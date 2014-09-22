@@ -7,10 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.adamwest.R;
+import de.adamwest.database.DatabaseManager;
+import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
+import org.w3c.dom.Text;
 
 import java.util.List;
 
@@ -26,11 +30,13 @@ public class RouteListAdapter extends BaseAdapter {
     private List<Route> routes;
     private Context context;
     private long currentHolidayId;
+    private Holiday currentHoliday;
 
     public RouteListAdapter(List<Route> routes, Context context, long currentHolidayId) {
         this.routes = routes;
         this.context = context;
         this.currentHolidayId = currentHolidayId;
+        currentHoliday = DatabaseManager.getHolidayFromId(context, currentHolidayId);
     }
     @Override
     public int getCount() {
@@ -73,8 +79,34 @@ public class RouteListAdapter extends BaseAdapter {
             return view;
         }
         else {
-            View view = inflater.inflate(R.layout.list_item_holiday, parent, false);
-            Route route = routes.get(position);
+            //View for existing route
+            final View view = inflater.inflate(R.layout.list_item_route, parent, false);
+            final LinearLayout detailLayout = (LinearLayout)view.findViewById(R.id.layout_route_details);
+            final Route route = routes.get(position);
+            if(currentHoliday.getRoute().equals(route)) {
+                view.findViewById(R.id.layout_active_indicator).setBackgroundColor(context.getResources().getColor(R.color.route_is_active_color));
+            }
+            ((TextView)view.findViewById(R.id.text_view_route_started_at)).setText(context.getString(R.string.route_createt_at) + route.getCreatedAt().toString());
+
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(detailLayout.getVisibility() == View.VISIBLE) {
+                        detailLayout.setVisibility(View.GONE);
+                    }
+                    else {
+                        detailLayout.setVisibility(View.VISIBLE);
+                    }
+                }
+            });
+
+            view.findViewById(R.id.button_set_route_as_active).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    DatabaseManager.setActiveRouteForHoliday(context, currentHolidayId, route.getId());
+                    notifyDataSetChanged();
+                }
+            });
             ((TextView)view.findViewById(R.id.text_view_holiday_name)).setText(route.getName());
             return view;
         }
