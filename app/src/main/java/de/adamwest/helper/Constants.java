@@ -8,5 +8,5 @@ public final class Constants {
 
     public static final String KEY_HOLIDAY_ID = "key_holiday_id";
     public static final String KEY_ROUTE_ID = "key_route_id";
-    public static final double MINIMUM_DISTANCE_BETWEEN_LOCATIONS = 10.000;
+    public static final double MINIMUM_DISTANCE_BETWEEN_LOCATIONS = 3.000;
 }

@@ -39,11 +39,11 @@ public class MapActivity extends Activity implements
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener {
 
-    static final String LOG_TAG = "Simon";
     private long currentHolidayId = -1;
-    private boolean firstLocationChange = false;
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
+    static final int activeColor = Color.argb(125, 0, 255, 0); // -transparent green
+    static final int inactiveColor = Color.argb(155, 255, 255, 255); // -transparent gray
     private GoogleMap map;
     private LocationClient mLocationClient;
     private LocationRequest mLocationRequest;
@@ -88,26 +88,6 @@ public class MapActivity extends Activity implements
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         map.setMyLocationEnabled(true); // Enable MyLocation Layer of Google Map
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
-
-        setUpMap();
-
-        // initialize / set up map: show last point on route!
-        // currentHoliday.getRoute().getlastPoint()
-        // setUpMap(lastPoint) -> zooms to this point and print route for existing points
-
-        // OnLocationChange(): move camera to current position and show indicator for current poisition:
-        // if distance(lastPoint-currentPos)>10m: route.addPoint(currentPos)
-        // drawNewTrackOnMap(currentPos)
-
-//        if (map != null) {
-//            Marker kiel = map.addMarker(new MarkerOptions()
-//                    .position(KIEL)
-//                    .title("Kiel")
-//                    .snippet("Kiel is cool")
-//                    .icon(BitmapDescriptorFactory
-//                            .fromResource(R.drawable.ic_launcher)));
-//        }
-
     }
 
     @Override
@@ -124,87 +104,107 @@ public class MapActivity extends Activity implements
         super.onStop();
     }
 
+    //-------------------- (GooglePlay) Services Client -----------------------
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        // Display the connection status
+        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        // If already requested, start periodic updates
+        mLocationClient.requestLocationUpdates(mLocationRequest, this);
+
+        setUpMap();
+    }
+
+    @Override
+    public void onDisconnected() {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
+    }
+
     //----------------------- Main Methods ------------------------------------
 
     private void setUpMap() {
 
-        if (currentHoliday != null) {
+        //go to current position
+        Location currentLoc = mLocationClient.getLastLocation();
+        moveMapTo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
 
-            if (currentHoliday.getCurrentRoute() != null) {
+        if (currentHoliday == null) {
+            //todo: error handling: activity started without existing holiday
+        } else {
 
-                List<RouteLocation> routeLocationList = currentHoliday.getCurrentRoute().getRouteLocationList();
+            List<Route> routeList = currentHoliday.getRouteList();
 
-                if (routeLocationList == null || routeLocationList.size() < 1) {
-                    //go to current position once (by setting flag, which is caught in onLocationChangeListener())
-                    firstLocationChange = true;
-                    return;
-                } else {
-                    //todo: zoom to map where both currentlocation and last position on route are shown
-                    //draw current route and go to last position on route
-
-                    HelpingMethods.log("routeLocationList.size() : " + routeLocationList.size());
-
-                    Double latitudeFirst = routeLocationList.get(0).getLatitude();
-                    Double longitudeFirst = routeLocationList.get(0).getLongitude();
-                    LatLng latLngFirst = new LatLng(latitudeFirst, longitudeFirst);
-                    // add marker for starting point
-                    map.addMarker(new MarkerOptions().position(new LatLng(latitudeFirst, longitudeFirst)).title("Start!"));
-
-                    Double latitudeLast = routeLocationList.get(routeLocationList.size() - 1).getLatitude();
-                    Double longitudeLast = routeLocationList.get(routeLocationList.size() - 1).getLongitude();
-                    LatLng latLngLast = new LatLng(latitudeLast, longitudeLast);
-                    // Show the last Location of currentRoute in Google Map
-                    map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngLast, 10));
-                    // Zoom in the Google Map
-                    map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
-
-                    drawRouteOnMap();
-
-                }
-
+            if (routeList == null || routeList.size() == 0) {
+                // todo: do nothing / or prompt to start new route
             } else {
-                //go to current position once (by setting flag, which is caught in onLocationChangeListener())
-                firstLocationChange = true;
+
+                Route route = currentHoliday.getCurrentRoute();
+
+                if (route != null) {
+                    drawInactiveRoutes();
+                    drawActiveRoute();
+                    //proceed with range check / tracking
+                } else {
+                    //draw the routes: (all in different colors)
+                    //1) draw all unselected routes (super transparent)
+                    //2) draw selected route (zoomed to, and less transparent or not at all transp.)
+                }
+//                private void drawRoutes(int selectedId){
+//
+//                }
             }
+
+
         }
+    }
 
-//        // Get LocationManager object from System Service LOCATION_SERVICE
-//        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-//        // Create a criteria object to retrieve provider
-//        Criteria criteria = new Criteria();
-//        // Get the name of the best provider
-//        String provider = locationManager.getBestProvider(criteria, true);
-//        // Get Current Location
-//        Location myLocation = locationManager.getLastKnownLocation(provider);
-//        // Get latitude of the current location
-//        double latitude = myLocation.getLatitude();
-//        // Get longitude of the current location
-//        double longitude = myLocation.getLongitude();
-//        // Create a LatLng object for the current location
-//        LatLng latLng = new LatLng(latitude, longitude);
+    private void drawActiveRoute() {
+        drawRouteOnMap(currentHoliday.getCurrentRoute(), activeColor);
+    }
 
+    private void drawInactiveRoutes() {
+        List<Route> routeList = currentHoliday.getRouteList();
+        for (Route route : routeList) {
+            if (route.getId() != currentHoliday.getCurrentRouteId())
+                drawRouteOnMap(route, inactiveColor);
+        }
     }
 
     //    private void drawRouteOnMap(List<RouteLocation> routeLocationList) {
-    private void drawRouteOnMap() {
+    private void drawRouteOnMap(Route route, int lineColor) {
 
-        List<RouteLocation> routeLocationList = currentHoliday.getCurrentRoute().getRouteLocationList();
+//        List<RouteLocation> routeLocationList = currentHoliday.getCurrentRoute().getRouteLocationList();
+        List<RouteLocation> routeLocationList = route.getRouteLocationList();
 
         PolylineOptions options = new PolylineOptions()
                 .width(22)
 //                .color(Color.GREEN);
-                .color(Color.argb(135, 0, 255, 0));
-//                .geodesic(true) // not needed?
+//                .color(Color.argb(135, 0, 255, 0));
+                .color(lineColor);
 
         for (int i = 0; i < routeLocationList.size(); i++) {
             Double latitude = routeLocationList.get(i).getLatitude();
             Double longitude = routeLocationList.get(i).getLongitude();
             LatLng latLng = new LatLng(latitude, longitude);
             options.add(latLng);
+            if (i == 0) {
+                map.addMarker(new MarkerOptions().position(latLng).title("Start!"));
+            } //todo: finish marker
         }
 
         map.addPolyline(options);
 
+    }
+
+    private void moveMapTo(LatLng latLng) {
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
+        map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
     }
 
     private void initRouteDrawerList() {
@@ -298,26 +298,6 @@ public class MapActivity extends Activity implements
         return super.onOptionsItemSelected(item);
     }
 
-    //-------------------- (GooglePlay) Services Client -----------------------
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        // Display the connection status
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-        // If already requested, start periodic updates
-        mLocationClient.requestLocationUpdates(mLocationRequest, this);
-
-    }
-
-    @Override
-    public void onDisconnected() {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
     //-------------------- (GooglePlay) Location Client -----------------------
 
     @Override
@@ -325,16 +305,8 @@ public class MapActivity extends Activity implements
 
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
-        if (firstLocationChange) {
-            // Show the last Location of currentRoute in Google Map
-            map.moveCamera(CameraUpdateFactory.newLatLng(loc));
-            // Zoom in the Google Map
-            map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
-            firstLocationChange = false;
-        }
-
         if (currentHoliday != null) {
-            Route route = currentHoliday.getRoute();
+            Route route = currentHoliday.getCurrentRoute();
             if (route != null) {
 
                 if (route.getRouteLocationList().size() == 0) {
@@ -356,7 +328,7 @@ public class MapActivity extends Activity implements
                         HelpingMethods.log(msg);
 
                         DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
-                        drawRouteOnMap();
+                        drawRouteOnMap(currentHoliday.getCurrentRoute(), activeColor);
                     }
                 }
 
@@ -371,3 +343,91 @@ public class MapActivity extends Activity implements
 
 }
 
+
+//    private void moveMapToCurrentLoc(){
+//        //go to current position
+//        LatLng latLngLast = getCurrentLatLng();
+//        // Show the last Location of currentRoute in Google Map
+//        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngLast, 10));
+//        // Zoom in the Google Map
+//        map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
+//    }
+//
+//    private LatLng getCurrentLatLng() {
+//        // Enable MyLocation Layer of Google Map
+//        map.setMyLocationEnabled(true);
+//
+//        // Get LocationManager object from System Service LOCATION_SERVICE
+//        LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//
+//        // Create a criteria object to retrieve provider
+//        Criteria criteria = new Criteria();
+//
+//        // Get the name of the best provider
+//        String provider = locationManager.getBestProvider(criteria, true);
+//
+//        // Get Current Location
+//        Location myLocation = locationManager.getLastKnownLocation(provider);
+//
+//        //set map type
+//        map.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+//
+//        // Get latitude of the current location
+//        double latitude = myLocation.getLatitude();
+//
+//        // Get longitude of the current location
+//        double longitude = myLocation.getLongitude();
+//
+//        // Create a LatLng object for the current location
+//        LatLng latLng = new LatLng(latitude, longitude);
+//
+//        return latLng;
+//    }
+
+
+//            if (currentHoliday.getCurrentRoute() != null) {
+//
+//                List<RouteLocation> routeLocationList = currentHoliday.getCurrentRoute().getRouteLocationList();
+//
+//                if (routeLocationList == null || routeLocationList.size() < 1) { // IF route is empty
+//                    return;
+//                } else {
+//                    //draw current route and go to last position on route
+//
+//                    HelpingMethods.log("routeLocationList.size() : " + routeLocationList.size());
+//
+//                    Double latitudeFirst = routeLocationList.get(0).getLatitude();
+//                    Double longitudeFirst = routeLocationList.get(0).getLongitude();
+////                    LatLng latLngFirst = new LatLng(latitudeFirst, longitudeFirst);
+//                    // add marker for starting point
+//                    map.addMarker(new MarkerOptions()
+//                            .position(new LatLng(latitudeFirst, longitudeFirst))
+//                            .snippet("This is the starting point of your route...")
+//                            .title("Start"));
+////                            .icon(BitmapDescriptorFactory
+////                                .fromResource(R.drawable.ic_launcher)));
+//
+//                    Double latitudeLast = routeLocationList.get(routeLocationList.size() - 1).getLatitude();
+//                    Double longitudeLast = routeLocationList.get(routeLocationList.size() - 1).getLongitude();
+//                    LatLng latLngLast = new LatLng(latitudeLast, longitudeLast);
+//
+//                    drawRouteOnMap();
+//                    moveMapTo(latLngLast);
+//                }
+//
+//            } else {
+//                //go to current position
+//                Location currentLoc = mLocationClient.getLastLocation();
+//                moveMapTo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
+//            }
+
+
+//PSEUDO
+
+// initialize / set up map: show last point on route!
+// currentHoliday.getRoute().getlastPoint()
+// setUpMap(lastPoint) -> zooms to this point and print route for existing points
+
+// OnLocationChange(): move camera to current position and show indicator for current poisition:
+// if distance(lastPoint-currentPos)>10m: route.addPoint(currentPos)
+// drawNewTrackOnMap(currentPos)
