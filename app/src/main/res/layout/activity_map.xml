@@ -2,7 +2,9 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/activity_map_layout"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MapActivity" >
 
     <android.support.v4.widget.DrawerLayout
             android:id="@+id/drawer_layout"
@@ -41,7 +43,8 @@
                     android:text="finish"
                     android:background="@drawable/simple_button_selector"
                     android:layout_margin="3dp"
-                    android:layout_above="@id/video_button"/>
+                    android:layout_above="@id/video_button"
+                    android:onClick="onFinishClick"/>
 
         </RelativeLayout>
 

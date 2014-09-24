@@ -83,7 +83,7 @@ public class RouteListAdapter extends BaseAdapter {
             final View view = inflater.inflate(R.layout.list_item_route, parent, false);
             final LinearLayout detailLayout = (LinearLayout)view.findViewById(R.id.layout_route_details);
             final Route route = routes.get(position);
-            if(currentHoliday.getRoute().equals(route)) {
+            if(currentHoliday.getRoute()!=null && currentHoliday.getRoute().equals(route)) {
                 view.findViewById(R.id.layout_active_indicator).setBackgroundColor(context.getResources().getColor(R.color.route_is_active_color));
             }
             ((TextView)view.findViewById(R.id.text_view_route_started_at)).setText(context.getString(R.string.route_createt_at) + route.getCreatedAt().toString());

@@ -128,6 +128,17 @@ public class MapActivity extends Activity implements
 
     //----------------------- Main Methods ------------------------------------
 
+    public void onFinishClick(View view) {
+        Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
+        removeActiveRoute();
+    }
+
+    private void removeActiveRoute() {
+        DatabaseManager.removeActiveRouteForHoliday(getApplicationContext(), currentHolidayId);
+        updateRouteList();
+        setUpMap();
+    }
+
     private void setUpMap() {
         map.clear();
         //go to current position
@@ -151,6 +162,7 @@ public class MapActivity extends Activity implements
                     drawActiveRoute();
                     //proceed with range check / tracking
                 } else {
+                    drawInactiveRoutes();
                     //draw the routes: (all in different colors)
                     //1) draw all unselected routes (super transparent)
                     //2) draw selected route (zoomed to, and less transparent or not at all transp.)
@@ -196,6 +208,10 @@ public class MapActivity extends Activity implements
             if (i == 0) {
                 map.addMarker(new MarkerOptions().position(latLng).title("Start!"));
             } //todo: finish marker
+            else if (i == routeLocationList.size() - 1) {
+                if (route.getId() != currentHoliday.getCurrentRouteId())
+                    map.addMarker(new MarkerOptions().position(latLng).title("Finish!"));
+            }
         }
 
         map.addPolyline(options);
