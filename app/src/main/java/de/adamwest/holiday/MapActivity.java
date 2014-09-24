@@ -20,6 +20,7 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.PolylineOptions;
@@ -88,6 +89,8 @@ public class MapActivity extends Activity implements
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         map.setMyLocationEnabled(true); // Enable MyLocation Layer of Google Map
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
+
+
     }
 
     @Override
@@ -127,6 +130,14 @@ public class MapActivity extends Activity implements
     }
 
     //----------------------- Main Methods ------------------------------------
+
+    public void onToggleMapClick(View view) {
+        if (map.getMapType() == GoogleMap.MAP_TYPE_HYBRID) {
+            map.setMapType(GoogleMap.MAP_TYPE_NORMAL); //set map type: normal
+        } else {
+            map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
+        }
+    }
 
     public void onFinishClick(View view) {
         Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
@@ -177,7 +188,8 @@ public class MapActivity extends Activity implements
     }
 
     private void drawActiveRoute() {
-        drawRouteOnMap(currentHoliday.getCurrentRoute(), activeColor);
+        if (currentHoliday.getCurrentRoute() != null)
+            drawRouteOnMap(currentHoliday.getCurrentRoute(), activeColor);
     }
 
     private void drawInactiveRoutes() {
@@ -206,11 +218,21 @@ public class MapActivity extends Activity implements
             LatLng latLng = new LatLng(latitude, longitude);
             options.add(latLng);
             if (i == 0) {
-                map.addMarker(new MarkerOptions().position(latLng).title("Start!"));
+                map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Start!")
+                        .snippet(route.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_green)));
+
             } //todo: finish marker
             else if (i == routeLocationList.size() - 1) {
                 if (route.getId() != currentHoliday.getCurrentRouteId())
-                    map.addMarker(new MarkerOptions().position(latLng).title("Finish!"));
+                    map.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title("Finish!")
+                            .snippet(route.getName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
+                ;
             }
         }
 
