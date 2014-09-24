@@ -129,7 +129,7 @@ public class MapActivity extends Activity implements
     //----------------------- Main Methods ------------------------------------
 
     private void setUpMap() {
-
+        map.clear();
         //go to current position
         Location currentLoc = mLocationClient.getLastLocation();
         moveMapTo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
