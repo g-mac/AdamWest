@@ -1,21 +1,61 @@
-
-
 <FrameLayout
-          xmlns:android="http://schemas.android.com/apk/res/android"
-          android:id="@+id/activity_map_layout"
-          android:layout_width="match_parent"
-          android:layout_height="match_parent">
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/activity_map_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MapActivity" >
 
     <android.support.v4.widget.DrawerLayout
-                android:id="@+id/drawer_layout"
+            android:id="@+id/drawer_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+        <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-        <fragment
-                android:id="@+id/map"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                class="com.google.android.gms.maps.MapFragment" />
+            <fragment
+                    android:id="@+id/map"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    class="com.google.android.gms.maps.MapFragment"/>
+
+            <Button android:id="@+id/picture_button"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="picture"
+                    android:background="@drawable/simple_button_selector"
+                    android:layout_margin="3dp"
+                    android:layout_alignParentBottom="true"/>
+
+            <Button android:id="@+id/video_button"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="video"
+                    android:background="@drawable/simple_button_selector"
+                    android:layout_margin="3dp"
+                    android:layout_above="@id/picture_button"/>
+
+            <Button android:id="@+id/finish_button"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="finish"
+                    android:background="@drawable/simple_button_selector"
+                    android:layout_margin="3dp"
+                    android:layout_above="@id/video_button"
+                    android:onClick="onFinishClick"/>
+
+            <Button android:id="@+id/toggle_map_button"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="toggle"
+                    android:background="@drawable/simple_button_selector"
+                    android:layout_margin="3dp"
+                    android:layout_above="@id/finish_button"
+                    android:onClick="onToggleMapClick"/>
+
+        </RelativeLayout>
 
         <ListView android:id="@+id/left_drawer"
                   android:layout_width="240dp"
@@ -26,6 +66,7 @@
                   android:dividerHeight="1dp"
                   android:background="#111"/>
 
+
     </android.support.v4.widget.DrawerLayout>
 
- </FrameLayout>
+</FrameLayout>

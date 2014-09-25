@@ -3,4 +3,8 @@
     <color name="list_view_active_color">#ff91a8c8</color>
     <color name="list_view_normal_color">#c8c8c8</color>
     <color name="route_is_active_color">#ff4fff30</color>
+
+    <color name="simple_button_normal">#B0FFFFFF</color>
+    <color name="simple_button_pressed">#FFFFFFFF</color>
+
 </resources>
