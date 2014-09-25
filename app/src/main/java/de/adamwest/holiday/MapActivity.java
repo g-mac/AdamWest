@@ -1,16 +1,22 @@
 package de.adamwest.holiday;
 
+import android.app.ActionBar;
 import android.app.Activity;
+import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.widget.DrawerLayout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -29,6 +35,7 @@ import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.database.RouteLocation;
+import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 
@@ -54,6 +61,8 @@ public class MapActivity extends Activity implements
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
 
+    private CameraManager cameraManager;
+
     // Update frequency in milliseconds
     private static final long UPDATE_INTERVAL = 15000;
     // A fast frequency ceiling in milliseconds
@@ -70,7 +79,7 @@ public class MapActivity extends Activity implements
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-
+        cameraManager = new CameraManager(this);
         mLocationClient = new LocationClient(this, this, this);
         mLocationClient.connect(); //ToDo: move to onStart?!
 
@@ -89,7 +98,6 @@ public class MapActivity extends Activity implements
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         map.setMyLocationEnabled(true); // Enable MyLocation Layer of Google Map
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
-
 
     }
 
@@ -333,6 +341,18 @@ public class MapActivity extends Activity implements
         if (id == R.id.action_settings) {
             return true;
         }
+        else if(id == R.id.action_add_attachment) {
+            return true;
+        }
+        else if(id == R.id.menu_picture) {
+            cameraManager.startCameraForPicture();
+        }
+        else if(id == R.id.menu_video) {
+            cameraManager.startCameraForVideo();
+        }
+        else if(id == R.id.menu_description) {
+
+        }
         return super.onOptionsItemSelected(item);
     }
 
@@ -378,6 +398,13 @@ public class MapActivity extends Activity implements
 //        Log.d(LOG_TAG, msg);
     }
 
+
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        cameraManager.onActivityResult(requestCode, resultCode, data);
+
+    }
 
 }
 

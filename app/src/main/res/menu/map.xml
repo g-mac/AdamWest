@@ -2,6 +2,30 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="de.adamwest.holiday.MapActivity" >
+
+
+    <item android:id="@+id/action_add_attachment"
+          android:icon="@drawable/ic_action_new_attachment"
+          android:title="@string/action"
+          android:showAsAction="ifRoom">
+        <menu>
+            <item
+                    android:icon="@drawable/ic_action_camera"
+                    android:id="@+id/menu_picture"
+                    android:title="@string/menu_picture" />
+
+            <item
+                    android:id="@+id/menu_video"
+                    android:icon="@drawable/ic_action_video"
+                    android:title="@string/menu_video" />
+
+            <item
+                    android:id="@+id/menu_description"
+                    android:icon="@drawable/ic_action_edit"
+                    android:title="@string/menu_description" />
+        </menu>
+    </item>
+
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="100"

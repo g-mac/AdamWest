@@ -7,6 +7,13 @@
     <string name="title_activity_map">MapActivity</string>
     <string name="drawer_open">DrawerOpen</string>
     <string name="drawer_close">DrawerClose</string>
+    <string name="action">Action</string>
+
+    //MENU
+    <string name="menu_picture">Foto</string>
+    <string name="menu_video">Video</string>
+    <string name="menu_description">Beschreibung</string>
+
 
     <string name="holiday_list_header">Eingetragene Urlaube</string>
 
