@@ -115,7 +115,7 @@ public final class DatabaseManager {
         getDaoSession(context).getRouteDao().update(route);
     }
 
-    public long addEventToRoute(Context context, long routeId, String eventName, String eventDescription, LatLng loc) {
+    public static long createNewEvent(Context context, long routeId, String eventName, String eventDescription, LatLng loc) {
         Route route = getDaoSession(context).getRouteDao().load(routeId);
         if(route == null) {
             //TODO Exception handling
@@ -140,6 +140,24 @@ public final class DatabaseManager {
         getDaoSession(context).getRouteDao().update(route);
 
         return eventId;
+    }
+
+    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc) {
+        long eventId = createNewEvent(context, routeId, "", "", loc);
+        return createNewMultiMediaElement(context, type, path, eventId);
+    }
+
+    public static long createNewMultiMediaElement(Context context, String type, String path, long eventId) {
+        MultimediaElement multimediaElement = new MultimediaElement();
+        multimediaElement.setType(type);
+        multimediaElement.setCreatedAt(new Date());
+        multimediaElement.setPath(path);
+        multimediaElement.setEventId(eventId);
+
+        Event event = getDaoSession(context).getEventDao().load(eventId);
+        event.getMultimediaElementList().add(multimediaElement);
+
+        return getDaoSession(context).insert(multimediaElement);
     }
 
 

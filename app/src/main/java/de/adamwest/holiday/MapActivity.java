@@ -60,7 +60,7 @@ public class MapActivity extends Activity implements
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
-
+    private Location currentLoc;
     private CameraManager cameraManager;
 
     // Update frequency in milliseconds
@@ -345,7 +345,9 @@ public class MapActivity extends Activity implements
             return true;
         }
         else if(id == R.id.menu_picture) {
-            cameraManager.startCameraForPicture();
+            if(currentLoc != null) {
+                cameraManager.startCameraForPicture(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
+            }
         }
         else if(id == R.id.menu_video) {
             cameraManager.startCameraForVideo();
@@ -361,6 +363,7 @@ public class MapActivity extends Activity implements
     @Override
     public void onLocationChanged(Location location) {
 
+        currentLoc = location;
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
         if (currentHoliday != null) {
@@ -404,6 +407,10 @@ public class MapActivity extends Activity implements
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         cameraManager.onActivityResult(requestCode, resultCode, data);
 
+    }
+
+    public long getCurrentHolidayId() {
+        return currentHolidayId;
     }
 
 }

@@ -1,14 +1,20 @@
 package de.adamwest.helper;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Toast;
+import com.google.android.gms.maps.model.LatLng;
+import de.adamwest.R;
+import de.adamwest.holiday.ConfirmMediaFragment;
+import de.adamwest.holiday.MapActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
@@ -24,16 +30,16 @@ public class CameraManager {
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
-    private static File currentFile;
-
+    public static File currentFile;
+    private LatLng currentLoc;
     private Uri fileUri;
 
     public CameraManager(Context context) {
         this.context = context;
     }
 
-    public void startCameraForPicture() {
-
+    public void startCameraForPicture(LatLng latLng) {
+        currentLoc = latLng;
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
@@ -86,11 +92,20 @@ public class CameraManager {
     }
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Fragment  confirmFragment = new ConfirmMediaFragment();
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(context, "Image saved to:\n" +
                         currentFile.getAbsolutePath(), Toast.LENGTH_LONG).show();
+                MapActivity mapActivity = (MapActivity)context;
+                Bundle args = new Bundle();
+                args.putLong(Constants.KEY_HOLIDAY_ID, mapActivity.getCurrentHolidayId());
+                args.putString(Constants.KEY_CAMERA_TYPE, Constants.TYPE_IMAGE);
+                args.putParcelable(Constants.KEY_LAT_LNG, currentLoc);
+                confirmFragment.setArguments(args);
+                mapActivity.getFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commit();
+
 
             } else if (resultCode == Activity.RESULT_CANCELED) {
                 // User cancelled the image capture

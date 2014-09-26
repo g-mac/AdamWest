@@ -27,6 +27,9 @@
     <string name="set_route_as_active">Strecke als aktive Strecke wählen</string>
     <string name="route_createt_at">Strecke gestartet am: </string>
 
+    <string name="cancel">Abbrechen</string>
+    <string name="save">Speichern</string>
+
 
 
 </resources>
