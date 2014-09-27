@@ -102,7 +102,8 @@ public class CameraManager {
                 Bundle args = new Bundle();
                 args.putLong(Constants.KEY_HOLIDAY_ID, mapActivity.getCurrentHolidayId());
                 args.putString(Constants.KEY_CAMERA_TYPE, Constants.TYPE_IMAGE);
-                args.putParcelable(Constants.KEY_LAT_LNG, currentLoc);
+                args.putDouble(Constants.KEY_LAT, currentLoc.latitude);
+                args.putDouble(Constants.KEY_LONG, currentLoc.longitude);
                 confirmFragment.setArguments(args);
                 mapActivity.getFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commit();
 

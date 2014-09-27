@@ -90,6 +90,10 @@ public final class DatabaseManager {
         return getDaoSession(context).getRouteDao().load(routeId);
     }
 
+    public static Event getEventFromId(Context context, long eventId) {
+        return getDaoSession(context).getEventDao().load(eventId);
+    }
+
     private static List<Route> getAllRoutes(Context context) {
         return getDaoSession(context).getRouteDao().loadAll();
     }
@@ -126,6 +130,7 @@ public final class DatabaseManager {
         location.setLatitude(loc.latitude);
         location.setLongitude(loc.longitude);
         location.setCreatedAt(new Date());
+        getDaoSession(context).insert(location);
 
         Event event = new Event();
         if(eventName != null) event.setName(eventName);
@@ -133,11 +138,10 @@ public final class DatabaseManager {
         event.setRouteLocation(location);
         event.setRouteId(route.getId());
 
-        long eventId = getDaoSession(context).getEventDao().insert(event);
-        getDaoSession(context).getRouteLocationDao().insert(location);
+        long eventId = getDaoSession(context).insert(event);
 
         route.getEventList().add(event);
-        getDaoSession(context).getRouteDao().update(route);
+        getDaoSession(context).update(route);
 
         return eventId;
     }

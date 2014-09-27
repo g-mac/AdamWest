@@ -29,15 +29,22 @@ public class ConfirmMediaFragment extends Fragment {
             public void onClick(View v) {
                 long routeId = DatabaseManager.getHolidayFromId(getActivity(), holidayId).getCurrentRoute().getId();
                 String type = getArguments().getString(Constants.KEY_CAMERA_TYPE);
-                LatLng loc = getArguments().getParcelable(Constants.KEY_LAT_LNG);
-                DatabaseManager.createNewEventWithMultiMediaElement(getActivity(), routeId, type, CameraManager.currentFile.getAbsolutePath(), loc);
+                LatLng loc = new LatLng(getArguments().getDouble(Constants.KEY_LAT),
+                             getArguments().getDouble(Constants.KEY_LONG));
+                if(-1 != DatabaseManager.createNewEventWithMultiMediaElement(getActivity(), routeId, type, CameraManager.currentFile.getAbsolutePath(), loc)) {
+                    getActivity().getFragmentManager().beginTransaction().remove(ConfirmMediaFragment.this).commit();
+                }
+                else{
+                                    //TODO ERROR WHILE CREATING
+                }
             }
         });
 
         view.findViewById(R.id.button_cancel).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                CameraManager.currentFile.delete();
+                getActivity().getFragmentManager().beginTransaction().remove(ConfirmMediaFragment.this).commit();
             }
         });
 

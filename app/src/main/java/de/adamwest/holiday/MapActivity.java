@@ -2,6 +2,7 @@ package de.adamwest.holiday;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
@@ -26,37 +27,34 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.*;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
-import de.adamwest.database.Holiday;
-import de.adamwest.database.Route;
-import de.adamwest.database.RouteLocation;
+import de.adamwest.database.*;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 public class MapActivity extends Activity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
-        LocationListener {
+        LocationListener, GoogleMap.OnMarkerClickListener {
 
     private long currentHolidayId = -1;
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
     static final int activeColor = Color.argb(125, 0, 255, 0); // -transparent green
     static final int inactiveColor = Color.argb(155, 255, 255, 255); // -transparent gray
+    private final int EVENT_MARKER_ID = 666;
     private GoogleMap map;
     private LocationClient mLocationClient;
     private LocationRequest mLocationRequest;
     private Holiday currentHoliday;
-
+    private Map<Marker,Long> eventMarkerMap;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -98,6 +96,7 @@ public class MapActivity extends Activity implements
         map = ((MapFragment) getFragmentManager().findFragmentById(R.id.map)).getMap();
         map.setMyLocationEnabled(true); // Enable MyLocation Layer of Google Map
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
+        map.setOnMarkerClickListener(this);
 
     }
 
@@ -244,6 +243,21 @@ public class MapActivity extends Activity implements
             }
         }
 
+
+        //TODO implement some button to show/hide the events for each map
+        if(currentHoliday.getCurrentRoute() != null) {
+            eventMarkerMap = new HashMap<Marker, Long>();
+            for(Event event: currentHoliday.getCurrentRoute().getEventList()) {
+                LatLng pos = new LatLng(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .position(pos)
+                        .title("Event")
+                        .snippet(event.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
+                ;
+                eventMarkerMap.put(marker, event.getId());
+            }
+        }
         map.addPolyline(options);
 
     }
@@ -345,6 +359,10 @@ public class MapActivity extends Activity implements
             return true;
         }
         else if(id == R.id.menu_picture) {
+            if(currentHoliday.getCurrentRoute() == null) {
+                //TODO Raise error
+                return false;
+            }
             if(currentLoc != null) {
                 cameraManager.startCameraForPicture(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
             }
@@ -413,6 +431,19 @@ public class MapActivity extends Activity implements
         return currentHolidayId;
     }
 
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        if(eventMarkerMap != null && eventMarkerMap.containsKey(marker)) {
+            long eventId = eventMarkerMap.get(marker);
+            Log.i("prose", "clicked on event");
+            Fragment eventFragment = new EventFragment();
+            Bundle args = new Bundle();
+            args.putLong(Constants.KEY_EVENT_ID, eventId);
+            eventFragment.setArguments(args);
+            getFragmentManager().beginTransaction().add(R.id.activity_map_layout, eventFragment).commit();
+        }
+        return false;
+    }
 }
 
 
