@@ -146,18 +146,12 @@ public class MapActivity extends Activity implements
 
     //----------------------- Main Methods ------------------------------------
 
-    public void zoomMapToRoute(Route route){
-        LatLngBounds bounds = getRouteBoundaries(route);
-//        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
-        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
-    }
-
-    public void onTestButtonClick(View view){
+    public void onTestButtonClick(View view) {
         //perform test actions in this method
 //        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
 
         Route testRoute = currentHoliday.getRouteList().get(0);
-        if(testRoute==null)
+        if (testRoute == null)
             return;
         zoomMapToRoute(testRoute);
     }
@@ -176,6 +170,7 @@ public class MapActivity extends Activity implements
     }
 
     private void removeActiveRoute() {
+        //todo: select route (so it will be zoomed to in setupmap())
         DatabaseManager.removeActiveRouteForHoliday(getApplicationContext(), currentHolidayId);
         updateRouteList();
         setUpMap();
@@ -205,13 +200,16 @@ public class MapActivity extends Activity implements
                     //proceed with range check / tracking
                 } else {
                     drawInactiveRoutes();
+
+//                    if(currentHoliday.getSelectedMap()!=null)
+//                    zoomMapToRoute(selectedRoute);
+//                    else
+                    zoomMapToCurrentHoliday(); //show entire holiday
+
                     //draw the routes: (all in different colors)
                     //1) draw all unselected routes (super transparent)
                     //2) draw selected route (zoomed to, and less transparent or not at all transp.)
                 }
-//                private void drawRoutes(int selectedId){
-//
-//                }
             }
 
 
@@ -285,6 +283,18 @@ public class MapActivity extends Activity implements
 
     }
 
+    public void zoomMapToRoute(Route route) {
+        LatLngBounds bounds = getRouteBoundaries(route);
+//        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+    }
+
+    public void zoomMapToCurrentHoliday() {
+        LatLngBounds bounds = getCurrentHolidayBoundaries();
+//        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+    }
+
     private void moveMapTo(LatLng latLng) {
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
         map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
@@ -337,6 +347,23 @@ public class MapActivity extends Activity implements
             builder.include(new LatLng(location.getLatitude(), location.getLongitude()));
         }
 
+        return builder.build();
+    }
+
+    private LatLngBounds getCurrentHolidayBoundaries() {
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        List<Route> routes = currentHoliday.getRouteList();
+
+        for (Route route : routes) {
+            List<RouteLocation> locations = route.getRouteLocationList();
+
+            for (RouteLocation location : locations) {
+                builder.include(new LatLng(location.getLatitude(), location.getLongitude()));
+            }
+
+        }
         return builder.build();
     }
 
@@ -414,7 +441,7 @@ public class MapActivity extends Activity implements
 
                 if (route.getRouteLocationList().size() == 0) {
                     DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
-                    map.addMarker(new MarkerOptions().position(loc).title("Start!"));
+//                    map.addMarker(new MarkerOptions().position(loc).title("Start!"));
                 } else {
                     RouteLocation lastLocation = route.getRouteLocationList().get(route.getRouteLocationList().size() - 1);
                     Location lastLoc = new Location("dummyprovider");
@@ -442,7 +469,6 @@ public class MapActivity extends Activity implements
 
 //        Log.d(LOG_TAG, msg);
     }
-
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
