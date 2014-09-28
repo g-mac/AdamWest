@@ -39,6 +39,15 @@
                     android:layout_above="@id/finish_button"
                     android:onClick="onToggleMapClick"/>
 
+            <Button android:id="@+id/toggle_test_button"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="test"
+                    android:background="@drawable/simple_button_selector"
+                    android:layout_margin="3dp"
+                    android:layout_above="@id/toggle_map_button"
+                    android:onClick="onTestButtonClick"/>
+
         </RelativeLayout>
 
         <ListView android:id="@+id/left_drawer"

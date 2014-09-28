@@ -34,6 +34,7 @@ import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 
+import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class MapActivity extends Activity implements
     private LocationClient mLocationClient;
     private LocationRequest mLocationRequest;
     private Holiday currentHoliday;
-    private Map<Marker,Long> eventMarkerMap;
+    private Map<Marker, Long> eventMarkerMap;
     private DrawerLayout mDrawerLayout;
     private ListView mDrawerList;
     private ActionBarDrawerToggle mDrawerToggle;
@@ -101,6 +102,13 @@ public class MapActivity extends Activity implements
     }
 
     @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        // Sync the toggle state after onRestoreInstanceState has occurred.
+        mDrawerToggle.syncState();
+    }
+
+    @Override
     protected void onStart() {
         super.onStart();
         // Connect the client.
@@ -137,6 +145,22 @@ public class MapActivity extends Activity implements
     }
 
     //----------------------- Main Methods ------------------------------------
+
+    public void zoomMapToRoute(Route route){
+        LatLngBounds bounds = getRouteBoundaries(route);
+//        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+    }
+
+    public void onTestButtonClick(View view){
+        //perform test actions in this method
+//        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+
+        Route testRoute = currentHoliday.getRouteList().get(0);
+        if(testRoute==null)
+            return;
+        zoomMapToRoute(testRoute);
+    }
 
     public void onToggleMapClick(View view) {
         if (map.getMapType() == GoogleMap.MAP_TYPE_HYBRID) {
@@ -207,7 +231,6 @@ public class MapActivity extends Activity implements
         }
     }
 
-    //    private void drawRouteOnMap(List<RouteLocation> routeLocationList) {
     private void drawRouteOnMap(Route route, int lineColor) {
 
 //        List<RouteLocation> routeLocationList = currentHoliday.getCurrentRoute().getRouteLocationList();
@@ -245,9 +268,9 @@ public class MapActivity extends Activity implements
 
 
         //TODO implement some button to show/hide the events for each map
-        if(currentHoliday.getCurrentRoute() != null) {
+        if (currentHoliday.getCurrentRoute() != null) {
             eventMarkerMap = new HashMap<Marker, Long>();
-            for(Event event: currentHoliday.getCurrentRoute().getEventList()) {
+            for (Event event : currentHoliday.getCurrentRoute().getEventList()) {
                 LatLng pos = new LatLng(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
                 Marker marker = map.addMarker(new MarkerOptions()
                         .position(pos)
@@ -305,11 +328,16 @@ public class MapActivity extends Activity implements
 
     }
 
-    @Override
-    protected void onPostCreate(Bundle savedInstanceState) {
-        super.onPostCreate(savedInstanceState);
-        // Sync the toggle state after onRestoreInstanceState has occurred.
-        mDrawerToggle.syncState();
+    private LatLngBounds getRouteBoundaries(Route route) {
+
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        List<RouteLocation> locations = route.getRouteLocationList();
+        for (RouteLocation location : locations) {
+            builder.include(new LatLng(location.getLatitude(), location.getLongitude()));
+        }
+
+        return builder.build();
     }
 
     @Override
@@ -354,23 +382,19 @@ public class MapActivity extends Activity implements
         int id = item.getItemId();
         if (id == R.id.action_settings) {
             return true;
-        }
-        else if(id == R.id.action_add_attachment) {
+        } else if (id == R.id.action_add_attachment) {
             return true;
-        }
-        else if(id == R.id.menu_picture) {
-            if(currentHoliday.getCurrentRoute() == null) {
+        } else if (id == R.id.menu_picture) {
+            if (currentHoliday.getCurrentRoute() == null) {
                 //TODO Raise error
                 return false;
             }
-            if(currentLoc != null) {
+            if (currentLoc != null) {
                 cameraManager.startCameraForPicture(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
             }
-        }
-        else if(id == R.id.menu_video) {
+        } else if (id == R.id.menu_video) {
             cameraManager.startCameraForVideo();
-        }
-        else if(id == R.id.menu_description) {
+        } else if (id == R.id.menu_description) {
 
         }
         return super.onOptionsItemSelected(item);
@@ -420,7 +444,6 @@ public class MapActivity extends Activity implements
     }
 
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         cameraManager.onActivityResult(requestCode, resultCode, data);
@@ -433,7 +456,7 @@ public class MapActivity extends Activity implements
 
     @Override
     public boolean onMarkerClick(Marker marker) {
-        if(eventMarkerMap != null && eventMarkerMap.containsKey(marker)) {
+        if (eventMarkerMap != null && eventMarkerMap.containsKey(marker)) {
             long eventId = eventMarkerMap.get(marker);
             Log.i("prose", "clicked on event");
             Fragment eventFragment = new EventFragment();
@@ -524,6 +547,42 @@ public class MapActivity extends Activity implements
 //                moveMapTo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
 //            }
 
+
+//    private double[] getRouteBoundaries(Route route) {
+//        double[] boundaries = null;
+//
+//        int mostEastLong = 0;
+//        int mostWestLong = 1;
+//        int mostNorthLat = 2;
+//        int mostSouthLat = 3;
+//
+//        List<RouteLocation> locations = route.getRouteLocationList();
+//        for (RouteLocation location : locations) {
+//            double locationLat = location.getLatitude();
+//            double locationLong = location.getLongitude();
+//
+//            if (boundaries == null) {
+//                boundaries = new double[4];
+//                boundaries[mostEastLong] = locationLong;
+//                boundaries[mostWestLong] = locationLong;
+//                boundaries[mostNorthLat] = locationLat;
+//                boundaries[mostSouthLat] = locationLat;
+//            } else {
+//                if (locationLong > boundaries[mostEastLong])
+//                    boundaries[mostEastLong] = locationLong;
+//                else if (locationLong < boundaries[mostWestLong])
+//                    boundaries[mostWestLong] = locationLong;
+//
+//                if (locationLat > boundaries[mostNorthLat])
+//                    boundaries[mostNorthLat] = locationLat;
+//                else if (locationLat < boundaries[mostSouthLat])
+//                    boundaries[mostSouthLat] = locationLat;
+//            }
+//
+//        }
+//
+//        return boundaries;
+//    }
 
 //PSEUDO
 
