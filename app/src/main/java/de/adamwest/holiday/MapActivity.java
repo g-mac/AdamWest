@@ -77,7 +77,7 @@ public class MapActivity extends Activity implements
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
-        cameraManager = new CameraManager(this);
+        cameraManager = CameraManager.getCameraManager( this);
         mLocationClient = new LocationClient(this, this, this);
         mLocationClient.connect(); //ToDo: move to onStart?!
 

@@ -1,11 +1,11 @@
 package de.adamwest.holiday;
 
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +15,7 @@ import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.database.MultimediaElement;
+import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 
 /**
@@ -33,7 +34,37 @@ public class EventFragment extends Fragment {
         if(eventId != -1) {
            currentEvent = DatabaseManager.getEventFromId(getActivity(), eventId);
         }
+        view.findViewById(R.id.add_new_element).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
+                b.setTitle("Example");
+                String[] types = {getString(R.string.menu_picture), getString(R.string.menu_video)};
 
+                b.setItems(types, new DialogInterface.OnClickListener() {
+
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+
+                        dialog.dismiss();
+                        switch(which){
+                            case 0:
+
+                                CameraManager.getCameraManager(getActivity()).startCameraForPicture(currentEvent.getId());
+                                getActivity().getFragmentManager().beginTransaction().remove(EventFragment.this).commit();
+
+                                break;
+                            case 1:
+                                //onCategoryRequested();
+                                break;
+                        }
+                    }
+
+                });
+
+                b.show();
+            }
+        });
         LinearLayout mediaElementsLayout = (LinearLayout)view.findViewById(R.id.layout_media_elements);
         if(currentEvent.getMultimediaElementList() != null && currentEvent.getMultimediaElementList().size() > 0) {
             for(final MultimediaElement multimediaElement : currentEvent.getMultimediaElementList()) {
@@ -56,6 +87,8 @@ public class EventFragment extends Fragment {
                 }
             }
         }
+
+//
         return view;
     }
 }

@@ -26,25 +26,43 @@ import java.util.Date;
 public class CameraManager {
     private Context context;
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
+    private static final int CAPTURE_IMAGE_WITH_EVENT_ACTIVITY_REQUEST_CODE = 101;
     private static final int CAPTURE_VIDEO_ACTIVITY_REQUEST_CODE = 200;
 
     public static final int MEDIA_TYPE_IMAGE = 1;
     public static final int MEDIA_TYPE_VIDEO = 2;
     public static File currentFile;
     private LatLng currentLoc;
+    private long currentEventId;
     private Uri fileUri;
+    private static CameraManager instance;
 
-    public CameraManager(Context context) {
+    private CameraManager(Context context) {
+
         this.context = context;
     }
-
+    public static CameraManager getCameraManager(Context context){
+        if(instance == null) {
+            instance = new CameraManager(context);
+        }
+        return instance;
+    }
     public void startCameraForPicture(LatLng latLng) {
         currentLoc = latLng;
+        startCameraForPicture(CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+
+    }
+
+    private void startCameraForPicture(int code) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_IMAGE); // create a file to save the image
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
-        ((Activity)context).startActivityForResult(intent, CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
+        ((Activity)context).startActivityForResult(intent, code);
+    }
 
+    public void startCameraForPicture(long eventId) {
+        currentEventId = eventId;
+        startCameraForPicture(CAPTURE_IMAGE_WITH_EVENT_ACTIVITY_REQUEST_CODE);
     }
 
     public void startCameraForVideo() {
@@ -93,7 +111,7 @@ public class CameraManager {
 
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         Fragment  confirmFragment = new ConfirmMediaFragment();
-        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+        if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE || requestCode == CAPTURE_IMAGE_WITH_EVENT_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {
                 // Image captured and saved to fileUri specified in the Intent
                 Toast.makeText(context, "Image saved to:\n" +
@@ -102,8 +120,13 @@ public class CameraManager {
                 Bundle args = new Bundle();
                 args.putLong(Constants.KEY_HOLIDAY_ID, mapActivity.getCurrentHolidayId());
                 args.putString(Constants.KEY_CAMERA_TYPE, Constants.TYPE_IMAGE);
-                args.putDouble(Constants.KEY_LAT, currentLoc.latitude);
-                args.putDouble(Constants.KEY_LONG, currentLoc.longitude);
+                if(requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
+                    args.putDouble(Constants.KEY_LAT, currentLoc.latitude);
+                    args.putDouble(Constants.KEY_LONG, currentLoc.longitude);
+                }
+                else if(requestCode == CAPTURE_IMAGE_WITH_EVENT_ACTIVITY_REQUEST_CODE) {
+                    args.putLong(Constants.KEY_EVENT_ID, currentEventId);
+                }
                 confirmFragment.setArguments(args);
                 mapActivity.getFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commit();
 

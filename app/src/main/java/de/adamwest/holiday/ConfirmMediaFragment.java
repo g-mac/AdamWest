@@ -13,6 +13,8 @@ import de.adamwest.database.DatabaseManager;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 
+import java.security.Key;
+
 /**
  * Created by philip on 26/09/14.
  */
@@ -27,16 +29,7 @@ public class ConfirmMediaFragment extends Fragment {
         view.findViewById(R.id.button_accept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long routeId = DatabaseManager.getHolidayFromId(getActivity(), holidayId).getCurrentRoute().getId();
-                String type = getArguments().getString(Constants.KEY_CAMERA_TYPE);
-                LatLng loc = new LatLng(getArguments().getDouble(Constants.KEY_LAT),
-                             getArguments().getDouble(Constants.KEY_LONG));
-                if(-1 != DatabaseManager.createNewEventWithMultiMediaElement(getActivity(), routeId, type, CameraManager.currentFile.getAbsolutePath(), loc)) {
-                    getActivity().getFragmentManager().beginTransaction().remove(ConfirmMediaFragment.this).commit();
-                }
-                else{
-                                    //TODO ERROR WHILE CREATING
-                }
+               storeMediaElementInDatabase();
             }
         });
 
@@ -52,5 +45,31 @@ public class ConfirmMediaFragment extends Fragment {
         imagepreview.setImageURI(Uri.parse(CameraManager.currentFile.getAbsolutePath()));
 
         return view;
+    }
+
+    private void storeMediaElementInDatabase() {
+        long routeId = DatabaseManager.getHolidayFromId(getActivity(), holidayId).getCurrentRoute().getId();
+        String type = getArguments().getString(Constants.KEY_CAMERA_TYPE);
+        String path = CameraManager.currentFile.getAbsolutePath();
+
+        long newCreationId = -1;
+        if(getArguments().containsKey(Constants.KEY_EVENT_ID)) {
+            long eventId = getArguments().getLong(Constants.KEY_EVENT_ID);
+            newCreationId = DatabaseManager.createNewMultiMediaElement(getActivity(), type, path, eventId);
+        }
+        else {
+            LatLng loc = new LatLng(getArguments().getDouble(Constants.KEY_LAT),
+                    getArguments().getDouble(Constants.KEY_LONG));
+
+            newCreationId = DatabaseManager.createNewEventWithMultiMediaElement(getActivity(), routeId, type, path, loc);
+        }
+
+
+        if(-1 != newCreationId) {
+            getActivity().getFragmentManager().beginTransaction().remove(ConfirmMediaFragment.this).commit();
+        }
+        else{
+            //TODO ERROR WHILE CREATING
+        }
     }
 }

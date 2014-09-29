@@ -30,6 +30,8 @@
     <string name="cancel">Abbrechen</string>
     <string name="save">Speichern</string>
 
+    <string name="add_attachment">Anhang hinzufügen</string>
+
 
 
 </resources>
