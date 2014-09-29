@@ -21,29 +21,13 @@
                     android:layout_height="match_parent"
                     class="com.google.android.gms.maps.MapFragment"/>
 
-            <Button android:id="@+id/picture_button"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:text="picture"
-                    android:background="@drawable/simple_button_selector"
-                    android:layout_margin="3dp"
-                    android:layout_alignParentBottom="true"/>
-
-            <Button android:id="@+id/video_button"
-                    android:layout_width="100dp"
-                    android:layout_height="35dp"
-                    android:text="video"
-                    android:background="@drawable/simple_button_selector"
-                    android:layout_margin="3dp"
-                    android:layout_above="@id/picture_button"/>
-
             <Button android:id="@+id/finish_button"
                     android:layout_width="100dp"
                     android:layout_height="35dp"
                     android:text="finish"
                     android:background="@drawable/simple_button_selector"
                     android:layout_margin="3dp"
-                    android:layout_above="@id/video_button"
+                    android:layout_alignParentBottom="true"
                     android:onClick="onFinishClick"/>
 
             <Button android:id="@+id/toggle_map_button"
@@ -54,6 +38,15 @@
                     android:layout_margin="3dp"
                     android:layout_above="@id/finish_button"
                     android:onClick="onToggleMapClick"/>
+
+            <Button android:id="@+id/toggle_test_button"
+                    android:layout_width="100dp"
+                    android:layout_height="35dp"
+                    android:text="test"
+                    android:background="@drawable/simple_button_selector"
+                    android:layout_margin="3dp"
+                    android:layout_above="@id/toggle_map_button"
+                    android:onClick="onTestButtonClick"/>
 
         </RelativeLayout>
 
