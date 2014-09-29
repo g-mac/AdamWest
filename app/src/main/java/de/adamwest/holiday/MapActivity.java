@@ -46,6 +46,7 @@ public class MapActivity extends Activity implements
         LocationListener, GoogleMap.OnMarkerClickListener {
 
     private long currentHolidayId = -1;
+    public int selectedRouteId = -1;
     static final LatLng HAMBURG = new LatLng(53.558, 9.927);
     static final LatLng KIEL = new LatLng(53.551, 9.993);
     static final int activeColor = Color.argb(125, 0, 255, 0); // -transparent green
@@ -148,12 +149,12 @@ public class MapActivity extends Activity implements
 
     public void onTestButtonClick(View view) {
         //perform test actions in this method
-//        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
 
-        Route testRoute = currentHoliday.getRouteList().get(0);
-        if (testRoute == null)
-            return;
-        zoomMapToRoute(testRoute);
+//        Route testRoute = currentHoliday.getRouteList().get(0);
+//        if (testRoute == null)
+//            return;
+//        zoomMapToRoute(testRoute);
     }
 
     public void onToggleMapClick(View view) {
@@ -171,12 +172,13 @@ public class MapActivity extends Activity implements
 
     private void removeActiveRoute() {
         //todo: select route (so it will be zoomed to in setupmap())
+        selectedRouteId = currentHoliday.getRouteList().indexOf(currentHoliday.getCurrentRoute());
         DatabaseManager.removeActiveRouteForHoliday(getApplicationContext(), currentHolidayId);
         updateRouteList();
         setUpMap();
     }
 
-    private void setUpMap() {
+    public void setUpMap() {
         map.clear();
         //go to current position
         Location currentLoc = mLocationClient.getLastLocation();
@@ -204,7 +206,13 @@ public class MapActivity extends Activity implements
 //                    if(currentHoliday.getSelectedMap()!=null)
 //                    zoomMapToRoute(selectedRoute);
 //                    else
-                    zoomMapToCurrentHoliday(); //show entire holiday
+                    if (selectedRouteId != -1) {
+                        Route selectedRoute = currentHoliday.getRouteList().get(selectedRouteId);
+                        if (currentHoliday.getRouteList().get(selectedRouteId) != null) {
+                            zoomMapToRoute(selectedRoute);
+                        }
+                    } else
+                        zoomMapToCurrentHoliday(); //show entire holiday
 
                     //draw the routes: (all in different colors)
                     //1) draw all unselected routes (super transparent)
@@ -296,8 +304,7 @@ public class MapActivity extends Activity implements
     }
 
     private void moveMapTo(LatLng latLng) {
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 10));
-        map.animateCamera(CameraUpdateFactory.zoomTo(17), 2500, null);
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
     }
 
     private void initRouteDrawerList() {
@@ -459,6 +466,7 @@ public class MapActivity extends Activity implements
 
                         DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
                         drawRouteOnMap(currentHoliday.getCurrentRoute(), activeColor);
+                        moveMapTo(loc);
                     }
                 }
 
@@ -493,6 +501,7 @@ public class MapActivity extends Activity implements
         }
         return false;
     }
+
 }
 
 

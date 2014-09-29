@@ -25,6 +25,7 @@
     <string name="create_new_holiday">Neuen Urlaub/Ausflug erzeugen</string>
     <string name="create_new_route">Neue Strecke starten</string>
     <string name="set_route_as_active">Strecke als aktive Strecke wählen</string>
+    <string name="show_route_overview">Strecke zeigen</string>
     <string name="route_createt_at">Strecke gestartet am: </string>
 
     <string name="cancel">Abbrechen</string>
