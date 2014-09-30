@@ -4,8 +4,11 @@ import android.app.AlertDialog;
 import android.app.Fragment;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,12 +52,13 @@ public class EventFragment extends Fragment {
                         dialog.dismiss();
                         switch(which){
                             case 0:
-
                                 CameraManager.getCameraManager(getActivity()).startCameraForPicture(currentEvent.getId());
                                 getActivity().getFragmentManager().beginTransaction().remove(EventFragment.this).commit();
 
                                 break;
                             case 1:
+                                CameraManager.getCameraManager(getActivity()).startCameraForVideo(currentEvent.getId());
+                                getActivity().getFragmentManager().beginTransaction().remove(EventFragment.this).commit();
                                 //onCategoryRequested();
                                 break;
                         }
@@ -68,23 +72,30 @@ public class EventFragment extends Fragment {
         LinearLayout mediaElementsLayout = (LinearLayout)view.findViewById(R.id.layout_media_elements);
         if(currentEvent.getMultimediaElementList() != null && currentEvent.getMultimediaElementList().size() > 0) {
             for(final MultimediaElement multimediaElement : currentEvent.getMultimediaElementList()) {
-                if(multimediaElement.getType().equals(Constants.TYPE_IMAGE)) {
-                    ImageView imageView = new ImageView(getActivity());
-                    imageView.setImageURI(Uri.parse(multimediaElement.getPath()));
-                    imageView.setMaxHeight(100);
-                    imageView.setMaxWidth(150);
-                    imageView.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            Intent intent = new Intent();
-                            intent.setAction(Intent.ACTION_VIEW);
-                            intent.setDataAndType(Uri.parse(multimediaElement.getPath()), "image/*");
-                            startActivity(intent);
 
-                        }
-                    });
-                    mediaElementsLayout.addView(imageView);
+                ImageView imageView = new ImageView(getActivity());
+                imageView.setMaxHeight(100);
+                imageView.setMaxWidth(150);
+                imageView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Intent intent = new Intent();
+                        intent.setAction(Intent.ACTION_VIEW);
+                        intent.setDataAndType(Uri.parse(multimediaElement.getPath()), "image/*");
+                        startActivity(intent);
+
+                    }
+                });
+
+                if(multimediaElement.getType().equals(Constants.TYPE_IMAGE)) {
+                    imageView.setImageURI(Uri.parse(multimediaElement.getPath()));
                 }
+                else if(multimediaElement.getType().equals(Constants.TYPE_VIDEO)) {
+                    Bitmap thumb = ThumbnailUtils.createVideoThumbnail(multimediaElement.getPath(),
+                            MediaStore.Images.Thumbnails.MINI_KIND);
+                    imageView.setImageBitmap(thumb);
+                }
+                mediaElementsLayout.addView(imageView);
             }
         }
 

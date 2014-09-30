@@ -420,7 +420,13 @@ public class MapActivity extends Activity implements
                 cameraManager.startCameraForPicture(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
             }
         } else if (id == R.id.menu_video) {
-            cameraManager.startCameraForVideo();
+            if (currentHoliday.getCurrentRoute() == null) {
+                //TODO Raise error
+                return false;
+            }
+            if (currentLoc != null) {
+                cameraManager.startCameraForVideo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
+            }
         } else if (id == R.id.menu_description) {
 
         }

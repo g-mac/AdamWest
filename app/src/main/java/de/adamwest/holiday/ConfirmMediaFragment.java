@@ -7,6 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.VideoView;
 import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
@@ -41,8 +42,18 @@ public class ConfirmMediaFragment extends Fragment {
             }
         });
 
-        ImageView imagepreview = (ImageView)view.findViewById(R.id.imageview_preview);
-        imagepreview.setImageURI(Uri.parse(CameraManager.currentFile.getAbsolutePath()));
+        ImageView imagePreview = (ImageView)view.findViewById(R.id.imageview_preview);
+        if(getArguments().getString(Constants.KEY_CAMERA_TYPE).equals(Constants.TYPE_IMAGE)) {
+            imagePreview.setImageURI(Uri.parse(CameraManager.currentFile.getAbsolutePath()));
+        }
+        else {
+            imagePreview.setVisibility(View.GONE);
+            VideoView videoView = (VideoView) view.findViewById(R.id.videoview);
+            videoView.setVisibility(View.VISIBLE);
+            videoView.setVideoURI(Uri.parse(CameraManager.currentFile.getAbsolutePath()));
+            videoView.start();
+        }
+
 
         return view;
     }
