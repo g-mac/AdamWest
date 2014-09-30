@@ -42,6 +42,11 @@
                     android:text="@string/set_route_as_active"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"/>
+            <Button
+                    android:id="@+id/button_show_route_overview"
+                    android:text="@string/show_route_overview"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
         </LinearLayout>
 
     </LinearLayout>

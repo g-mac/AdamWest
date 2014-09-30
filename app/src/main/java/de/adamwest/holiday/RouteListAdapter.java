@@ -60,7 +60,7 @@ public class RouteListAdapter extends BaseAdapter {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if(0 == routes.size() || position == routes.size()) {
@@ -91,10 +91,9 @@ public class RouteListAdapter extends BaseAdapter {
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if(detailLayout.getVisibility() == View.VISIBLE) {
+                    if (detailLayout.getVisibility() == View.VISIBLE) {
                         detailLayout.setVisibility(View.GONE);
-                    }
-                    else {
+                    } else {
                         detailLayout.setVisibility(View.VISIBLE);
                     }
                 }
@@ -105,6 +104,17 @@ public class RouteListAdapter extends BaseAdapter {
                 public void onClick(View v) {
                     DatabaseManager.setActiveRouteForHoliday(context, currentHolidayId, route.getId());
                     notifyDataSetChanged();
+                }
+            });
+
+            view.findViewById(R.id.button_show_route_overview).setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+//                    (MapActivity)context.selectedRouteId = position;
+//                    (MapActivity)context.setUpMap();
+                    MapActivity ma = (MapActivity) context;
+                    ma.selectedRouteId = position;
+                    ma.setUpMap();
                 }
             });
             ((TextView)view.findViewById(R.id.text_view_holiday_name)).setText(route.getName());
