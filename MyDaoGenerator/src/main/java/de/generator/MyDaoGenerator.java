@@ -34,6 +34,7 @@ public class MyDaoGenerator {
         multimediaElement.addIdProperty();
         multimediaElement.addStringProperty("type");
         multimediaElement.addStringProperty("path");
+        multimediaElement.addStringProperty("description");
         multimediaElement.addDateProperty("createdAt");
 
         Entity holiday = schema.addEntity("Holiday");

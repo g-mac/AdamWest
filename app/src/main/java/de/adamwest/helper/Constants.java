@@ -18,6 +18,7 @@ public final class Constants {
 
     public static final double MINIMUM_DISTANCE_BETWEEN_LOCATIONS = 3.000;
 
-    public static final String TYPE_IMAGE = "image";
-    public static final String TYPE_VIDEO = "video";
+    public static final String TYPE_IMAGE = "type_image";
+    public static final String TYPE_VIDEO = "type_video";
+    public static final String TYPE_TEXT = "type_text";
 }

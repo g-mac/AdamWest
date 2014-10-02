@@ -29,8 +29,9 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Type = new Property(1, String.class, "type", false, "TYPE");
         public final static Property Path = new Property(2, String.class, "path", false, "PATH");
-        public final static Property CreatedAt = new Property(3, java.util.Date.class, "createdAt", false, "CREATED_AT");
-        public final static Property EventId = new Property(4, Long.class, "eventId", false, "EVENT_ID");
+        public final static Property Description = new Property(3, String.class, "description", false, "DESCRIPTION");
+        public final static Property CreatedAt = new Property(4, java.util.Date.class, "createdAt", false, "CREATED_AT");
+        public final static Property EventId = new Property(5, Long.class, "eventId", false, "EVENT_ID");
     };
 
     private Query<MultimediaElement> event_MultimediaElementListQuery;
@@ -50,8 +51,9 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'TYPE' TEXT," + // 1: type
                 "'PATH' TEXT," + // 2: path
-                "'CREATED_AT' INTEGER," + // 3: createdAt
-                "'EVENT_ID' INTEGER);"); // 4: eventId
+                "'DESCRIPTION' TEXT," + // 3: description
+                "'CREATED_AT' INTEGER," + // 4: createdAt
+                "'EVENT_ID' INTEGER);"); // 5: eventId
     }
 
     /** Drops the underlying database table. */
@@ -80,14 +82,19 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
             stmt.bindString(3, path);
         }
  
+        String description = entity.getDescription();
+        if (description != null) {
+            stmt.bindString(4, description);
+        }
+ 
         java.util.Date createdAt = entity.getCreatedAt();
         if (createdAt != null) {
-            stmt.bindLong(4, createdAt.getTime());
+            stmt.bindLong(5, createdAt.getTime());
         }
  
         Long eventId = entity.getEventId();
         if (eventId != null) {
-            stmt.bindLong(5, eventId);
+            stmt.bindLong(6, eventId);
         }
     }
 
@@ -104,8 +111,9 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // type
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // path
-            cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // createdAt
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // eventId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // description
+            cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)), // createdAt
+            cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5) // eventId
         );
         return entity;
     }
@@ -116,8 +124,9 @@ public class MultimediaElementDao extends AbstractDao<MultimediaElement, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setType(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setPath(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setCreatedAt(cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)));
-        entity.setEventId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setDescription(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setCreatedAt(cursor.isNull(offset + 4) ? null : new java.util.Date(cursor.getLong(offset + 4)));
+        entity.setEventId(cursor.isNull(offset + 5) ? null : cursor.getLong(offset + 5));
      }
     
     /** @inheritdoc */

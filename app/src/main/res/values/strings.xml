@@ -33,6 +33,8 @@
 
     <string name="add_attachment">Anhang hinzufügen</string>
 
+    <string name="description_optional">Beschreibung (optional)</string>
+
 
 
 </resources>

@@ -9,6 +9,7 @@ public class MultimediaElement {
     private Long id;
     private String type;
     private String path;
+    private String description;
     private java.util.Date createdAt;
     private Long eventId;
 
@@ -19,10 +20,11 @@ public class MultimediaElement {
         this.id = id;
     }
 
-    public MultimediaElement(Long id, String type, String path, java.util.Date createdAt, Long eventId) {
+    public MultimediaElement(Long id, String type, String path, String description, java.util.Date createdAt, Long eventId) {
         this.id = id;
         this.type = type;
         this.path = path;
+        this.description = description;
         this.createdAt = createdAt;
         this.eventId = eventId;
     }
@@ -49,6 +51,14 @@ public class MultimediaElement {
 
     public void setPath(String path) {
         this.path = path;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public java.util.Date getCreatedAt() {

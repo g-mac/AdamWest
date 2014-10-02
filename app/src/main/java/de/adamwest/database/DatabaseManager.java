@@ -146,16 +146,17 @@ public final class DatabaseManager {
         return eventId;
     }
 
-    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc) {
+    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc, String description) {
         long eventId = createNewEvent(context, routeId, "", "", loc);
-        return createNewMultiMediaElement(context, type, path, eventId);
+        return createNewMultiMediaElement(context, type, path, eventId, description);
     }
 
-    public static long createNewMultiMediaElement(Context context, String type, String path, long eventId) {
+    public static long createNewMultiMediaElement(Context context, String type, String path, long eventId, String description) {
         MultimediaElement multimediaElement = new MultimediaElement();
         multimediaElement.setType(type);
         multimediaElement.setCreatedAt(new Date());
-        multimediaElement.setPath(path);
+        if(path != null) multimediaElement.setPath(path);
+        if(description != null) multimediaElement.setDescription(description);
         multimediaElement.setEventId(eventId);
 
         Event event = getDaoSession(context).getEventDao().load(eventId);

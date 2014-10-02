@@ -12,8 +12,10 @@ import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Event;
@@ -42,7 +44,7 @@ public class EventFragment extends Fragment {
             public void onClick(View v) {
                 AlertDialog.Builder b = new AlertDialog.Builder(getActivity());
                 b.setTitle("Example");
-                String[] types = {getString(R.string.menu_picture), getString(R.string.menu_video)};
+                String[] types = {getString(R.string.menu_picture), getString(R.string.menu_video), getString(R.string.menu_description)};
 
                 b.setItems(types, new DialogInterface.OnClickListener() {
 
@@ -61,6 +63,16 @@ public class EventFragment extends Fragment {
                                 getActivity().getFragmentManager().beginTransaction().remove(EventFragment.this).commit();
                                 //onCategoryRequested();
                                 break;
+                            case 2:
+                                Fragment  confirmFragment = new MediaDescriptionFragment();
+
+                                MapActivity mapActivity = (MapActivity)getActivity();
+                                Bundle args = new Bundle();
+                                args.putLong(Constants.KEY_HOLIDAY_ID, mapActivity.getCurrentHolidayId());
+                                args.putLong(Constants.KEY_EVENT_ID, currentEvent.getId());
+                                confirmFragment.setArguments(args);
+                                getActivity().getFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commit();
+                                getActivity().getFragmentManager().beginTransaction().remove(EventFragment.this).commit();
                         }
                     }
 
@@ -89,13 +101,20 @@ public class EventFragment extends Fragment {
 
                 if(multimediaElement.getType().equals(Constants.TYPE_IMAGE)) {
                     imageView.setImageURI(Uri.parse(multimediaElement.getPath()));
+                    mediaElementsLayout.addView(imageView);
                 }
                 else if(multimediaElement.getType().equals(Constants.TYPE_VIDEO)) {
                     Bitmap thumb = ThumbnailUtils.createVideoThumbnail(multimediaElement.getPath(),
                             MediaStore.Images.Thumbnails.MINI_KIND);
                     imageView.setImageBitmap(thumb);
+                    mediaElementsLayout.addView(imageView);
                 }
-                mediaElementsLayout.addView(imageView);
+                else if(multimediaElement.getType().equals(Constants.TYPE_TEXT)) {
+                    TextView textView = new TextView(getActivity());
+                    textView.setText(multimediaElement.getDescription());
+                    mediaElementsLayout.addView(textView);
+                }
+
             }
         }
 

@@ -435,7 +435,19 @@ public class MapActivity extends Activity implements
                 cameraManager.startCameraForVideo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
             }
         } else if (id == R.id.menu_description) {
-
+            if (currentHoliday.getCurrentRoute() == null) {
+                //TODO Raise error
+                return false;
+            }
+            if (currentLoc != null) {
+                Fragment descriptionFragment = new MediaDescriptionFragment();
+                Bundle args = new Bundle();
+                args.putLong(Constants.KEY_ROUTE_ID, currentHoliday.getCurrentRoute().getId());
+                args.putLong(Constants.KEY_HOLIDAY_ID, currentHoliday.getId());
+                args.putDouble(Constants.KEY_LAT, currentLoc.getLatitude());
+                args.putDouble(Constants.KEY_LONG, currentLoc.getLongitude());
+                descriptionFragment.setArguments(args);
+                getFragmentManager().beginTransaction().add(R.id.activity_map_layout, descriptionFragment).commit();            }
         }
         return super.onOptionsItemSelected(item);
     }

@@ -88,15 +88,6 @@ public class Holiday {
         this.currentRouteId = currentRouteId;
     }
 
-    // KEEP METHODS - put your custom methods here
-    public Route getCurrentRoute() {
-        return getRoute();
-    }
-
-    public void setCurrentRoute(Route route) {
-        setRoute(route);
-    }
-    // KEEP METHODS END
     /** To-one relationship, resolved on first access. */
     public Route getRoute() {
         Long __key = this.currentRouteId;
@@ -120,6 +111,14 @@ public class Holiday {
             currentRouteId = route == null ? null : route.getId();
             route__resolvedKey = currentRouteId;
         }
+    }
+
+    public void setCurrentRoute(Route route) {
+        setRoute(route);
+    }
+
+    public Route getCurrentRoute() {
+        return getRoute();
     }
 
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
