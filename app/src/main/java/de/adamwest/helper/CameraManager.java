@@ -1,7 +1,6 @@
 package de.adamwest.helper;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +8,7 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
@@ -128,7 +128,7 @@ public class CameraManager {
     }
 
     private void openConfirmFragment(String type) {
-        Fragment  confirmFragment = new ConfirmMediaFragment();
+        Fragment confirmFragment = new ConfirmMediaFragment();
 
         MapActivity mapActivity = (MapActivity)context;
         Bundle args = new Bundle();
@@ -142,7 +142,7 @@ public class CameraManager {
             args.putLong(Constants.KEY_EVENT_ID, currentEventId);
         }
         confirmFragment.setArguments(args);
-        mapActivity.getFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commit();
+        mapActivity.getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commitAllowingStateLoss();
     }
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {

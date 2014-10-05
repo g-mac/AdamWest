@@ -1,6 +1,6 @@
 package de.adamwest.holiday;
 
-import android.app.Fragment;
+import android.support.v4.app.Fragment;
 import android.view.View;
 import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.database.DatabaseManager;
@@ -19,7 +19,7 @@ public class MediaFragmentParent extends Fragment {
                 if(!mediaType.equals(Constants.TYPE_TEXT)) {
                     CameraManager.currentFile.delete();
                 }
-                getActivity().getFragmentManager().beginTransaction().remove(MediaFragmentParent.this).commit();
+                getActivity().getSupportFragmentManager().beginTransaction().remove(MediaFragmentParent.this).commit();
             }
         };
     }
@@ -40,7 +40,7 @@ public class MediaFragmentParent extends Fragment {
 
 
         if(-1 != newCreationId) {
-            getActivity().getFragmentManager().beginTransaction().remove(MediaFragmentParent.this).commit();
+            getActivity().getSupportFragmentManager().beginTransaction().remove(MediaFragmentParent.this).commit();
         }
         else{
             //TODO ERROR WHILE CREATING

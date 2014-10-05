@@ -94,6 +94,10 @@ public final class DatabaseManager {
         return getDaoSession(context).getEventDao().load(eventId);
     }
 
+    public static MultimediaElement getMultiMediaEventFromId(Context context, long elementId) {
+        return getDaoSession(context).getMultimediaElementDao().load(elementId);
+    }
+
     private static List<Route> getAllRoutes(Context context) {
         return getDaoSession(context).getRouteDao().loadAll();
     }
@@ -158,7 +162,6 @@ public final class DatabaseManager {
         if(path != null) multimediaElement.setPath(path);
         if(description != null) multimediaElement.setDescription(description);
         multimediaElement.setEventId(eventId);
-
         Event event = getDaoSession(context).getEventDao().load(eventId);
         event.getMultimediaElementList().add(multimediaElement);
 

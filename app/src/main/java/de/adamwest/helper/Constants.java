@@ -9,6 +9,8 @@ public final class Constants {
     public static final String KEY_HOLIDAY_ID = "key_holiday_id";
     public static final String KEY_ROUTE_ID = "key_route_id";
     public static final String KEY_EVENT_ID = "key_event_id";
+    public static final String KEY_MULTIMEDIA_ELEMENT_ID = "key_multimedia_id";
+
 
     public static final String KEY_CAMERA_TYPE = "key_camera_type";
     public static final String KEY_LAT_LNG = "key_lat_lng";
@@ -21,4 +23,7 @@ public final class Constants {
     public static final String TYPE_IMAGE = "type_image";
     public static final String TYPE_VIDEO = "type_video";
     public static final String TYPE_TEXT = "type_text";
+
+
+    public static final String TAG_EVENT_FRAGMENT = "tag_event_fragment";
 }

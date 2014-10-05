@@ -1,23 +1,19 @@
 package de.adamwest.holiday;
 
-import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.app.ActionBarDrawerToggle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SpinnerAdapter;
 import android.widget.Toast;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -33,14 +29,14 @@ import de.adamwest.database.*;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
+import de.adamwest.holiday.event.EventFragment;
 
-import java.lang.reflect.Array;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 
-public class MapActivity extends Activity implements
+public class MapActivity extends FragmentActivity implements
         GooglePlayServicesClient.ConnectionCallbacks,
         GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener, GoogleMap.OnMarkerClickListener {
@@ -447,7 +443,7 @@ public class MapActivity extends Activity implements
                 args.putDouble(Constants.KEY_LAT, currentLoc.getLatitude());
                 args.putDouble(Constants.KEY_LONG, currentLoc.getLongitude());
                 descriptionFragment.setArguments(args);
-                getFragmentManager().beginTransaction().add(R.id.activity_map_layout, descriptionFragment).commit();            }
+                getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, descriptionFragment).commit();            }
         }
         return super.onOptionsItemSelected(item);
     }
@@ -511,11 +507,11 @@ public class MapActivity extends Activity implements
         if (eventMarkerMap != null && eventMarkerMap.containsKey(marker)) {
             long eventId = eventMarkerMap.get(marker);
             Log.i("prose", "clicked on event");
-            Fragment eventFragment = new EventFragment();
+            android.support.v4.app.Fragment eventFragment = new EventFragment();
             Bundle args = new Bundle();
             args.putLong(Constants.KEY_EVENT_ID, eventId);
             eventFragment.setArguments(args);
-            getFragmentManager().beginTransaction().add(R.id.activity_map_layout, eventFragment).commit();
+            getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, eventFragment, Constants.TAG_EVENT_FRAGMENT).addToBackStack("").commit();
         }
         return false;
     }
