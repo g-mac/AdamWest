@@ -5,18 +5,20 @@ import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Holiday;
-import de.adamwest.database.Route;
-import de.adamwest.database.RouteLocation;
 import de.adamwest.helper.Constants;
+import de.adamwest.helper.HelpingMethods;
 import de.adamwest.holiday.MapActivity;
+import de.adamwest.holiday.RouteListAdapter;
 
 import java.util.List;
 
@@ -24,10 +26,11 @@ import java.util.List;
 public class HolidayListActivity extends Activity {
 
     private ListView holidayListView;
+    private ActionMode actionMode;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_route_list);
+        setContentView(R.layout.layout_holiday_list);
         holidayListView = (ListView)findViewById(R.id.listview_route_list);
 
         final List<Holiday> holidayList = DatabaseManager.getAllHoliday(getApplicationContext());
@@ -54,6 +57,19 @@ public class HolidayListActivity extends Activity {
                 }
             }
         });
+
+        holidayListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+
+            public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+                                           int pos, long id) {
+
+                //if(actionMode != null) return false;
+
+                actionMode = startActionMode(new HolidaySelectActionCallback(actionMode, 1));
+                arg1.setActivated(true);
+                return true;
+            }
+        });
     }
 
 
@@ -74,6 +90,19 @@ public class HolidayListActivity extends Activity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        HelpingMethods.log("on Resume");
+        updateList();
+    }
+
+
+    public void updateList() {
+        HolidayListAdapter adapter =  (HolidayListAdapter)holidayListView.getAdapter();
+        adapter.notifyDataSetChanged();
     }
 
 

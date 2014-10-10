@@ -16,18 +16,18 @@ public class MediaDescriptionFragment extends MediaFragmentParent {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_media_text, container, false);
+        initFragment(view);
 
-        final long holidayId = getArguments().getLong(Constants.KEY_HOLIDAY_ID);
         view.findViewById(R.id.button_accept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String description = ((EditText)view.findViewById(R.id.edit_text_description)).getText().toString();
-                storeMediaElementInDatabase(Constants.TYPE_TEXT, null, description, holidayId);
+                String eventName = eventNameEditText.getText().toString();
+                storeMediaElementInDatabase(Constants.TYPE_TEXT, null, description, holidayId, eventName);
 
             }
         });
 
-        view.findViewById(R.id.button_cancel).setOnClickListener(cancelButtonOnClickListener(Constants.TYPE_TEXT));
 
         return view;
     }

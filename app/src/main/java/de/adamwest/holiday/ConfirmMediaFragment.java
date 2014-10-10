@@ -28,19 +28,19 @@ public class ConfirmMediaFragment extends MediaFragmentParent {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.fragment_confirm_media, container, false);
-        final long holidayId = getArguments().getLong(Constants.KEY_HOLIDAY_ID);
+        initFragment(view);
         final String type = getArguments().getString(Constants.KEY_CAMERA_TYPE);
         final String path = CameraManager.currentFile.getAbsolutePath();
-        final String description = ((EditText)view.findViewById(R.id.edit_text_media_description)).getText().toString();
 
         view.findViewById(R.id.button_accept).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               storeMediaElementInDatabase(type, path, description, holidayId);
+                String eventName = eventNameEditText.getText().toString();
+                String description = ((EditText)view.findViewById(R.id.edit_text_media_description)).getText().toString();
+                storeMediaElementInDatabase(type, path, description, holidayId, eventName);
             }
         });
 
-        view.findViewById(R.id.button_cancel).setOnClickListener(cancelButtonOnClickListener(getArguments().getString(Constants.KEY_CAMERA_TYPE)));
 
         ImageView imagePreview = (ImageView)view.findViewById(R.id.imageview_preview);
         if(getArguments().getString(Constants.KEY_CAMERA_TYPE).equals(Constants.TYPE_IMAGE)) {

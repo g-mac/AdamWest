@@ -24,7 +24,7 @@ public class TextPreviewFragment extends Fragment {
         long elementId = getArguments().getLong(Constants.KEY_MULTIMEDIA_ELEMENT_ID);
         MultimediaElement element = DatabaseManager.getMultiMediaEventFromId(getActivity(), elementId);
         ((TextView)view.findViewById(R.id.text_view_event_text)).setText(element.getDescription());
-        
+
         return view;
     }
 }

@@ -6,6 +6,12 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <EditText
+            android:id="@+id/edit_text_event_name"
+            android:hint="@string/event_name_optinal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
     <ImageView
             android:id="@+id/imageview_preview"
             android:background="@color/common_signin_btn_light_text_disabled"

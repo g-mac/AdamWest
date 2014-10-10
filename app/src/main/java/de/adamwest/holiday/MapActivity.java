@@ -338,7 +338,6 @@ public class MapActivity extends FragmentActivity implements
     public void updateRouteList() {
         RouteListAdapter adapter = (RouteListAdapter) mDrawerList.getAdapter();
         adapter.notifyDataSetChanged();
-
     }
 
     private LatLngBounds getRouteBoundaries(Route route) {

@@ -7,6 +7,7 @@
     <TextView
             android:id="@+id/text_view_multimedia_element_description"
             android:layout_alignParentBottom="true"
+            android:text="Test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 

@@ -19,6 +19,8 @@ public final class Constants {
 
 
     public static final double MINIMUM_DISTANCE_BETWEEN_LOCATIONS = 3.000;
+    public static final double MAXIMAL_MERGING_DISTANCE_BETWEEN_EVENTS = 10.0;
+
 
     public static final String TYPE_IMAGE = "type_image";
     public static final String TYPE_VIDEO = "type_video";

@@ -8,6 +8,8 @@
     <string name="drawer_open">DrawerOpen</string>
     <string name="drawer_close">DrawerClose</string>
     <string name="action">Action</string>
+    <string name="delete">Löschen</string>
+    <string name="edit">Bearbeiten</string>
 
     //MENU
     <string name="menu_picture">Foto</string>
@@ -34,6 +36,17 @@
     <string name="add_attachment">Anhang hinzufügen</string>
 
     <string name="description_optional">Beschreibung (optional)</string>
+    <string name="event_name_optinal">Evenname (optional)</string>
+
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="event_nearby_title">Event vorhanden</string>
+    <string name="event_nearby_text_1">Sie haben bereits ein Event in ihrer unmittelbaren Nähe erzeugt</string>
+    <string name="event_nearby_text_2">. Möchten Sie dieses verwenden, oder ein neues erzeugen?</string>
+    <string name="unnamed">Unbenannt</string>
+    <string name="old_event">Alt</string>
+    <string name="new_event">Neu</string>
+    <string name="ammount_of_routes">Anzahl der Strecken:</string>
 
 
 

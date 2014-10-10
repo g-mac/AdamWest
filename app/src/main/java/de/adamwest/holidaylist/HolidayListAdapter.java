@@ -8,7 +8,10 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.adamwest.R;
 import de.adamwest.database.Holiday;
+import de.adamwest.helper.HelpingMethods;
 
+import java.text.DateFormat;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -55,8 +58,15 @@ public class HolidayListAdapter extends BaseAdapter {
             View view = inflater.inflate(R.layout.list_item_holiday, parent, false);
             Holiday holiday = holidays.get(position);
             ((TextView)view.findViewById(R.id.text_view_holiday_name)).setText(holiday.getName());
+            ((TextView)view.findViewById(R.id.text_view_date)).setText(HelpingMethods.convertDateToFormattedString(holiday.getCreatedAt()));
+            String size = String.valueOf(holiday.getRouteList().size());
+            ((TextView)view.findViewById(R.id.text_view_route_counter)).setText(size);
+            ((TextView)view.findViewById(R.id.text_view_holiday_description)).setText(holiday.getDescription());
+
             return view;
         }
 
     }
+
+
 }

@@ -150,8 +150,9 @@ public final class DatabaseManager {
         return eventId;
     }
 
-    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc, String description) {
-        long eventId = createNewEvent(context, routeId, "", "", loc);
+    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc, String description, String eventName) {
+        String savingEventName = (eventName != null) ? eventName : "";
+        long eventId = createNewEvent(context, routeId, savingEventName, "", loc);
         return createNewMultiMediaElement(context, type, path, eventId, description);
     }
 

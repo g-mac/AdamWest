@@ -8,8 +8,12 @@
 
     <TextView
             android:text="@string/add_new_holiday"
-            android:textSize="25dp"
+            style="@style/listview_large_text"
+            android:paddingLeft="@dimen/listview_padding"
+            android:paddingRight="@dimen/listview_padding"
+            android:paddingTop="5dp"
+            android:paddingBottom="5dp"
             android:id="@+id/text_view_new_holiday_item"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" android:gravity="center_horizontal"/>
 </LinearLayout>
