@@ -43,7 +43,12 @@ public class HolidayListAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return position;
+        if(0 == holidays.size() || position == holidays.size()) {
+            return -1;
+        }
+        else {
+            return ((Holiday)getItem(position)).getId();
+        }
     }
 
     @Override

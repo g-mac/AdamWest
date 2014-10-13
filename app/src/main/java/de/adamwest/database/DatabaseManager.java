@@ -2,8 +2,11 @@ package de.adamwest.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
+import android.location.Location;
+import android.net.Uri;
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.File;
 import java.util.Date;
 import java.util.List;
 
@@ -102,8 +105,45 @@ public final class DatabaseManager {
         return getDaoSession(context).getRouteDao().loadAll();
     }
 
-    public void deleteRoute(Context context, long routeId) {
+
+    public static void deleteRouteLocation(Context context, long routeLocationId) {
+        getDaoSession(context).getRouteLocationDao().deleteByKey(routeLocationId);
+    }
+
+    public static void deleteMultiMediaElement(Context context, long multiMediaEventId) {
+        MultimediaElement multimediaElement = getDaoSession(context).getMultimediaElementDao().load(multiMediaEventId);
+        File file = new File(multimediaElement.getPath());
+        file.delete();
+        getDaoSession(context).getMultimediaElementDao().deleteByKey(multiMediaEventId);
+    }
+
+    public static void deleteEvent(Context context, long eventId) {
+        Event event = getDaoSession(context).getEventDao().load(eventId);
+        for(MultimediaElement multimediaElement : event.getMultimediaElementList()) {
+            deleteMultiMediaElement(context, multimediaElement.getId());
+        }
+        deleteRouteLocation(context, event.getLocationId());
+
+        getDaoSession(context).getEventDao().deleteByKey(eventId);
+    }
+
+    public static void deleteRoute(Context context, long routeId) {
+        Route route = getDaoSession(context).getRouteDao().load(routeId);
+        for(RouteLocation routeLocation : route.getRouteLocationList()) {
+            deleteRouteLocation(context, routeLocation.getId());
+        }
+        for(Event event : route.getEventList()) {
+            deleteEvent(context, event.getId());
+        }
         getDaoSession(context).getRouteDao().deleteByKey(routeId);
+    }
+
+    public static void deleteHoliday(Context context, long holidayId) {
+        Holiday holiday = getDaoSession(context).getHolidayDao().load(holidayId);
+        for(Route route : holiday.getRouteList()) {
+            deleteRoute(context, route.getId());
+        }
+        getDaoSession(context).getHolidayDao().deleteByKey(holidayId);
     }
 
     public static void addLocationToRoute(Context context, long routeId, LatLng loc) {

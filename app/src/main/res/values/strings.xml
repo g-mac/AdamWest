@@ -48,6 +48,9 @@
     <string name="new_event">Neu</string>
     <string name="ammount_of_routes">Anzahl der Strecken:</string>
 
+    <string name="confirm_delete">Löschen bestätigen</string>
+    <string name="confirm_delete_text">"Soll dieser Urlaub wirklich gelöscht werden?</string>
+
 
 
 </resources>

@@ -1,7 +1,9 @@
 package de.adamwest.holidaylist;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,6 +16,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
+import de.adamwest.database.Event;
 import de.adamwest.database.Holiday;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
@@ -39,7 +42,6 @@ public class HolidayListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 if (position == holidayList.size()) {
-                    Log.i("abc", "clicked: " + position);
                     Fragment createNewHolidayFragment = new CreateNewHolidayFragment();
                     getFragmentManager().beginTransaction().add(R.id.main_layout, createNewHolidayFragment).commit();
                 }
@@ -64,8 +66,11 @@ public class HolidayListActivity extends Activity {
                                            int pos, long id) {
 
                 //if(actionMode != null) return false;
+                if(id == -1) {
+                    return false;
+                }
 
-                actionMode = startActionMode(new HolidaySelectActionCallback(actionMode, 1));
+                actionMode = startActionMode(new HolidaySelectActionCallback(actionMode, id, HolidayListActivity.this));
                 arg1.setActivated(true);
                 return true;
             }
@@ -82,13 +87,8 @@ public class HolidayListActivity extends Activity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-        if (id == R.id.action_settings) {
-            return true;
-        }
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -98,6 +98,8 @@ public class HolidayListActivity extends Activity {
         HelpingMethods.log("on Resume");
         updateList();
     }
+
+
 
 
     public void updateList() {
