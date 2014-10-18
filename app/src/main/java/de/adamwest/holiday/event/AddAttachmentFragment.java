@@ -5,15 +5,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import de.adamwest.R;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
-import de.adamwest.holiday.MapActivity;
-import de.adamwest.holiday.MediaDescriptionFragment;
+import de.adamwest.holiday.holiday_edit.MapActivity;
+import de.adamwest.holiday.holiday_edit.MediaDescriptionFragment;
 
 /**
  * Created by philip on 05/10/14.

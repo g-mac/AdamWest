@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+    <LinearLayout
+                  android:orientation="vertical"
+                  android:layout_width="match_parent"
+                  android:layout_height="match_parent">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="First off: fuck your bitch and the clique you claim Westside when we ride, come equipped with game You claim to be a player but I fucked your wife We bust on Bad Boys, niggas fucked for Life Plus Puffy trying to see me, weak hearts I rip Biggie Smalls and Junior MAFIA some mark-ass bitches We keep on coming while we running for your jewels Steady gunning, keep on busting at them fools You know the rules Little Ceasar go ask you homie how I'll leave you Cut your young ass up, see you in pieces Now be deceased Little Kim, don't fuck around with real G's Quick to snatch your ugly ass off the streets So fuck peace! I'll let them niggas know it's on for life So let the Westside ride the night Bad Boys murdered on wax and killed Fuck with me and get your caps peeled. You know
+
+I see no changes, wake up in the morning and I ask myself: 'Is life worth living? Should I blast myself?' I'm tired of being poor and, even worse, I'm black My stomach hurts so I'm looking for a purse to snatch Cops give a damn about a negro Pull the trigger, kill a nigga, he's a hero 'Give the crack to the kids: who the hell cares? One less hungry mouth on the welfare!' First ship em dope and let em deal to brothers Give 'em guns, step back, watch em kill each other 'It's time to fight back', that's what Huey said 2 shots in the dark, now Huey's dead I got love for my brother But we can never go nowhere unless we share with each other We gotta start making changes Learn to see me as a brother instead of 2 distant strangers And that's how it's supposed to be How can the Devil take a brother if he's close to me? I'd love to go back to when we played as kids But things change... and that's the way it is"/>
+
+    </LinearLayout>
+</ScrollView>

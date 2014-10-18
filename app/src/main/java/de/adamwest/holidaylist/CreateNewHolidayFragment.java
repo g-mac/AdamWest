@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import de.adamwest.holiday.MapActivity;
+import de.adamwest.holiday.holiday_edit.MapActivity;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.helper.Constants;

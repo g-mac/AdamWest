@@ -1,27 +1,22 @@
 package de.adamwest.holidaylist;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Fragment;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
-import de.adamwest.database.Event;
 import de.adamwest.database.Holiday;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
-import de.adamwest.holiday.MapActivity;
-import de.adamwest.holiday.RouteListAdapter;
+import de.adamwest.holiday.holiday_edit.MapActivity;
+import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
 
 import java.util.List;
 
@@ -52,7 +47,15 @@ public class HolidayListActivity extends Activity {
                         //TODO error msg
                     }
                     else {
-                        Intent intent = new Intent(getApplicationContext(), MapActivity.class);
+
+                        //TODO check if holiday still active or finished, so go to detail or edit
+                        Intent intent;
+                        if(true) {
+                            intent = new Intent(getApplicationContext(), HolidayDetailActivity.class);
+                        }
+                        else {
+                            intent = new Intent(getApplicationContext(), MapActivity.class);
+                        }
                         intent.putExtra(Constants.KEY_HOLIDAY_ID, holidayId);
                         startActivity(intent);
                     }

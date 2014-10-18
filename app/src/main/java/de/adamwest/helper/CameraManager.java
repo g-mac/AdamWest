@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -14,7 +13,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.R;
 import de.adamwest.holiday.ConfirmMediaFragment;
-import de.adamwest.holiday.MapActivity;
+import de.adamwest.holiday.holiday_edit.MapActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

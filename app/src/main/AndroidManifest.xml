@@ -28,7 +28,12 @@
         </activity>
 
         <activity
-                android:name=".holiday.MapActivity"
+                android:name=".holiday.holiday_edit.MapActivity"
+                android:label="@string/title_activity_map">
+        </activity>
+
+        <activity
+                android:name=".holiday.holiday_detail.HolidayDetailActivity"
                 android:label="@string/title_activity_map">
         </activity>
 

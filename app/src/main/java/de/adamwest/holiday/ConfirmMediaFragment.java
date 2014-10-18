@@ -1,7 +1,5 @@
 package de.adamwest.holiday;
 
-import android.app.Fragment;
-import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,13 +8,10 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.VideoView;
-import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
-
-import java.security.Key;
+import de.adamwest.holiday.holiday_edit.MediaFragmentParent;
 
 /**
  * Created by philip on 26/09/14.
