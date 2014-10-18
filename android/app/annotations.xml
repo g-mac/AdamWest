@@ -1,0 +1,5 @@
+<root>
+    <item name='android.app.ActionBar'>
+        <annotation name='org.jetbrains.annotations.Nullable'/>
+    </item>
+</root>
