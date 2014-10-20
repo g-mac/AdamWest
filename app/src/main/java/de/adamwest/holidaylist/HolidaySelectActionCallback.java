@@ -16,13 +16,11 @@ import de.adamwest.helper.HelpingMethods;
  */
 public class HolidaySelectActionCallback implements ActionMode.Callback {
 
-    ActionMode actionMode;
     private long holidayId;
-    Activity activity;
-    public HolidaySelectActionCallback(ActionMode actionMode, long holidayId, Activity activity) {
-        this.actionMode = actionMode;
+    HolidayListActivity activity;
+    public HolidaySelectActionCallback(long holidayId, Activity activity) {
         this.holidayId = holidayId;
-        this.activity = activity;
+        this.activity = (HolidayListActivity)activity;
     }
     @Override
     public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -56,7 +54,7 @@ public class HolidaySelectActionCallback implements ActionMode.Callback {
     // Called when the user exits the action mode
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        actionMode = null;
+        activity.setActionMode(null);
         HelpingMethods.log("actionModeDestroyed");
     }
 
@@ -67,13 +65,13 @@ public class HolidaySelectActionCallback implements ActionMode.Callback {
                 .setPositiveButton(activity.getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete
-                        DatabaseManager.deleteHoliday(activity, holidayId);
-                        actionMode.finish(); // Action picked, so close the CAB
+                       activity.deleteHoliday(holidayId);
+                        activity.getActionMode().finish(); // Action picked, so close the CAB
                     }
                 })
                 .setNegativeButton(activity.getString(R.string.no), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        actionMode.finish();
+                        activity.getActionMode().finish();
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)

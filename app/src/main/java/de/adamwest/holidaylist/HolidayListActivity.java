@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,13 +26,14 @@ public class HolidayListActivity extends Activity {
 
     private ListView holidayListView;
     private ActionMode actionMode;
+    private List<Holiday> holidayList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_holiday_list);
         holidayListView = (ListView)findViewById(R.id.listview_route_list);
 
-        final List<Holiday> holidayList = DatabaseManager.getAllHoliday(getApplicationContext());
+        holidayList = DatabaseManager.getAllHoliday(getApplicationContext());
         holidayListView.setAdapter(new HolidayListAdapter(holidayList, this));
         holidayListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
@@ -67,13 +69,14 @@ public class HolidayListActivity extends Activity {
 
             public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
                                            int pos, long id) {
+                HelpingMethods.log("Size of list: " + holidayList.size());
 
-                //if(actionMode != null) return false;
+//                if(actionMode != null) return false;
                 if(id == -1) {
                     return false;
                 }
 
-                actionMode = startActionMode(new HolidaySelectActionCallback(actionMode, id, HolidayListActivity.this));
+                actionMode = startActionMode(new HolidaySelectActionCallback(id, HolidayListActivity.this));
                 arg1.setActivated(true);
                 return true;
             }
@@ -102,11 +105,28 @@ public class HolidayListActivity extends Activity {
         updateList();
     }
 
+    public ActionMode getActionMode()  {
+        return actionMode;
+    }
+
+    public void setActionMode(ActionMode actionMode) {
+        this.actionMode = actionMode;
+    }
+
+    public void deleteHoliday(long holidayId) {
+        DatabaseManager.deleteHoliday(this, holidayId);
+        holidayList = DatabaseManager.getAllHoliday(getApplicationContext());
+        updateList();
+
+
+
+    }
 
 
 
     public void updateList() {
-        HolidayListAdapter adapter =  (HolidayListAdapter)holidayListView.getAdapter();
+        holidayListView.setAdapter(new HolidayListAdapter(holidayList, this));
+        HolidayListAdapter adapter = (HolidayListAdapter)holidayListView.getAdapter();
         adapter.notifyDataSetChanged();
     }
 

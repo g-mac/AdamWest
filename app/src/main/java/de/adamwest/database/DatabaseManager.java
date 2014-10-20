@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.net.Uri;
 import com.google.android.gms.maps.model.LatLng;
+import de.adamwest.helper.HelpingMethods;
 
 import java.io.File;
 import java.util.Date;
@@ -51,6 +52,7 @@ public final class DatabaseManager {
     }
 
     public static List<Holiday> getAllHoliday(Context context) {
+        getDaoSession(context).clear();
         return getDaoSession(context).getHolidayDao().loadAll();
     }
 
@@ -139,11 +141,13 @@ public final class DatabaseManager {
     }
 
     public static void deleteHoliday(Context context, long holidayId) {
+        HelpingMethods.log("start Deleting holiday");
         Holiday holiday = getDaoSession(context).getHolidayDao().load(holidayId);
         for(Route route : holiday.getRouteList()) {
             deleteRoute(context, route.getId());
         }
         getDaoSession(context).getHolidayDao().deleteByKey(holidayId);
+        HelpingMethods.log("finished Deleting holiday");
     }
 
     public static void addLocationToRoute(Context context, long routeId, LatLng loc) {
