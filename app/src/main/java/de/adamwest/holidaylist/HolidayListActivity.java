@@ -50,9 +50,8 @@ public class HolidayListActivity extends Activity {
                     }
                     else {
 
-                        //TODO check if holiday still active or finished, so go to detail or edit
                         Intent intent;
-                        if(true) {
+                        if(DatabaseManager.getActiveHolidayId(HolidayListActivity.this) != holidayId) {
                             intent = new Intent(getApplicationContext(), HolidayDetailActivity.class);
                         }
                         else {

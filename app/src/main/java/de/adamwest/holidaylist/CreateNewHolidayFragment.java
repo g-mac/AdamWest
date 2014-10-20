@@ -55,11 +55,16 @@ public class CreateNewHolidayFragment extends Fragment {
                     //creation of new route failed
                     //TODO error msg
                 }
-                else {
+                else if(DatabaseManager.setHolidayAsActive(getActivity(), holidayId)) {
                     Log.i("abc", "RouteId: " + holidayId);
+                    //TODO ask if route should be active maybe?
+
                     Intent intent = new Intent(getActivity(), MapActivity.class);
                     intent.putExtra(Constants.KEY_HOLIDAY_ID, holidayId);
                     startActivity(intent);
+                }
+                else {
+                    //TODO Something went wrong ;)
                 }
             }
         });

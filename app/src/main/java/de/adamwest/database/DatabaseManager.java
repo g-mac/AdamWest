@@ -16,6 +16,7 @@ import java.util.List;
  */
 public final class DatabaseManager {
     private DatabaseManager(){}
+    private static final String ACTIVE_HOLIDAY_KEY = "activeHoliday";
 
     //never use the daoSession directly, always use the getter
     private static DaoSession daoSession;
@@ -141,13 +142,12 @@ public final class DatabaseManager {
     }
 
     public static void deleteHoliday(Context context, long holidayId) {
-        HelpingMethods.log("start Deleting holiday");
         Holiday holiday = getDaoSession(context).getHolidayDao().load(holidayId);
         for(Route route : holiday.getRouteList()) {
             deleteRoute(context, route.getId());
         }
         getDaoSession(context).getHolidayDao().deleteByKey(holidayId);
-        HelpingMethods.log("finished Deleting holiday");
+        deleteHolidayAsActive(context, holidayId);
     }
 
     public static void addLocationToRoute(Context context, long routeId, LatLng loc) {
@@ -211,6 +211,37 @@ public final class DatabaseManager {
         event.getMultimediaElementList().add(multimediaElement);
 
         return getDaoSession(context).insert(multimediaElement);
+    }
+
+    public static boolean setHolidayAsActive(Context context, long holidayId) {
+        Holiday holiday = getDaoSession(context).getHolidayDao().load(holidayId);
+        if(holiday == null) return false;
+
+       ActiveHoliday activeHoliday = getDaoSession(context).getActiveHolidayDao().load(ACTIVE_HOLIDAY_KEY);
+        if(activeHoliday == null) {
+            activeHoliday = new ActiveHoliday();
+            activeHoliday.setActive(ACTIVE_HOLIDAY_KEY);
+        }
+        activeHoliday.setHoliday(holiday);
+        activeHoliday.setHolidayId(holidayId);
+        getDaoSession(context).insertOrReplace(activeHoliday);
+        return true;
+    }
+
+    public static void deleteHolidayAsActive(Context context, long holidayId) {
+        ActiveHoliday activeHoliday = getDaoSession(context).getActiveHolidayDao().load(ACTIVE_HOLIDAY_KEY);
+        if(activeHoliday != null) {
+            if(activeHoliday.getHolidayId() == holidayId) {
+                activeHoliday.setHoliday(null);
+                activeHoliday.setHolidayId(null);
+                getDaoSession(context).update(activeHoliday);
+            }
+        }
+    }
+
+    public static long getActiveHolidayId(Context context) {
+        ActiveHoliday activeHoliday = getDaoSession(context).getActiveHolidayDao().load(ACTIVE_HOLIDAY_KEY);
+        return (activeHoliday == null || activeHoliday.getHoliday() == null)? -1 : activeHoliday.getHolidayId();
     }
 
 

@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.adamwest.R;
+import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Holiday;
 import de.adamwest.helper.HelpingMethods;
 
@@ -62,6 +63,10 @@ public class HolidayListAdapter extends BaseAdapter {
         else {
             View view = inflater.inflate(R.layout.list_item_holiday, parent, false);
             Holiday holiday = holidays.get(position);
+            if(DatabaseManager.getActiveHolidayId(context) ==  holiday.getId()) {
+                //active Holiday
+                view.setBackgroundColor(context.getResources().getColor(R.color.route_is_active_color));
+            }
             ((TextView)view.findViewById(R.id.text_view_holiday_name)).setText(holiday.getName());
             ((TextView)view.findViewById(R.id.text_view_date)).setText(HelpingMethods.convertDateToFormattedString(holiday.getCreatedAt()));
             String size = String.valueOf(holiday.getRouteList().size());
