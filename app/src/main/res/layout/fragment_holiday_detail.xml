@@ -3,17 +3,145 @@
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
     <LinearLayout
                   android:orientation="vertical"
                   android:layout_width="match_parent"
                   android:layout_height="match_parent">
 
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:paddingBottom="5dp"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/text_view_date"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" android:layout_centerVertical="true"/>
+            <TextView
+                    android:id="@+id/text_view_holiday_name"
+                    style="@style/textview_header"
+                    android:layout_toLeftOf="@id/text_view_date"
+                    android:layout_alignParentLeft="true"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" android:layout_centerVertical="true"/>
+        </RelativeLayout>
+
+
         <TextView
+                android:text="@string/description"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="First off: fuck your bitch and the clique you claim Westside when we ride, come equipped with game You claim to be a player but I fucked your wife We bust on Bad Boys, niggas fucked for Life Plus Puffy trying to see me, weak hearts I rip Biggie Smalls and Junior MAFIA some mark-ass bitches We keep on coming while we running for your jewels Steady gunning, keep on busting at them fools You know the rules Little Ceasar go ask you homie how I'll leave you Cut your young ass up, see you in pieces Now be deceased Little Kim, don't fuck around with real G's Quick to snatch your ugly ass off the streets So fuck peace! I'll let them niggas know it's on for life So let the Westside ride the night Bad Boys murdered on wax and killed Fuck with me and get your caps peeled. You know
+                android:layout_height="wrap_content"/>
 
-I see no changes, wake up in the morning and I ask myself: 'Is life worth living? Should I blast myself?' I'm tired of being poor and, even worse, I'm black My stomach hurts so I'm looking for a purse to snatch Cops give a damn about a negro Pull the trigger, kill a nigga, he's a hero 'Give the crack to the kids: who the hell cares? One less hungry mouth on the welfare!' First ship em dope and let em deal to brothers Give 'em guns, step back, watch em kill each other 'It's time to fight back', that's what Huey said 2 shots in the dark, now Huey's dead I got love for my brother But we can never go nowhere unless we share with each other We gotta start making changes Learn to see me as a brother instead of 2 distant strangers And that's how it's supposed to be How can the Devil take a brother if he's close to me? I'd love to go back to when we played as kids But things change... and that's the way it is"/>
+        <TextView
+                android:id="@+id/text_view_description"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
 
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/text_view_routes"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/amount_of_routes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"/>
+
+            <TextView
+                    android:id="@+id/text_view_route_counter"
+                    android:layout_toRightOf="@id/text_view_routes"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/text_view_distance"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/distance_made"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"/>
+
+            <TextView
+                    android:id="@+id/text_view_distance_counter"
+                    android:layout_toRightOf="@id/text_view_distance"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/text_view_amount_of_pictures"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/amount_of_pictures"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"/>
+
+            <TextView
+                    android:id="@+id/text_view_picture_counter"
+                    android:layout_toRightOf="@id/text_view_amount_of_pictures"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/text_amount_videos"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/amount_of_videos"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"/>
+
+            <TextView
+                    android:id="@+id/text_view_video_counter"
+                    android:layout_toRightOf="@id/text_amount_videos"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <TextView
+                    android:id="@+id/text_view_amount_text"
+                    android:layout_alignParentLeft="true"
+                    android:text="@string/amount_of_text"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"/>
+
+            <TextView
+                    android:id="@+id/text_view_text_counter"
+                    android:layout_toRightOf="@id/text_view_amount_text"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="0dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+        </RelativeLayout>
     </LinearLayout>
 </ScrollView>

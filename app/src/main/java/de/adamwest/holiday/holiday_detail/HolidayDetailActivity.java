@@ -7,15 +7,18 @@ import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import de.adamwest.R;
+import de.adamwest.helper.Constants;
 
 /**
  * Created by Philip on 18.10.2014.
  */
 public class HolidayDetailActivity extends FragmentActivity {
 
+    private long holidayId;
     ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        holidayId = getIntent().getLongExtra(Constants.KEY_HOLIDAY_ID, -1);
         //Remove title bar
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Remove notification bar
@@ -71,6 +74,10 @@ public class HolidayDetailActivity extends FragmentActivity {
         actionBar.addTab(routesTab);
         actionBar.addTab(mapTab);
 
+    }
+
+    public long getHolidayId() {
+        return holidayId;
     }
 
 }

@@ -50,10 +50,16 @@
     <string name="unnamed">Unbenannt</string>
     <string name="old_event">Alt</string>
     <string name="new_event">Neu</string>
-    <string name="ammount_of_routes">Anzahl der Strecken:</string>
-
+    <string name="amount_of_routes">Anzahl der Strecken:</string>
+    <string name="distance_made">Zurückgelegte Distanz:</string>
+    <string name="amount_of_pictures">Anzahl Fotos:</string>
+    <string name="amount_of_videos">Anzahl Videos:</string>
+    <string name="amount_of_text">Anzahl Texte:</string>
+    <string name="distance_scale_unit">m</string>
     <string name="confirm_delete">Löschen bestätigen</string>
     <string name="confirm_delete_text">"Soll dieser Urlaub wirklich gelöscht werden?</string>
+
+    <string name="description">Beschreibung:</string>
 
 
 

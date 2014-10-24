@@ -10,4 +10,9 @@
         <item name="android:textSize">20dp</item>
     </style>
 
+    <style name="textview_header">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textSize">24dp</item>
+    </style>
+
 </resources>

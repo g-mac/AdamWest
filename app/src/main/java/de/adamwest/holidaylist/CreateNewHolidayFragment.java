@@ -56,11 +56,11 @@ public class CreateNewHolidayFragment extends Fragment {
                     //TODO error msg
                 }
                 else if(DatabaseManager.setHolidayAsActive(getActivity(), holidayId)) {
-                    Log.i("abc", "RouteId: " + holidayId);
                     //TODO ask if route should be active maybe?
-
+                    getActivity().getFragmentManager().beginTransaction().remove(CreateNewHolidayFragment.this).commit();
                     Intent intent = new Intent(getActivity(), MapActivity.class);
                     intent.putExtra(Constants.KEY_HOLIDAY_ID, holidayId);
+                    Log.i("abc", "RouteId: " + holidayId);
                     startActivity(intent);
                 }
                 else {

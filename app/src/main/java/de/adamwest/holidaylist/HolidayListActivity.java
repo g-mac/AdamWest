@@ -117,8 +117,6 @@ public class HolidayListActivity extends Activity {
         holidayList = DatabaseManager.getAllHoliday(getApplicationContext());
         updateList();
 
-
-
     }
 
 
