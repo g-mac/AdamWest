@@ -61,6 +61,11 @@
 
     <string name="description">Beschreibung:</string>
 
+    <string name="started_at">Begonnen:</string>
+    <string name="finished_at">Beendet:</string>
 
+    <string name="picture_count">Bilder:</string>
+    <string name="video_count">Videos:</string>
+    <string name="text_count">Texte:</string>
 
 </resources>
