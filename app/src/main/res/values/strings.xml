@@ -15,6 +15,9 @@
     <string name="menu_picture">Foto</string>
     <string name="menu_video">Video</string>
     <string name="menu_description">Beschreibung</string>
+    <string name="menu_delete_route">Strecke löschen</string>
+    <string name="menu_edit_route">Strecken-Infomationen bearbeiten</string>
+    <string name="menu_show_attachments">Mediafiles anzeigen</string>
 
     //TABS
     <string name="tab_detail">Detail</string>
@@ -57,7 +60,8 @@
     <string name="amount_of_text">Anzahl Texte:</string>
     <string name="distance_scale_unit">m</string>
     <string name="confirm_delete">Löschen bestätigen</string>
-    <string name="confirm_delete_text">"Soll dieser Urlaub wirklich gelöscht werden?</string>
+    <string name="confirm_holiday_delete_text">"Soll dieser Urlaub wirklich gelöscht werden?</string>
+    <string name="confirm_route_delete_text">"Soll diese Strecke wirklich gelöscht werden?</string>
 
     <string name="description">Beschreibung:</string>
 

@@ -49,7 +49,8 @@ public final class DatabaseManager {
     }
 
     public static Holiday getHolidayFromId(Context context, long holidayId) {
-        return getDaoSession(context).getHolidayDao().load(holidayId);
+        Holiday holiday = getDaoSession(context).getHolidayDao().load(holidayId);
+        return holiday;
     }
 
     public static List<Holiday> getAllHoliday(Context context) {
@@ -117,7 +118,9 @@ public final class DatabaseManager {
         MultimediaElement multimediaElement = getDaoSession(context).getMultimediaElementDao().load(multiMediaEventId);
         File file = new File(multimediaElement.getPath());
         file.delete();
+        long eventId = multimediaElement.getEventId();
         getDaoSession(context).getMultimediaElementDao().deleteByKey(multiMediaEventId);
+        getEventFromId(context, eventId).resetMultimediaElementList();
     }
 
     public static void deleteEvent(Context context, long eventId) {
@@ -126,8 +129,9 @@ public final class DatabaseManager {
             deleteMultiMediaElement(context, multimediaElement.getId());
         }
         deleteRouteLocation(context, event.getLocationId());
-
+        long routeId = event.getRouteId();
         getDaoSession(context).getEventDao().deleteByKey(eventId);
+        getRouteFromId(context, routeId).resetEventList();
     }
 
     public static void deleteRoute(Context context, long routeId) {
@@ -138,7 +142,9 @@ public final class DatabaseManager {
         for(Event event : route.getEventList()) {
             deleteEvent(context, event.getId());
         }
+        long holidayId = route.getHolidayId();
         getDaoSession(context).getRouteDao().deleteByKey(routeId);
+        getHolidayFromId(context, holidayId).resetRouteList();
     }
 
     public static void deleteHoliday(Context context, long holidayId) {
