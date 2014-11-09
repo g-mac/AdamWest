@@ -30,6 +30,7 @@ import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.holiday.event.EventFragment;
+import de.adamwest.holiday.holiday_detail.EventGridFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -145,7 +146,8 @@ public class MapActivity extends FragmentActivity implements
 
     public void onTestButtonClick(View view) {
         //perform test actions in this method
-        Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+        //Toast.makeText(getApplicationContext(), "test", Toast.LENGTH_LONG).show();
+        getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, new EventGridFragment()).commit();
 
 //        Route testRoute = currentHoliday.getRouteList().get(0);
 //        if (testRoute == null)
