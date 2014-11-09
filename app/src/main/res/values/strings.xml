@@ -22,6 +22,7 @@
     //TABS
     <string name="tab_detail">Detail</string>
     <string name="tab_routes">Strecken</string>
+    <string name="tab_events">Events</string>
     <string name="tab_map">Karte</string>
 
     <string name="holiday_list_header">Eingetragene Urlaube</string>

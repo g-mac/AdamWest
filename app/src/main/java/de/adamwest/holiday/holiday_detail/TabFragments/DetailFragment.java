@@ -1,4 +1,4 @@
-package de.adamwest.holiday.holiday_detail;
+package de.adamwest.holiday.holiday_detail.TabFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,6 +11,7 @@ import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Holiday;
 import de.adamwest.helper.HolidayStatsCalculator;
 import de.adamwest.helper.HelpingMethods;
+import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
 
 /**
  * Created by Philip on 18.10.2014.

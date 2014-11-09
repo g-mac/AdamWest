@@ -30,7 +30,7 @@ import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.holiday.event.EventFragment;
-import de.adamwest.holiday.holiday_detail.EventGridFragment;
+import de.adamwest.holiday.holiday_detail.TabFragments.EventGridFragment;
 
 import java.util.HashMap;
 import java.util.List;
@@ -120,29 +120,7 @@ public class MapActivity extends FragmentActivity implements
         super.onStop();
     }
 
-    //-------------------- (GooglePlay) Services Client -----------------------
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        // Display the connection status
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-        // If already requested, start periodic updates
-        mLocationClient.requestLocationUpdates(mLocationRequest, this);
-
-        setUpMap();
-    }
-
-    @Override
-    public void onDisconnected() {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
-
-    //----------------------- Main Methods ------------------------------------
+    //----------------------- OnClick Methods ---------------------------------
 
     public void onTestButtonClick(View view) {
         //perform test actions in this method
@@ -167,6 +145,8 @@ public class MapActivity extends FragmentActivity implements
         Toast.makeText(getApplicationContext(), "finish", Toast.LENGTH_LONG).show();
         removeActiveRoute();
     }
+
+    //----------------------- Main Methods ------------------------------------
 
     private void removeActiveRoute() {
         //todo: select route (so it will be zoomed to in setupmap())
@@ -371,10 +351,8 @@ public class MapActivity extends FragmentActivity implements
         return builder.build();
     }
 
-    @Override
-    public void onConfigurationChanged(Configuration newConfig) {
-        super.onConfigurationChanged(newConfig);
-        mDrawerToggle.onConfigurationChanged(newConfig);
+    public long getCurrentHolidayId() {
+        return currentHolidayId;
     }
 
     public void createEvent() {
@@ -392,6 +370,12 @@ public class MapActivity extends FragmentActivity implements
     }
 
     //-------------------- Toolbar Methods -----------------------
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        mDrawerToggle.onConfigurationChanged(newConfig);
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -499,10 +483,6 @@ public class MapActivity extends FragmentActivity implements
 
     }
 
-    public long getCurrentHolidayId() {
-        return currentHolidayId;
-    }
-
     @Override
     public boolean onMarkerClick(Marker marker) {
         if (eventMarkerMap != null && eventMarkerMap.containsKey(marker)) {
@@ -515,6 +495,28 @@ public class MapActivity extends FragmentActivity implements
             getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, eventFragment, Constants.TAG_EVENT_FRAGMENT).addToBackStack("").commit();
         }
         return false;
+    }
+
+    //-------------------- (GooglePlay) Services Client -----------------------
+
+    @Override
+    public void onConnected(Bundle bundle) {
+        // Display the connection status
+        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
+        // If already requested, start periodic updates
+        mLocationClient.requestLocationUpdates(mLocationRequest, this);
+
+        setUpMap();
+    }
+
+    @Override
+    public void onDisconnected() {
+
+    }
+
+    @Override
+    public void onConnectionFailed(ConnectionResult connectionResult) {
+
     }
 
 }

@@ -4,6 +4,10 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import de.adamwest.helper.Constants;
+import de.adamwest.holiday.holiday_detail.TabFragments.DetailFragment;
+import de.adamwest.holiday.holiday_detail.TabFragments.EventGridFragment;
+import de.adamwest.holiday.holiday_detail.TabFragments.MapFragment;
+import de.adamwest.holiday.holiday_detail.TabFragments.RouteListFragment;
 
 /**
  * Created by Philip on 18.10.2014.
@@ -19,8 +23,10 @@ public class DetailsSlideViewPageAdapter extends FragmentStatePagerAdapter {
         switch (position) {
             case 0:
                 return new DetailFragment();
+//            case 1:
+//                return new RouteListFragment();
             case 1:
-                return new RouteListFragment();
+                return new EventGridFragment();
             case 2:
                 return new MapFragment();
             default:

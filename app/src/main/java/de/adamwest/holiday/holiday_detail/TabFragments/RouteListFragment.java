@@ -1,4 +1,4 @@
-package de.adamwest.holiday.holiday_detail;
+package de.adamwest.holiday.holiday_detail.TabFragments;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +11,8 @@ import android.widget.ListView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Route;
+import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
+import de.adamwest.holiday.holiday_detail.RouteListAdapter;
 
 import java.util.List;
 

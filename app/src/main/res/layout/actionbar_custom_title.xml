@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                tools:context=".HolidayDetailActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_gravity="center"
+                android:gravity="fill_horizontal"
+                android:clickable="true"
+                android:background="@drawable/action_bar_title_selector"
+                android:onClick="onTitleBarClick">
+    <!--android:gravity="fill_horizontal">-->
+
+    <!--<Spinner-->
+            <!--android:id="@+id/actionbar_spinner"-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="match_parent"/>-->
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center">
+
+        <TextView
+                android:id="@+id/action_bar_custom_title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textColor="#ffefefef"
+                android:text="Holiday Name"
+                android:textSize="16dp"/>
+
+        <TextView
+                android:id="@+id/action_bar_custom_subtitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:layout_below="@id/action_bar_custom_title"
+                android:text="All Routes"
+                android:textColor="#ffc5c5c5"
+                android:textSize="13dp"/>
+
+    </RelativeLayout>
+
+    <ImageView
+            android:src="@drawable/text_icon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_margin="5dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:scaleType="centerCrop"/>
+
+</RelativeLayout>

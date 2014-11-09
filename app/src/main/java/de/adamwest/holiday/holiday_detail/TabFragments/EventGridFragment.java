@@ -1,4 +1,4 @@
-package de.adamwest.holiday.holiday_detail;
+package de.adamwest.holiday.holiday_detail.TabFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,6 +9,7 @@ import android.widget.GridView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Event;
+import de.adamwest.holiday.holiday_detail.EventGridAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -19,6 +20,7 @@ import java.util.List;
 public class EventGridFragment extends Fragment {
 
     GridView gridview;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -27,8 +29,9 @@ public class EventGridFragment extends Fragment {
         gridview = (GridView) view.findViewById(R.id.gridview);
 
         //TODO List needs to be auto gen
-        List<Event> eventList = DatabaseManager.getHolidayFromId(getActivity(),DatabaseManager.getActiveHolidayId(getActivity())).getRoute().getEventList();
-        gridview.setAdapter(new EventGridAdapter(getActivity(), eventList));
+//        List<Event> eventList = DatabaseManager.getHolidayFromId(getActivity(), DatabaseManager.getActiveHolidayId(getActivity())).getRoute().getEventList();
+//        if (eventList != null && !eventList.isEmpty())
+//            gridview.setAdapter(new EventGridAdapter(getActivity(), eventList));
         return view;
     }
 }

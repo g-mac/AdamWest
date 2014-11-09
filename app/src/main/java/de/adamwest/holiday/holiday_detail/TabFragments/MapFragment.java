@@ -1,4 +1,4 @@
-package de.adamwest.holiday.holiday_detail;
+package de.adamwest.holiday.holiday_detail.TabFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
