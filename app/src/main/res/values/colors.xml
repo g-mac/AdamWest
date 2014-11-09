@@ -7,6 +7,6 @@
     <color name="simple_button_normal">#B0FFFFFF</color>
     <color name="simple_button_pressed">#FFFFFFFF</color>
 
-    <color name="black_with_opacity">#aa5a5a5a</color>
+    <color name="black_with_opacity">#aa000000</color>
 
 </resources>
