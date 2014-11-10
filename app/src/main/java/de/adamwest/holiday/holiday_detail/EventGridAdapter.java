@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ThumbnailUtils;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +67,14 @@ public class EventGridAdapter extends BaseAdapter {
             else if(multimediaElement.getType().equals(Constants.TYPE_TEXT)) {
                 ((ImageView)view.findViewById(R.id.image_view_grid_item)).setImageDrawable(context.getResources().getDrawable(R.drawable.text_icon));
             }
+            else if(multimediaElement.getType().equals(Constants.TYPE_VIDEO)) {
+                view.findViewById(R.id.image_view_video_play).setVisibility(View.VISIBLE);
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(multimediaElement.getPath(),
+                        MediaStore.Images.Thumbnails.MINI_KIND);
+                if(thumb!= null) {
+                    ((ImageView)view.findViewById(R.id.image_view_grid_item)).setImageBitmap(thumb);
+                }
+            }
             ((TextView)view.findViewById(R.id.text_view_grid_event_description)).setText(multimediaElement.getDescription());
             return view;
         }
@@ -87,7 +97,6 @@ public class EventGridAdapter extends BaseAdapter {
             DisplayMetrics displaymetrics = new DisplayMetrics();
             ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
             int newWidth = (displaymetrics.widthPixels -8) / 2;
-            HelpingMethods.log("Breite: " + newWidth);
             double scaleFactor = bitmapImage.getWidth() / newWidth;
             int newHeight = new Double(bitmapImage.getHeight() / scaleFactor).intValue();
 

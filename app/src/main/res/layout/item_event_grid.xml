@@ -12,6 +12,14 @@
             android:layout_height="190dp"
             android:scaleType="centerCrop"/>
 
+    <ImageView
+            android:id="@+id/image_view_video_play"
+            android:src="@drawable/play_overlay"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
     <TextView
             android:id="@+id/text_view_grid_event_description"
             android:background="@color/black_with_opacity"

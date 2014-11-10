@@ -29,9 +29,9 @@ public class EventGridFragment extends Fragment {
         gridview = (GridView) view.findViewById(R.id.gridview);
 
         //TODO List needs to be auto gen
-//        List<Event> eventList = DatabaseManager.getHolidayFromId(getActivity(), DatabaseManager.getActiveHolidayId(getActivity())).getRoute().getEventList();
-//        if (eventList != null && !eventList.isEmpty())
-//            gridview.setAdapter(new EventGridAdapter(getActivity(), eventList));
+        List<Event> eventList = DatabaseManager.getHolidayFromId(getActivity(), DatabaseManager.getActiveHolidayId(getActivity())).getRoute().getEventList();
+        if (eventList != null && !eventList.isEmpty())
+        gridview.setAdapter(new EventGridAdapter(getActivity(), eventList));
         return view;
     }
 }
