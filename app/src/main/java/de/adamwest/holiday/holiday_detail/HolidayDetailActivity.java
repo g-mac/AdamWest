@@ -58,7 +58,7 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     private void createTabBar() {
         final ActionBar actionBar = getActionBar();
-//        actionBar.setIcon(R.drawable.journal_ic);
+        actionBar.setIcon(R.drawable.ic_overview_bright);
 
         // Create and show custom view in Action Bar
         routes = DatabaseManager.getHolidayFromId(this, holidayId).getRouteList();
