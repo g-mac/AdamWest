@@ -9,6 +9,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
 import de.adamwest.R;
@@ -51,6 +52,11 @@ public class HolidayDetailActivity extends FragmentActivity {
                     }
                 });
         createTabBar();
+
+        ListView listView = (ListView) findViewById(R.id.main_route_list);
+        routes = DatabaseManager.getHolidayFromId(this,holidayId).getRouteList();
+        listView.setAdapter(new RouteListAdapter(routes, this));
+
     }
 
 
@@ -107,9 +113,9 @@ public class HolidayDetailActivity extends FragmentActivity {
         ActionBar.Tab mapTab = actionBar.newTab().setText(getString(R.string.tab_map))
                 .setTabListener(tabListener);
         actionBar.addTab(detailTab);
-//        actionBar.addTab(routesTab);
         actionBar.addTab(eventsTab);
         actionBar.addTab(mapTab);
+//        actionBar.addTab(routesTab);
 
     }
 
@@ -140,7 +146,36 @@ public class HolidayDetailActivity extends FragmentActivity {
 
 //------ OnClick Methods -------------------------------------------------------------------------------------------
 
-    public void onTitleBarClick(View view){
+    public void onTitleBarClick(View view) {
         Toast.makeText(this, "select holiday/route", Toast.LENGTH_SHORT).show();
+
+        final ActionBar actionBar = getActionBar();
+
+        View routeList = findViewById(R.id.main_route_list);
+        //todo: line might not be needed
+        View viewPager = findViewById(R.id.pager);
+
+        if (actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS){
+            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            routeList.setVisibility(View.VISIBLE);
+            //todo: line might not be needed
+//            viewPager.setVisibility(View.GONE);
+        }
+        else{
+            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            routeList.setVisibility(View.GONE);
+            //todo: line might not be needed
+//            viewPager.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void onTestButtonClick(View view) {
+        final ActionBar actionBar = getActionBar();
+
+//        if (actionBar.isShowing())
+//            actionBar.hide();
+//        else
+//            actionBar.show();
+//        Toast.makeText(this, "showing/hiding Action Bar", Toast.LENGTH_SHORT).show();
     }
 }

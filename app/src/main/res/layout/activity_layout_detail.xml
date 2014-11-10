@@ -1,9 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.v4.view.ViewPager
+<RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/pager"
-        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background"
-        android:paddingTop="?android:attr/actionBarSize"/>
+        android:layout_width="match_parent">
+
+    <android.support.v4.view.ViewPager
+            android:id="@+id/pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background"
+            android:paddingTop="?android:attr/actionBarSize"/>
+
+    <ListView
+            android:id="@+id/main_route_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#000000"/>
+    <!--android:visibility="gone"-->
+
+</RelativeLayout>
