@@ -55,7 +55,7 @@ public class HolidayDetailActivity extends FragmentActivity {
 
         ListView listView = (ListView) findViewById(R.id.main_route_list);
         routes = DatabaseManager.getHolidayFromId(this,holidayId).getRouteList();
-        listView.setAdapter(new RouteListAdapter(routes, this));
+        listView.setAdapter(new MainRouteListAdapter(routes, this));
 
     }
 

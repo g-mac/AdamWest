@@ -16,7 +16,8 @@
             android:id="@+id/main_route_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="#000000"/>
-    <!--android:visibility="gone"-->
+            android:paddingTop="?android:attr/actionBarSize"
+            android:visibility="gone"/>
+            <!--android:background="#000000"-->
 
 </RelativeLayout>

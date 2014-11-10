@@ -24,7 +24,7 @@
 
         <ScrollView android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#78ffffff"
+                    android:background="#a5ffffff"
                     android:layout_below="@id/cover_picture">
 
             <LinearLayout
