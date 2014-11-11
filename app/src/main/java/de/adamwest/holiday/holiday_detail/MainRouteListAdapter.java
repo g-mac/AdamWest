@@ -47,7 +47,7 @@ public class MainRouteListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         Route route = routes.get(position);
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View view = inflater.inflate(R.layout.list_item_route_detail, parent, false);
+        View view = inflater.inflate(R.layout.list_item_route_main, parent, false);
 
         String startDate = HelpingMethods.convertDateToFormattedString(route.getCreatedAt()) + " / " + HelpingMethods.convertDateToFormatedTime(route.getCreatedAt());
         String finishedDate;

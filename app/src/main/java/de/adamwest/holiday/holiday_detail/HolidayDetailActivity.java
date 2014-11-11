@@ -53,9 +53,9 @@ public class HolidayDetailActivity extends FragmentActivity {
                 });
         createTabBar();
 
-//        ListView listView = (ListView) findViewById(R.id.main_route_list);
-//        routes = DatabaseManager.getHolidayFromId(this,holidayId).getRouteList();
-//        listView.setAdapter(new MainRouteListAdapter(routes, this));
+        ListView listView = (ListView) findViewById(R.id.main_route_list);
+        routes = DatabaseManager.getHolidayFromId(this,holidayId).getRouteList();
+        listView.setAdapter(new MainRouteListAdapter(routes, this));
 
     }
 
@@ -151,21 +151,26 @@ public class HolidayDetailActivity extends FragmentActivity {
 
         final ActionBar actionBar = getActionBar();
 
-        View routeList = findViewById(R.id.main_route_list);
+        View routeListView = findViewById(R.id.main_route_list_view);
         //todo: line might not be needed
         View viewPager = findViewById(R.id.pager);
 
         if (actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS){
             getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-            routeList.setVisibility(View.VISIBLE);
+            routeListView.setVisibility(View.VISIBLE);
             //todo: line might not be needed
-//            viewPager.setVisibility(View.GONE);
+            viewPager.setVisibility(View.GONE);
+//            viewPager.setActivated(false);
+//            viewPager.setEnabled(false);
+//            viewPager.setSelected(false);
+//            viewPager.setFocusable(false);
+
         }
         else{
             getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            routeList.setVisibility(View.GONE);
+            routeListView.setVisibility(View.GONE);
             //todo: line might not be needed
-//            viewPager.setVisibility(View.VISIBLE);
+            viewPager.setVisibility(View.VISIBLE);
         }
     }
 
