@@ -21,6 +21,13 @@
             android:background="@color/black_with_little_opacity"
             android:visibility="gone">
 
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/route_list_divider_height"
+                android:gravity="center"
+                android:text="Holiday"
+                android:background="@color/route_list_dividercolor"/>
+
         <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
@@ -51,6 +58,7 @@
                         android:layout_height="match_parent"
                         android:layout_marginLeft="@dimen/route_list_item_covermargin"
                         android:layout_marginRight="@dimen/route_list_item_covermargin"
+                        android:layout_marginTop="@dimen/route_list_item_covermargin"
                         android:layout_above="@id/list_item_date"
                         android:src="@drawable/cover_picture_dummy"
                         android:adjustViewBounds="true"
@@ -163,6 +171,13 @@
             </RelativeLayout>
 
         </LinearLayout>
+
+        <TextView
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/route_list_divider_height"
+                android:text="Routes"
+                android:gravity="center"
+                android:background="@color/route_list_dividercolor"/>
 
         <ListView
                 android:id="@+id/main_route_list"

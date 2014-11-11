@@ -12,4 +12,6 @@
     <dimen name="route_list_item_description_textsize">12sp</dimen>
     <dimen name="route_list_item_description_margin">5dp</dimen>
 
+    <dimen name="route_list_divider_height">20dp</dimen>
+
 </resources>

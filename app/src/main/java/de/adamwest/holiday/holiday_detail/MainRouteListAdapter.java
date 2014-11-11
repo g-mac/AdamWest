@@ -49,26 +49,26 @@ public class MainRouteListAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = inflater.inflate(R.layout.list_item_route_main, parent, false);
 
-        String startDate = HelpingMethods.convertDateToFormattedString(route.getCreatedAt()) + " / " + HelpingMethods.convertDateToFormatedTime(route.getCreatedAt());
+        String startDate = HelpingMethods.convertDateToFormattedString(route.getCreatedAt()) + " - " + HelpingMethods.convertDateToFormatedTime(route.getCreatedAt());
         String finishedDate;
         if(route.getRouteLocationList().size() > 0) {
             Date lastDate = route.getRouteLocationList().get(route.getRouteLocationList().size() -1).getCreatedAt();
-            finishedDate = HelpingMethods.convertDateToFormattedString(lastDate) + " / " + HelpingMethods.convertDateToFormatedTime(lastDate);
+            finishedDate = HelpingMethods.convertDateToFormattedString(lastDate) + " - " + HelpingMethods.convertDateToFormatedTime(lastDate);
 
         }
         else {
             finishedDate = startDate;
         }
-        ((TextView) view.findViewById(R.id.text_view_started_date)).setText(startDate);
-        ((TextView) view.findViewById(R.id.text_view_finished_date)).setText(finishedDate);
+        ((TextView) view.findViewById(R.id.list_item_date)).setText(startDate);
+//        ((TextView) view.findViewById(R.id.text_view_finished_date)).setText(finishedDate);
 
-        ((TextView) view.findViewById(R.id.text_view_route_name)).setText(route.getName());
-        ((TextView)view.findViewById(R.id.text_view_route_description)).setText(route.getDescription());
-        ((TextView)view.findViewById(R.id.text_view_distance_counter)).setText(HolidayStatsCalculator.getDistanceForRoute(route) + (context).getString(R.string.distance_scale_unit));
+        ((TextView) view.findViewById(R.id.list_item_name)).setText(route.getName());
+        ((TextView)view.findViewById(R.id.list_item_description)).setText(route.getDescription());
+//        ((TextView)view.findViewById(R.id.text_view_distance_counter)).setText(HolidayStatsCalculator.getDistanceForRoute(route) + (context).getString(R.string.distance_scale_unit));
 
-        ((TextView)view.findViewById(R.id.text_view_amount_of_pictures)).setText(context.getString(R.string.picture_count) + HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_IMAGE));
-        ((TextView)view.findViewById(R.id.text_view_amount_of_videos)).setText(context.getString(R.string.video_count) + HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_VIDEO));
-        ((TextView)view.findViewById(R.id.text_view_amount_of_text)).setText(context.getString(R.string.text_count) + HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_TEXT));
+//        ((TextView)view.findViewById(R.id.list_item_no_pictures)).setText(HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_IMAGE));
+//        ((TextView)view.findViewById(R.id.list_item_no_videos)).setText(HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_VIDEO));
+//        ((TextView)view.findViewById(R.id.list_item_no_texts)).setText(HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_TEXT));
 
 
 
