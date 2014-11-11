@@ -53,9 +53,9 @@ public class HolidayDetailActivity extends FragmentActivity {
                 });
         createTabBar();
 
-        ListView listView = (ListView) findViewById(R.id.main_route_list);
-        routes = DatabaseManager.getHolidayFromId(this,holidayId).getRouteList();
-        listView.setAdapter(new MainRouteListAdapter(routes, this));
+//        ListView listView = (ListView) findViewById(R.id.main_route_list);
+//        routes = DatabaseManager.getHolidayFromId(this,holidayId).getRouteList();
+//        listView.setAdapter(new MainRouteListAdapter(routes, this));
 
     }
 
@@ -147,7 +147,7 @@ public class HolidayDetailActivity extends FragmentActivity {
 //------ OnClick Methods -------------------------------------------------------------------------------------------
 
     public void onTitleBarClick(View view) {
-        Toast.makeText(this, "select holiday/route", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this, "select holiday/route", Toast.LENGTH_SHORT).show();
 
         final ActionBar actionBar = getActionBar();
 
