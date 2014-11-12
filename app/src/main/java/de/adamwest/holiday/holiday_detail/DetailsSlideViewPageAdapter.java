@@ -39,4 +39,10 @@ public class DetailsSlideViewPageAdapter extends FragmentStatePagerAdapter {
     public int getCount() {
         return Constants.NUMBER_OF_DETAIL_TABS;
     }
+
+    //refer to: http://stackoverflow.com/questions/7263291/viewpager-pageradapter-not-updating-the-view
+    @Override
+    public int getItemPosition(Object object) {
+        return POSITION_NONE;
+    }
 }

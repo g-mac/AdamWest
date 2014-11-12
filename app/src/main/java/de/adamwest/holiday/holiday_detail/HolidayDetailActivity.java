@@ -1,7 +1,9 @@
 package de.adamwest.holiday.holiday_detail;
 
 import android.app.ActionBar;
+import android.app.Activity;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentActivity;
@@ -9,9 +11,7 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.Spinner;
-import android.widget.Toast;
+import android.widget.*;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Route;
@@ -28,18 +28,21 @@ public class HolidayDetailActivity extends FragmentActivity {
     private long holidayId;
     ViewPager viewPager;
     private List<Route> routes;
+    public long routeId;
 
 //------ Activity/Lifecycle Methods --------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         holidayId = getIntent().getLongExtra(Constants.KEY_HOLIDAY_ID, -1);
+        routeId = -1;
         //Remove title bar
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Remove notification bar
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_layout_detail);
+
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new DetailsSlideViewPageAdapter(getSupportFragmentManager()));
         viewPager.setOnPageChangeListener(
@@ -51,12 +54,28 @@ public class HolidayDetailActivity extends FragmentActivity {
                         getActionBar().setSelectedNavigationItem(position);
                     }
                 });
+
         createTabBar();
 
+
+        TextView holidayNameInTitleBar = (TextView) findViewById(R.id.action_bar_custom_title);
+        String holidayName = DatabaseManager.getHolidayFromId(this, holidayId).getName();
+        holidayNameInTitleBar.setText(holidayName);
+
         ListView listView = (ListView) findViewById(R.id.main_route_list);
-        routes = DatabaseManager.getHolidayFromId(this,holidayId).getRouteList();
+        routes = DatabaseManager.getHolidayFromId(this, holidayId).getRouteList();
         listView.setAdapter(new MainRouteListAdapter(routes, this));
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
+//                Toast.makeText(getApplicationContext(),selectedRoute.getName(),Toast.LENGTH_SHORT).show();
+                Route selectedRoute = (Route) adapter.getItemAtPosition(position);
+                routeId = selectedRoute.getId();
+                viewPager.getAdapter().notifyDataSetChanged();
+                updateActionBar();
+                toggleRouteListDropdown();
+            }
+        });
     }
 
 
@@ -138,40 +157,17 @@ public class HolidayDetailActivity extends FragmentActivity {
         }
     }
 
-//------ Other Methods ---------------------------------------------------------------------------------------------
-
-    public long getHolidayId() {
-        return holidayId;
-    }
-
 //------ OnClick Methods -------------------------------------------------------------------------------------------
+
+    public void onHolidayListItemClick(View view) {
+        routeId = -1;
+        updateActionBar();
+        toggleRouteListDropdown();
+    }
 
     public void onTitleBarClick(View view) {
 //        Toast.makeText(this, "select holiday/route", Toast.LENGTH_SHORT).show();
-
-        final ActionBar actionBar = getActionBar();
-
-        View routeListView = findViewById(R.id.main_route_list_view);
-        //todo: line might not be needed
-        View viewPager = findViewById(R.id.pager);
-
-        if (actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS){
-            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-            routeListView.setVisibility(View.VISIBLE);
-            //todo: line might not be needed
-            viewPager.setVisibility(View.GONE);
-//            viewPager.setActivated(false);
-//            viewPager.setEnabled(false);
-//            viewPager.setSelected(false);
-//            viewPager.setFocusable(false);
-
-        }
-        else{
-            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            routeListView.setVisibility(View.GONE);
-            //todo: line might not be needed
-            viewPager.setVisibility(View.VISIBLE);
-        }
+        toggleRouteListDropdown();
     }
 
     public void onTestButtonClick(View view) {
@@ -183,4 +179,43 @@ public class HolidayDetailActivity extends FragmentActivity {
 //            actionBar.show();
 //        Toast.makeText(this, "showing/hiding Action Bar", Toast.LENGTH_SHORT).show();
     }
+
+//------ Other Methods ---------------------------------------------------------------------------------------------
+
+    public long getHolidayId() {
+        return holidayId;
+    }
+
+    private void toggleRouteListDropdown() {
+
+        final ActionBar actionBar = getActionBar();
+
+        View routeListView = findViewById(R.id.main_route_list_view);
+        //todo: line might not be needed
+        View viewPager = findViewById(R.id.pager);
+
+//        actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS
+        if (routeListView.getVisibility() != View.VISIBLE) {
+            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            routeListView.setVisibility(View.VISIBLE);
+            //todo: line might not be needed
+            viewPager.setVisibility(View.GONE);
+
+        } else {
+            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            routeListView.setVisibility(View.GONE);
+            //todo: line might not be needed
+            viewPager.setVisibility(View.VISIBLE);
+        }
+    }
+
+    private void updateActionBar() {
+        TextView routeNameInTitleBar = (TextView) findViewById(R.id.action_bar_custom_subtitle);
+        if (routeId == -1) {
+            routeNameInTitleBar.setText("All Routes");
+        } else {
+            routeNameInTitleBar.setText(DatabaseManager.getRouteFromId(this, routeId).getName());
+        }
+    }
+
 }

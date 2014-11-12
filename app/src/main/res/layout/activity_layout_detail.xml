@@ -18,7 +18,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical"
             android:paddingTop="?android:attr/actionBarSize"
-            android:background="@color/black_with_little_opacity"
             android:visibility="gone">
 
         <TextView
@@ -31,7 +30,10 @@
         <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="horizontal"
-                android:layout_height="100dp">
+                android:layout_height="100dp"
+                android:background="@color/black_with_little_opacity"
+                android:clickable="true"
+                android:onClick="onHolidayListItemClick">
             <!--android:background="@color/black_with_little_opacity"-->
 
             <RelativeLayout
@@ -182,6 +184,7 @@
         <ListView
                 android:id="@+id/main_route_list"
                 android:layout_width="match_parent"
+                android:background="@color/black_with_little_opacity"
                 android:layout_height="match_parent"/>
         <!--android:background="#000000"-->
 
