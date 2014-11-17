@@ -1,5 +1,7 @@
 package de.adamwest.holiday.holiday_detail.TabFragments;
 
+import android.graphics.Color;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -9,20 +11,23 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
-import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.*;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
-import de.adamwest.database.Holiday;
-import de.adamwest.database.Route;
+import de.adamwest.database.*;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
+
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Philip on 18.10.2014.
  */
 public class MapFragment extends Fragment {
 
+    static final int inactiveColor = Color.argb(155, 255, 255, 255); // -transparent gray
+    static final int activeColor = Color.argb(125, 0, 255, 0); // -transparent green
 
     private MapView mapView;
     private GoogleMap map;
@@ -95,10 +100,21 @@ public class MapFragment extends Fragment {
     public void onStop(){
         super.onStop();
     }
+
     //----------------------- Map Methods -------------------------------------
 
-    private void setUpMap() {
-//        map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
+    public void setUpMap() {
+        map.clear();
+
+//        //go to current position
+//        Location currentLoc = mLocationClient.getLastLocation();
+//        moveMapTo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
+
+        Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
+
+        if (holiday != null) {
+            drawInactiveRoutes(holiday);
+        }
 
         //Zoom map to correct holidaybounds OR routebounds
         if (routeId != -1) {
@@ -106,17 +122,57 @@ public class MapFragment extends Fragment {
             if (route != null)
                 zoomMapToBounds(HelpingMethods.getRouteBoundaries(route));
         } else {
-            Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
+//            Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
             if(holiday!=null)
                 zoomMapToBounds(HelpingMethods.getHolidayBoundaries(holiday));
         }
+    }
+
+    private void drawInactiveRoutes(Holiday holiday) {
+        List<Route> routeList = holiday.getRouteList();
+        for (Route route : routeList) {
+            if (route.getId() != holiday.getCurrentRouteId())
+                drawRouteOnMap(route, activeColor);
+        }
+    }
+
+    private void drawRouteOnMap(Route route, int lineColor) {
+
+        List<RouteLocation> routeLocationList = route.getRouteLocationList();
+
+        PolylineOptions options = new PolylineOptions()
+                .width(22)
+                .color(lineColor);
+
+        for (int i = 0; i < routeLocationList.size(); i++) {
+            Double latitude = routeLocationList.get(i).getLatitude();
+            Double longitude = routeLocationList.get(i).getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            options.add(latLng);
+            if (i == 0) {
+                map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Start!")
+                        .snippet(route.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_green)));
+
+            } //todo: finish marker
+            else if (i == routeLocationList.size() - 1) {
+                    map.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title("Finish!")
+                            .snippet(route.getName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
+            }
+        }
+
+        map.addPolyline(options);
     }
 
     public void zoomMapToBounds(LatLngBounds bounds) {
 //        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
     }
-
 
     //----------------------- Other Methods -----------------------------------
 
