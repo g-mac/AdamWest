@@ -10,42 +10,31 @@
     <string name="action">Action</string>
     <string name="delete">Löschen</string>
     <string name="edit">Bearbeiten</string>
-
-    //MENU
-    <string name="menu_picture">Foto</string>
+    //MENU    <string name="menu_picture">Foto</string>
     <string name="menu_video">Video</string>
     <string name="menu_description">Beschreibung</string>
     <string name="menu_delete_route">Strecke löschen</string>
     <string name="menu_edit_route">Strecken-Infomationen bearbeiten</string>
     <string name="menu_show_attachments">Mediafiles anzeigen</string>
-
-    //TABS
-    <string name="tab_detail">Detail</string>
+    //TABS    <string name="tab_detail">Detail</string>
     <string name="tab_routes">Strecken</string>
     <string name="tab_events">Events</string>
     <string name="tab_map">Karte</string>
-
     <string name="holiday_list_header">Eingetragene Urlaube</string>
-
     <string name="add_new_holiday">Neues Abenteuer starten...</string>
     <string name="insert_holiday_name">Urlaubsziel/Namen eingeben</string>
     <string name="insert_holiday_description">Beschreibung(optional)</string>
-
     <string name="abort">Abbrechen</string>
     <string name="create_new_holiday">Neuen Urlaub/Ausflug erzeugen</string>
     <string name="create_new_route">Neue Strecke starten</string>
     <string name="set_route_as_active">Strecke als aktive Strecke wählen</string>
     <string name="show_route_overview">Strecke zeigen</string>
     <string name="route_createt_at">Strecke gestartet am: </string>
-
     <string name="cancel">Abbrechen</string>
     <string name="save">Speichern</string>
-
     <string name="add_attachment">Anhang hinzufügen</string>
-
     <string name="description_optional">Beschreibung (optional)</string>
     <string name="event_name_optinal">Evenname (optional)</string>
-
     <string name="yes">Ja</string>
     <string name="no">Nein</string>
     <string name="event_nearby_title">Event vorhanden</string>
@@ -63,14 +52,12 @@
     <string name="confirm_delete">Löschen bestätigen</string>
     <string name="confirm_holiday_delete_text">"Soll dieser Urlaub wirklich gelöscht werden?</string>
     <string name="confirm_route_delete_text">"Soll diese Strecke wirklich gelöscht werden?</string>
-
     <string name="description">Beschreibung:</string>
-
     <string name="started_at">Begonnen:</string>
     <string name="finished_at">Beendet:</string>
-
     <string name="picture_count">Bilder:</string>
     <string name="video_count">Videos:</string>
     <string name="text_count">Texte:</string>
+    <string name="title_activity_start">StartActivity</string>
 
 </resources>
