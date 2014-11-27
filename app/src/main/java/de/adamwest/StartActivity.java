@@ -32,7 +32,7 @@ public class StartActivity extends Activity {
 
         Intent intent = new Intent(getApplicationContext(), HolidayListActivity.class);
         startActivity(intent);
-        finish();
+//        finish();
 
 //        if (actionBar.isShowing())
 //            actionBar.hide();
