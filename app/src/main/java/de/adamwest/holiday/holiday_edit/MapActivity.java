@@ -279,7 +279,7 @@ public class MapActivity extends FragmentActivity implements
                         .position(latLng)
                         .title("Start!")
                         .snippet(route.getName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_green)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
 
             } //todo: finish marker
             else if (i == routeLocationList.size() - 1) {
@@ -288,7 +288,7 @@ public class MapActivity extends FragmentActivity implements
                             .position(latLng)
                             .title("Finish!")
                             .snippet(route.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
                 ;
             }
         }
@@ -303,7 +303,7 @@ public class MapActivity extends FragmentActivity implements
                         .position(pos)
                         .title("Event")
                         .snippet(event.getName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_picture)));
                 ;
                 eventMarkerMap.put(marker, event.getId());
             }

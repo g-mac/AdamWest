@@ -1,6 +1,7 @@
 package de.adamwest.holiday.holiday_detail.TabFragments;
 
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -183,21 +184,21 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             options.add(latLng);
 
             //todo: start/finish marker
-//            if (i == 0) {
-//                map.addMarker(new MarkerOptions()
-//                        .position(latLng)
-//                        .title("Start!")
-//                        .snippet(route.getName())
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_green)));
-//
-//            }
-//            else if (i == routeLocationList.size() - 1) {
-//                map.addMarker(new MarkerOptions()
-//                        .position(latLng)
-//                        .title("Finish!")
-//                        .snippet(route.getName())
-//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
-//            }
+            if (i == 0) {
+                map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Start!")
+                        .snippet(route.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
+//                map.addCircle(HelpingMethods.getCircleOptions().center(latLng));
+            }
+            else if (i == routeLocationList.size() - 1) {
+                map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Finish!")
+                        .snippet(route.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
+            }
         }
 
         map.addPolyline(options);
@@ -206,12 +207,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     private void addEventMarkersToMap(Route route) {
         for (Event event : route.getEventList()) {
             LatLng pos = new LatLng(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
+            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_picture);
             Marker marker = map.addMarker(new MarkerOptions()
                     .position(pos)
                     .title("Event")
 //                    .title(event.getName())
                     .snippet(event.getName())
-                    .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
+                    .icon(markerIcon));
             eventMarkerMap.put(marker, event.getId());
         }
     }

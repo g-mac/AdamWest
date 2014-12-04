@@ -1,7 +1,9 @@
 package de.adamwest.helper;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import de.adamwest.database.Holiday;
@@ -62,5 +64,15 @@ public final class HelpingMethods {
         }
         return builder.build();
     }
+
+//    public static CircleOptions getCircleOptions() {
+//        CircleOptions co = new CircleOptions();
+////        co.center(latlng);
+//        co.radius(100);
+////        co.fillColor(Color.RED);
+//        co.strokeColor(Color.RED);
+//        co.strokeWidth(2.0f);
+//        return co;
+//    }
 
 }
