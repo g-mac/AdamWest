@@ -114,7 +114,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
         Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
 
-        if (holiday != null) {
+        boolean holidayHasRoutes = (holiday != null && holiday.getRouteList()!=null && holiday.getRouteList().size()>0);
+
+        if (holidayHasRoutes) {
             addRoutesToMap(holiday);
         }
 
@@ -125,7 +127,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                 zoomMapToBounds(HelpingMethods.getRouteBoundaries(route));
         } else {
 //            Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
-            if (holiday != null)
+            if (holidayHasRoutes)
                 zoomMapToBounds(HelpingMethods.getHolidayBoundaries(holiday));
         }
 
