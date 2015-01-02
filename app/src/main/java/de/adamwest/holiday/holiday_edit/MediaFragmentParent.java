@@ -113,7 +113,7 @@ public class MediaFragmentParent extends Fragment {
             eventNameEditText.setVisibility(View.GONE);
         }
         holidayId = getArguments().getLong(Constants.KEY_HOLIDAY_ID);
-        checkNearbyEvents(holidayId);
+        //checkNearbyEvents(holidayId);
         view.findViewById(R.id.button_cancel).setOnClickListener(cancelButtonOnClickListener(Constants.TYPE_TEXT));
 
     }

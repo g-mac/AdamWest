@@ -37,11 +37,6 @@ public class ImagePreviewFragment extends Fragment {
         MultimediaElement element = DatabaseManager.getMultiMediaEventFromId(getActivity(), elementId);
         if(element != null) {
             if(element.getType().equals(Constants.TYPE_IMAGE)) {
-
-
-
-
-
                 try {
                     File imgFile = new File(element.getPath());
                     Bitmap bitmapImage = null;

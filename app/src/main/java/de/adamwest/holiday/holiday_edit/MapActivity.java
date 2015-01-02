@@ -1,9 +1,12 @@
 package de.adamwest.holiday.holiday_edit;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
@@ -15,11 +18,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GooglePlayServicesClient;
-import com.google.android.gms.location.LocationClient;
-import com.google.android.gms.location.LocationListener;
-import com.google.android.gms.location.LocationRequest;
+
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
@@ -38,8 +37,6 @@ import java.util.Map;
 
 
 public class MapActivity extends FragmentActivity implements
-        GooglePlayServicesClient.ConnectionCallbacks,
-        GooglePlayServicesClient.OnConnectionFailedListener,
         LocationListener, GoogleMap.OnMarkerClickListener {
 
     private long currentHolidayId = -1;
@@ -50,8 +47,6 @@ public class MapActivity extends FragmentActivity implements
     static final int inactiveColor = Color.argb(155, 255, 255, 255); // -transparent gray
     private final int EVENT_MARKER_ID = 666;
     private GoogleMap map;
-    private LocationClient mLocationClient;
-    private LocationRequest mLocationRequest;
     private Holiday currentHoliday;
     private Map<Marker, Long> eventMarkerMap;
     private DrawerLayout mDrawerLayout;
@@ -60,8 +55,11 @@ public class MapActivity extends FragmentActivity implements
     private Location currentLoc;
     private CameraManager cameraManager;
 
+    private LocationManager locationManager;
+
     // Update frequency in milliseconds
     private static final long UPDATE_INTERVAL = 15000;
+    private static final float MINIMUM_DISTANCE_IN_METER = 10;
     // A fast frequency ceiling in milliseconds
     private static final long FASTEST_INTERVAL = 1000;
 
@@ -77,13 +75,6 @@ public class MapActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         cameraManager = CameraManager.getCameraManager( this);
-        mLocationClient = new LocationClient(this, this, this);
-        mLocationClient.connect(); //ToDo: move to onStart?!
-
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(FASTEST_INTERVAL);
 
         currentHolidayId = getIntent().getLongExtra(Constants.KEY_HOLIDAY_ID, -1);
         if (currentHolidayId != -1) {
@@ -96,6 +87,13 @@ public class MapActivity extends FragmentActivity implements
         map.setMyLocationEnabled(true); // Enable MyLocation Layer of Google Map
         map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
         map.setOnMarkerClickListener(this);
+
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        // Define the criteria how to select the locatioin provider -> use
+        // default
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, new Float(Constants.MINIMUM_DISTANCE_BETWEEN_LOCATIONS), this);
+
 
     }
 
@@ -202,8 +200,10 @@ public class MapActivity extends FragmentActivity implements
     public void setUpMap() {
         map.clear();
         //go to current position
-        Location currentLoc = mLocationClient.getLastLocation();
-        moveMapTo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
+        //Location currentLoc = mLocationClient.getLastLocation();
+        if(currentLoc != null) {
+            moveMapTo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
+        }
 
         if (currentHoliday == null) {
             //todo: error handling: activity started without existing holiday
@@ -436,10 +436,13 @@ public class MapActivity extends FragmentActivity implements
     }
 
     //-------------------- (GooglePlay) Location Client -----------------------
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
     @Override
     public void onLocationChanged(Location location) {
-
+        HelpingMethods.log("LOCATION: " + location);
         currentLoc = location;
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
@@ -480,6 +483,21 @@ public class MapActivity extends FragmentActivity implements
     }
 
     @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         cameraManager.onActivityResult(requestCode, resultCode, data);
 
@@ -500,26 +518,6 @@ public class MapActivity extends FragmentActivity implements
     }
 
     //-------------------- (GooglePlay) Services Client -----------------------
-
-    @Override
-    public void onConnected(Bundle bundle) {
-        // Display the connection status
-        Toast.makeText(this, "Connected", Toast.LENGTH_SHORT).show();
-        // If already requested, start periodic updates
-        mLocationClient.requestLocationUpdates(mLocationRequest, this);
-
-        setUpMap();
-    }
-
-    @Override
-    public void onDisconnected() {
-
-    }
-
-    @Override
-    public void onConnectionFailed(ConnectionResult connectionResult) {
-
-    }
 
 }
 

@@ -137,9 +137,9 @@ public class CameraManager {
             args.putDouble(Constants.KEY_LAT, currentLoc.latitude);
             args.putDouble(Constants.KEY_LONG, currentLoc.longitude);
         }
-        else if(currentEventId != -1) {
-            args.putLong(Constants.KEY_EVENT_ID, currentEventId);
-        }
+        //else if(currentEventId != -1) {
+            //args.putLong(Constants.KEY_EVENT_ID, currentEventId);
+        //}
         confirmFragment.setArguments(args);
         mapActivity.getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commitAllowingStateLoss();
     }
