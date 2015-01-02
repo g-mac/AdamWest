@@ -57,7 +57,6 @@ public class HolidayDetailActivity extends FragmentActivity {
 
         createTabBar();
 
-
         TextView holidayNameInTitleBar = (TextView) findViewById(R.id.action_bar_custom_title);
         String holidayName = DatabaseManager.getHolidayFromId(this, holidayId).getName();
         holidayNameInTitleBar.setText(holidayName);
@@ -161,6 +160,7 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     public void onHolidayListItemClick(View view) {
         routeId = -1;
+        viewPager.getAdapter().notifyDataSetChanged();
         updateActionBar();
         toggleRouteListDropdown();
     }
@@ -172,7 +172,6 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     public void onTestButtonClick(View view) {
         final ActionBar actionBar = getActionBar();
-
 //        if (actionBar.isShowing())
 //            actionBar.hide();
 //        else

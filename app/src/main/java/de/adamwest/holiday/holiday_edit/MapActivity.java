@@ -156,6 +156,49 @@ public class MapActivity extends FragmentActivity implements
         setUpMap();
     }
 
+    public long getCurrentHolidayId() {
+        return currentHolidayId;
+    }
+
+    private void initRouteDrawerList() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mDrawerList = (ListView) findViewById(R.id.left_drawer);
+        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
+                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
+
+            /** Called when a drawer has settled in a completely closed state. */
+            public void onDrawerClosed(View view) {
+                super.onDrawerClosed(view);
+                getActionBar().setTitle("Closed");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+
+            /** Called when a drawer has settled in a completely open state. */
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getActionBar().setTitle("open");
+                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
+            }
+        };
+
+        // Set the drawer toggle as the DrawerListener
+        mDrawerLayout.setDrawerListener(mDrawerToggle);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeButtonEnabled(true);
+        Holiday currentHoliday = DatabaseManager.getHolidayFromId(this, currentHolidayId);
+        if (currentHoliday != null) {
+            mDrawerList.setAdapter(new RouteListAdapter(currentHoliday.getRouteList(), this, currentHolidayId));
+        }
+
+    }
+
+    public void updateRouteList() {
+        RouteListAdapter adapter = (RouteListAdapter) mDrawerList.getAdapter();
+        adapter.notifyDataSetChanged();
+    }
+
+    //----------------------- Map Methods -------------------------------------
+
     public void setUpMap() {
         map.clear();
         //go to current position
@@ -236,7 +279,7 @@ public class MapActivity extends FragmentActivity implements
                         .position(latLng)
                         .title("Start!")
                         .snippet(route.getName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_green)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
 
             } //todo: finish marker
             else if (i == routeLocationList.size() - 1) {
@@ -245,7 +288,7 @@ public class MapActivity extends FragmentActivity implements
                             .position(latLng)
                             .title("Finish!")
                             .snippet(route.getName())
-                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_red)));
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
                 ;
             }
         }
@@ -260,7 +303,7 @@ public class MapActivity extends FragmentActivity implements
                         .position(pos)
                         .title("Event")
                         .snippet(event.getName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_icon)));
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_picture)));
                 ;
                 eventMarkerMap.put(marker, event.getId());
             }
@@ -283,43 +326,6 @@ public class MapActivity extends FragmentActivity implements
 
     private void moveMapTo(LatLng latLng) {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
-    }
-
-    private void initRouteDrawerList() {
-        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
-        mDrawerList = (ListView) findViewById(R.id.left_drawer);
-        mDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,
-                R.drawable.ic_drawer, R.string.drawer_open, R.string.drawer_close) {
-
-            /** Called when a drawer has settled in a completely closed state. */
-            public void onDrawerClosed(View view) {
-                super.onDrawerClosed(view);
-                getActionBar().setTitle("Closed");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-
-            /** Called when a drawer has settled in a completely open state. */
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                getActionBar().setTitle("open");
-                invalidateOptionsMenu(); // creates call to onPrepareOptionsMenu()
-            }
-        };
-
-        // Set the drawer toggle as the DrawerListener
-        mDrawerLayout.setDrawerListener(mDrawerToggle);
-        getActionBar().setDisplayHomeAsUpEnabled(true);
-        getActionBar().setHomeButtonEnabled(true);
-        Holiday currentHoliday = DatabaseManager.getHolidayFromId(this, currentHolidayId);
-        if (currentHoliday != null) {
-            mDrawerList.setAdapter(new RouteListAdapter(currentHoliday.getRouteList(), this, currentHolidayId));
-        }
-
-    }
-
-    public void updateRouteList() {
-        RouteListAdapter adapter = (RouteListAdapter) mDrawerList.getAdapter();
-        adapter.notifyDataSetChanged();
     }
 
     private LatLngBounds getRouteBoundaries(Route route) {
@@ -349,10 +355,6 @@ public class MapActivity extends FragmentActivity implements
 
         }
         return builder.build();
-    }
-
-    public long getCurrentHolidayId() {
-        return currentHolidayId;
     }
 
     public void createEvent() {

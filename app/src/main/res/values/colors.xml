@@ -9,6 +9,7 @@
 
     <color name="simple_button_normal">#B0FFFFFF</color>
     <color name="simple_button_pressed">#FFFFFFFF</color>
+    <color name="simple_button_disabled">#875a5a5a</color>
 
     <color name="simple_button_normal_dark">#82383838</color>
     <color name="simple_button_pressed_dark">#d6383838</color>
