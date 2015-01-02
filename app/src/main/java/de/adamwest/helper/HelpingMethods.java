@@ -22,4 +22,9 @@ public final class HelpingMethods {
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
         return df.format(date);
     }
+
+    public static String convertDateToFormatedTime(Date date) {
+        DateFormat df = DateFormat.getTimeInstance(DateFormat.SHORT);
+        return df.format(date);
+    }
 }

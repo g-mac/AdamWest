@@ -1,4 +1,4 @@
-package de.adamwest.holiday.holiday_detail;
+package de.adamwest.holiday.holiday_detail.TabFragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,11 +10,11 @@ import de.adamwest.R;
 /**
  * Created by Philip on 18.10.2014.
  */
-public class RouteListFragment extends Fragment {
+public class MapFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        return inflater.inflate(R.layout.fragment_detail_route_list, container, false);
+        return inflater.inflate(R.layout.fragment_map, container, false);
     }
 }

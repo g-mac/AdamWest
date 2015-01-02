@@ -8,7 +8,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
 import de.adamwest.helper.HelpingMethods;
 
 /**
@@ -61,7 +60,7 @@ public class HolidaySelectActionCallback implements ActionMode.Callback {
     public void buildAlertDialog() {
         new AlertDialog.Builder(activity)
                 .setTitle(activity.getString(R.string.confirm_delete))
-                .setMessage(activity.getString(R.string.confirm_delete_text))
+                .setMessage(activity.getString(R.string.confirm_holiday_delete_text))
                 .setPositiveButton(activity.getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
                         // continue with delete

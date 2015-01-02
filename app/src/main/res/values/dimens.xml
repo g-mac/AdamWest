@@ -3,4 +3,15 @@
     <dimen name="activity_horizontal_margin">16dp</dimen>
     <dimen name="activity_vertical_margin">16dp</dimen>
     <dimen name="listview_padding">10dp</dimen>
+
+    <dimen name="route_list_item_iconsize">15dp</dimen>
+    <dimen name="route_list_item_iconmargin">4dp</dimen>
+    <dimen name="route_list_item_covermargin">5dp</dimen>
+    <dimen name="route_list_item_counters_textsize">14sp</dimen>
+    <dimen name="route_list_item_date_textsize">12sp</dimen>
+    <dimen name="route_list_item_description_textsize">12sp</dimen>
+    <dimen name="route_list_item_description_margin">5dp</dimen>
+
+    <dimen name="route_list_divider_height">20dp</dimen>
+
 </resources>
