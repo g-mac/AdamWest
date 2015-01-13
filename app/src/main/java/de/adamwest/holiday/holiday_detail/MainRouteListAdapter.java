@@ -66,9 +66,9 @@ public class MainRouteListAdapter extends BaseAdapter {
         ((TextView)view.findViewById(R.id.list_item_description)).setText(route.getDescription());
 //        ((TextView)view.findViewById(R.id.text_view_distance_counter)).setText(HolidayStatsCalculator.getDistanceForRoute(route) + (context).getString(R.string.distance_scale_unit));
 
-//        ((TextView)view.findViewById(R.id.list_item_no_pictures)).setText(HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_IMAGE));
-//        ((TextView)view.findViewById(R.id.list_item_no_videos)).setText(HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_VIDEO));
-//        ((TextView)view.findViewById(R.id.list_item_no_texts)).setText(HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_TEXT));
+//        ((TextView)view.findViewById(R.id.list_item_no_pictures)).setText(HolidayStatsCalculator.getAmountOfEventsForRoute(route, Constants.TYPE_IMAGE));
+//        ((TextView)view.findViewById(R.id.list_item_no_videos)).setText(HolidayStatsCalculator.getAmountOfEventsForRoute(route, Constants.TYPE_VIDEO));
+//        ((TextView)view.findViewById(R.id.list_item_no_texts)).setText(HolidayStatsCalculator.getAmountOfEventsForRoute(route, Constants.TYPE_TEXT));
 
 
 

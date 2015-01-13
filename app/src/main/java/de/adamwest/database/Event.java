@@ -1,6 +1,5 @@
 package de.adamwest.database;
 
-import java.util.List;
 import de.adamwest.database.DaoSession;
 import de.greenrobot.dao.DaoException;
 
@@ -13,6 +12,9 @@ public class Event {
     private Long id;
     private String name;
     private String description;
+    private String type;
+    private String path;
+    private java.util.Date createdAt;
     private Long locationId;
     private Long routeId;
 
@@ -25,7 +27,6 @@ public class Event {
     private RouteLocation routeLocation;
     private Long routeLocation__resolvedKey;
 
-    private List<MultimediaElement> multimediaElementList;
 
     public Event() {
     }
@@ -34,10 +35,13 @@ public class Event {
         this.id = id;
     }
 
-    public Event(Long id, String name, String description, Long locationId, Long routeId) {
+    public Event(Long id, String name, String description, String type, String path, java.util.Date createdAt, Long locationId, Long routeId) {
         this.id = id;
         this.name = name;
         this.description = description;
+        this.type = type;
+        this.path = path;
+        this.createdAt = createdAt;
         this.locationId = locationId;
         this.routeId = routeId;
     }
@@ -70,6 +74,30 @@ public class Event {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
+    public java.util.Date getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(java.util.Date createdAt) {
+        this.createdAt = createdAt;
     }
 
     public Long getLocationId() {
@@ -111,28 +139,6 @@ public class Event {
             locationId = routeLocation == null ? null : routeLocation.getId();
             routeLocation__resolvedKey = locationId;
         }
-    }
-
-    /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
-    public List<MultimediaElement> getMultimediaElementList() {
-        if (multimediaElementList == null) {
-            if (daoSession == null) {
-                throw new DaoException("Entity is detached from DAO context");
-            }
-            MultimediaElementDao targetDao = daoSession.getMultimediaElementDao();
-            List<MultimediaElement> multimediaElementListNew = targetDao._queryEvent_MultimediaElementList(id);
-            synchronized (this) {
-                if(multimediaElementList == null) {
-                    multimediaElementList = multimediaElementListNew;
-                }
-            }
-        }
-        return multimediaElementList;
-    }
-
-    /** Resets a to-many relationship, making the next get call to query for a fresh result. */
-    public synchronized void resetMultimediaElementList() {
-        multimediaElementList = null;
     }
 
     /** Convenient call for {@link AbstractDao#delete(Object)}. Entity must attached to an entity context. */

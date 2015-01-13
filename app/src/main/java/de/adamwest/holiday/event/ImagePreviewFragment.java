@@ -16,7 +16,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
-import de.adamwest.database.MultimediaElement;
+import de.adamwest.database.Event;
 import de.adamwest.helper.Constants;
 
 import java.io.File;
@@ -34,11 +34,12 @@ public class ImagePreviewFragment extends Fragment {
         ImageView imageView = (ImageView)view.findViewById(R.id.image_view_multimedia_image);
 
         long elementId = getArguments().getLong(Constants.KEY_MULTIMEDIA_ELEMENT_ID);
-        MultimediaElement element = DatabaseManager.getMultiMediaEventFromId(getActivity(), elementId);
-        if(element != null) {
-            if(element.getType().equals(Constants.TYPE_IMAGE)) {
+        Event event = DatabaseManager.getEventFromId(getActivity(), elementId);
+        if(event != null) {
+            if(event.getType().equals(Constants.TYPE_IMAGE)) {
+
                 try {
-                    File imgFile = new File(element.getPath());
+                    File imgFile = new File(event.getPath());
                     Bitmap bitmapImage = null;
                     if(imgFile.exists()){
                         bitmapImage = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
@@ -66,13 +67,13 @@ public class ImagePreviewFragment extends Fragment {
 
                 //imageView.setImageURI(Uri.parse(element.getPath()));
             }
-            else if(element.getType().equals(Constants.TYPE_VIDEO)) {
-                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(element.getPath(),
+            else if(event.getType().equals(Constants.TYPE_VIDEO)) {
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(event.getPath(),
                             MediaStore.Images.Thumbnails.FULL_SCREEN_KIND);
                 imageView.setImageBitmap(thumb);
             }
 
-            ((TextView)view.findViewById(R.id.text_view_multimedia_element_description)).setText(element.getDescription());
+            ((TextView)view.findViewById(R.id.text_view_multimedia_element_description)).setText(event.getDescription());
 
         }
         return view;

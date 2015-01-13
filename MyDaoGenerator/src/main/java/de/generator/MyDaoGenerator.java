@@ -29,13 +29,16 @@ public class MyDaoGenerator {
         event.addIdProperty();
         event.addStringProperty("name");
         event.addStringProperty("description");
+        event.addStringProperty("type");
+        event.addStringProperty("path");
+        event.addDateProperty("createdAt");
 
-        Entity multimediaElement = schema.addEntity("MultimediaElement");
-        multimediaElement.addIdProperty();
-        multimediaElement.addStringProperty("type");
-        multimediaElement.addStringProperty("path");
-        multimediaElement.addStringProperty("description");
-        multimediaElement.addDateProperty("createdAt");
+//        Entity multimediaElement = schema.addEntity("MultimediaElement");
+//        multimediaElement.addIdProperty();
+//        multimediaElement.addStringProperty("type");
+//        multimediaElement.addStringProperty("path");
+//        multimediaElement.addStringProperty("description");
+//        multimediaElement.addDateProperty("createdAt");
 
         Entity holiday = schema.addEntity("Holiday");
         holiday.addIdProperty();
@@ -55,9 +58,6 @@ public class MyDaoGenerator {
 
         Property routeIdForEvent = event.addLongProperty("routeId").getProperty();
         route.addToMany(event, routeIdForEvent);
-
-        Property eventId = multimediaElement.addLongProperty("eventId").getProperty();
-        event.addToMany(multimediaElement, eventId);
 
         Property holidayId = route.addLongProperty("holidayId").getProperty();
         holiday.addToMany(route, holidayId);

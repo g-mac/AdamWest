@@ -1,6 +1,5 @@
 package de.adamwest.holiday.holiday_detail;
 
-import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +7,6 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
-import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
@@ -69,9 +66,9 @@ public class RouteListAdapter extends BaseAdapter {
         ((TextView)view.findViewById(R.id.text_view_route_description)).setText(route.getDescription());
         ((TextView)view.findViewById(R.id.text_view_distance_counter)).setText(HolidayStatsCalculator.getDistanceForRoute(route) + (context).getString(R.string.distance_scale_unit));
 
-        ((TextView)view.findViewById(R.id.text_view_amount_of_pictures)).setText(context.getString(R.string.picture_count) + HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_IMAGE));
-        ((TextView)view.findViewById(R.id.text_view_amount_of_videos)).setText(context.getString(R.string.video_count) + HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_VIDEO));
-        ((TextView)view.findViewById(R.id.text_view_amount_of_text)).setText(context.getString(R.string.text_count) + HolidayStatsCalculator.getAmountOfMediaFileForRoute(route, Constants.TYPE_TEXT));
+        ((TextView)view.findViewById(R.id.text_view_amount_of_pictures)).setText(context.getString(R.string.picture_count) + HolidayStatsCalculator.getAmountOfEventsForRoute(route, Constants.TYPE_IMAGE));
+        ((TextView)view.findViewById(R.id.text_view_amount_of_videos)).setText(context.getString(R.string.video_count) + HolidayStatsCalculator.getAmountOfEventsForRoute(route, Constants.TYPE_VIDEO));
+        ((TextView)view.findViewById(R.id.text_view_amount_of_text)).setText(context.getString(R.string.text_count) + HolidayStatsCalculator.getAmountOfEventsForRoute(route, Constants.TYPE_TEXT));
 
 
 

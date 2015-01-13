@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
-import de.adamwest.database.MultimediaElement;
+import de.adamwest.database.Event;
 import de.adamwest.helper.Constants;
 
 /**
@@ -22,8 +22,8 @@ public class TextPreviewFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_text_preview, container, false);
 
         long elementId = getArguments().getLong(Constants.KEY_MULTIMEDIA_ELEMENT_ID);
-        MultimediaElement element = DatabaseManager.getMultiMediaEventFromId(getActivity(), elementId);
-        ((TextView)view.findViewById(R.id.text_view_event_text)).setText(element.getDescription());
+        Event event = DatabaseManager.getEventFromId(getActivity(), elementId);
+        ((TextView)view.findViewById(R.id.text_view_event_text)).setText(event.getDescription());
 
         return view;
     }

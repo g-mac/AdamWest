@@ -20,7 +20,6 @@ import android.widget.TextView;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Event;
-import de.adamwest.database.MultimediaElement;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 
@@ -44,7 +43,7 @@ public class EventFragment extends Fragment {
            currentEvent = DatabaseManager.getEventFromId(getActivity(), eventId);
         }
         viewPager.setOffscreenPageLimit(CACHE_LIMIT);
-        viewPager.setAdapter(new EventSlideViewPageAdapter(getFragmentManager(), currentEvent.getMultimediaElementList(), eventId));
+        //viewPager.setAdapter(new EventSlideViewPageAdapter(getFragmentManager(), currentEvent, eventId));
 
 
 //        LinearLayout mediaElementsLayout = (LinearLayout)view.findViewById(R.id.layout_media_elements);

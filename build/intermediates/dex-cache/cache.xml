@@ -2,12 +2,6 @@
 <pre-dex-items>
 
     <item
-        dex="/Users/philip/Development/AdamWest/app/build/intermediates/pre-dexed/debug/classes-707e01a37a2b1c7a8a7bf0181be18abaad31f7f1.jar"
-        jar="/Users/philip/Development/AdamWest/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/classes.jar"
-        jumboMode="false"
-        revision="20.0.0"
-        sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef"/>
-    <item
         dex="/Users/philip/Development/AdamWest/app/build/intermediates/pre-dexed/debug/classes-f23fafba61fb5cdb00eb6896e9bb162ac861b551.jar"
         jar="/Users/philip/Development/AdamWest/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/classes.jar"
         jumboMode="false"
@@ -19,6 +13,18 @@
         jumboMode="false"
         revision="20.0.0"
         sha1="9d9013e9ff35fc3756411e62873c363c70c638fa"/>
+    <item
+        dex="/Users/philip/Development/AdamWest/app/build/intermediates/pre-dexed/debug/classes-707e01a37a2b1c7a8a7bf0181be18abaad31f7f1.jar"
+        jar="/Users/philip/Development/AdamWest/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/20.0.0/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="f21927d22fe31889ecce94dd697a2e75b137e0ef"/>
+    <item
+        dex="/Users/philip/Development/AdamWest/app/build/intermediates/pre-dexed/debug/classes-9f3586d0fcaf98855ef5533a75a300922ede8491.jar"
+        jar="/Users/philip/Development/AdamWest/app/build/intermediates/exploded-aar/com.google.maps.android/android-maps-utils/0.3.4/classes.jar"
+        jumboMode="false"
+        revision="20.0.0"
+        sha1="cf251baf39f5c5138224b67b4106eb6331abbd13"/>
     <item
         dex="/Users/philip/Development/AdamWest/app/build/intermediates/pre-dexed/debug/internal_impl-20.0.0-56cab21e7fda60a9e7ce14b608c61ea564bbe589.jar"
         jar="/Users/philip/Development/AdamWest/app/build/intermediates/exploded-aar/com.android.support/support-v4/20.0.0/libs/internal_impl-20.0.0.jar"

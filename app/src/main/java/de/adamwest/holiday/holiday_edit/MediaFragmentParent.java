@@ -34,20 +34,13 @@ public class MediaFragmentParent extends Fragment {
     }
 
     protected void storeMediaElementInDatabase(String type, String path, String description, long holidayId, String eventName) {
-        long routeId = DatabaseManager.getHolidayFromId(getActivity(), holidayId).getCurrentRoute().getId();
+        long routeId = DatabaseManager.getHolidayFromId(getActivity(), holidayId).getRoute().getId();
         long newCreationId = -1;
 
+        LatLng loc = new LatLng(getArguments().getDouble(Constants.KEY_LAT),
+            getArguments().getDouble(Constants.KEY_LONG));
 
-        if(getArguments().containsKey(Constants.KEY_EVENT_ID)) {
-            long eventId = getArguments().getLong(Constants.KEY_EVENT_ID);
-            newCreationId = DatabaseManager.createNewMultiMediaElement(getActivity(), type, path, eventId, description);
-        }
-        else {
-            LatLng loc = new LatLng(getArguments().getDouble(Constants.KEY_LAT),
-                    getArguments().getDouble(Constants.KEY_LONG));
-
-            newCreationId = DatabaseManager.createNewEventWithMultiMediaElement(getActivity(), routeId, type, path, loc, description, eventName);
-        }
+        newCreationId = DatabaseManager.createNewEvent(getActivity(), routeId, type, path, loc, description, eventName);
 
         if(-1 != newCreationId) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(MediaFragmentParent.this).commit();
@@ -58,7 +51,7 @@ public class MediaFragmentParent extends Fragment {
     }
 
     protected void checkNearbyEvents(long holidayId) {
-        Route route = DatabaseManager.getHolidayFromId(getActivity(), holidayId).getCurrentRoute();
+        Route route = DatabaseManager.getHolidayFromId(getActivity(), holidayId).getRoute();
         if(getArguments().containsKey(Constants.KEY_EVENT_ID) || route == null) return;
         Location currentLoc = new Location("dummyprovider");
 

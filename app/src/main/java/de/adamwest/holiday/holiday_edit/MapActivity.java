@@ -148,7 +148,7 @@ public class MapActivity extends FragmentActivity implements
 
     private void removeActiveRoute() {
         //todo: select route (so it will be zoomed to in setupmap())
-        selectedRouteId = currentHoliday.getRouteList().indexOf(currentHoliday.getCurrentRoute());
+        selectedRouteId = currentHoliday.getRouteList().indexOf(currentHoliday.getRoute());
         DatabaseManager.removeActiveRouteForHoliday(getApplicationContext(), currentHolidayId);
         updateRouteList();
         setUpMap();
@@ -215,7 +215,7 @@ public class MapActivity extends FragmentActivity implements
                 // todo: do nothing / or prompt to start new route
             } else {
 
-                Route route = currentHoliday.getCurrentRoute();
+                Route route = currentHoliday.getRoute();
 
                 if (route != null) {
                     drawInactiveRoutes();
@@ -246,8 +246,8 @@ public class MapActivity extends FragmentActivity implements
     }
 
     private void drawActiveRoute() {
-        if (currentHoliday.getCurrentRoute() != null)
-            drawRouteOnMap(currentHoliday.getCurrentRoute(), activeColor);
+        if (currentHoliday.getRoute() != null)
+            drawRouteOnMap(currentHoliday.getRoute(), activeColor);
     }
 
     private void drawInactiveRoutes() {
@@ -295,9 +295,9 @@ public class MapActivity extends FragmentActivity implements
 
 
         //TODO implement some button to show/hide the events for each map
-        if (currentHoliday.getCurrentRoute() != null) {
+        if (currentHoliday.getRoute() != null) {
             eventMarkerMap = new HashMap<Marker, Long>();
-            for (Event event : currentHoliday.getCurrentRoute().getEventList()) {
+            for (Event event : currentHoliday.getRoute().getEventList()) {
                 LatLng pos = new LatLng(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
                 Marker marker = map.addMarker(new MarkerOptions()
                         .position(pos)
@@ -402,7 +402,7 @@ public class MapActivity extends FragmentActivity implements
         } else if (id == R.id.action_add_attachment) {
             return true;
         } else if (id == R.id.menu_picture) {
-            if (currentHoliday.getCurrentRoute() == null) {
+            if (currentHoliday.getRoute() == null) {
                 //TODO Raise error
                 return false;
             }
@@ -410,7 +410,7 @@ public class MapActivity extends FragmentActivity implements
                 cameraManager.startCameraForPicture(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
             }
         } else if (id == R.id.menu_video) {
-            if (currentHoliday.getCurrentRoute() == null) {
+            if (currentHoliday.getRoute() == null) {
                 //TODO Raise error
                 return false;
             }
@@ -418,14 +418,14 @@ public class MapActivity extends FragmentActivity implements
                 cameraManager.startCameraForVideo(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
             }
         } else if (id == R.id.menu_description) {
-            if (currentHoliday.getCurrentRoute() == null) {
+            if (currentHoliday.getRoute() == null) {
                 //TODO Raise error
                 return false;
             }
             if (currentLoc != null) {
                 Fragment descriptionFragment = new MediaDescriptionFragment();
                 Bundle args = new Bundle();
-                args.putLong(Constants.KEY_ROUTE_ID, currentHoliday.getCurrentRoute().getId());
+                args.putLong(Constants.KEY_ROUTE_ID, currentHoliday.getRoute().getId());
                 args.putLong(Constants.KEY_HOLIDAY_ID, currentHoliday.getId());
                 args.putDouble(Constants.KEY_LAT, currentLoc.getLatitude());
                 args.putDouble(Constants.KEY_LONG, currentLoc.getLongitude());
@@ -447,7 +447,7 @@ public class MapActivity extends FragmentActivity implements
         LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
 
         if (currentHoliday != null) {
-            Route route = currentHoliday.getCurrentRoute();
+            Route route = currentHoliday.getRoute();
             if (route != null) {
 
                 if (route.getRouteLocationList().size() == 0) {
@@ -469,7 +469,7 @@ public class MapActivity extends FragmentActivity implements
                         HelpingMethods.log(msg);
 
                         DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
-                        drawRouteOnMap(currentHoliday.getCurrentRoute(), activeColor);
+                        drawRouteOnMap(currentHoliday.getRoute(), activeColor);
                         moveMapTo(loc);
                     }
                 }
@@ -508,11 +508,11 @@ public class MapActivity extends FragmentActivity implements
         if (eventMarkerMap != null && eventMarkerMap.containsKey(marker)) {
             long eventId = eventMarkerMap.get(marker);
             Log.i("prose", "clicked on event");
-            android.support.v4.app.Fragment eventFragment = new EventFragment();
+            //android.support.v4.app.Fragment eventFragment = new EventFragment();
             Bundle args = new Bundle();
             args.putLong(Constants.KEY_EVENT_ID, eventId);
-            eventFragment.setArguments(args);
-            getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, eventFragment, Constants.TAG_EVENT_FRAGMENT).addToBackStack("").commit();
+            //eventFragment.setArguments(args);
+            //getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, eventFragment, Constants.TAG_EVENT_FRAGMENT).addToBackStack("").commit();
         }
         return false;
     }

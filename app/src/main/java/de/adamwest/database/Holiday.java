@@ -113,14 +113,6 @@ public class Holiday {
         }
     }
 
-    public void setCurrentRoute(Route route) {
-        setRoute(route);
-    }
-
-    public Route getCurrentRoute() {
-        return getRoute();
-    }
-
     /** To-many relationship, resolved on first access (and after reset). Changes to to-many relations are not persisted, make changes to the target entity. */
     public List<Route> getRouteList() {
         if (routeList == null) {

@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.adamwest.R;
 import de.adamwest.database.Event;
-import de.adamwest.database.MultimediaElement;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 import org.w3c.dom.Text;
@@ -57,25 +56,25 @@ public class EventGridAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.item_event_grid, parent, false);
-            MultimediaElement multimediaElement = ((Event)getItem(position)).getMultimediaElementList().get(0);
-            if(multimediaElement.getType().equals(Constants.TYPE_IMAGE)) {
-                Bitmap image = resizeBitMap(view, multimediaElement);
+            Event event = ((Event)getItem(position));
+            if(event.getType().equals(Constants.TYPE_IMAGE)) {
+                Bitmap image = resizeBitMap(view, event);
                 if(image != null) {
                     ((ImageView)view.findViewById(R.id.image_view_grid_item)).setImageBitmap(image);
                 }
             }
-            else if(multimediaElement.getType().equals(Constants.TYPE_TEXT)) {
+            else if(event.getType().equals(Constants.TYPE_TEXT)) {
                 ((ImageView)view.findViewById(R.id.image_view_grid_item)).setImageDrawable(context.getResources().getDrawable(R.drawable.text_icon));
             }
-            else if(multimediaElement.getType().equals(Constants.TYPE_VIDEO)) {
+            else if(event.getType().equals(Constants.TYPE_VIDEO)) {
                 view.findViewById(R.id.image_view_video_play).setVisibility(View.VISIBLE);
-                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(multimediaElement.getPath(),
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(event.getPath(),
                         MediaStore.Images.Thumbnails.MINI_KIND);
                 if(thumb!= null) {
                     ((ImageView)view.findViewById(R.id.image_view_grid_item)).setImageBitmap(thumb);
                 }
             }
-            ((TextView)view.findViewById(R.id.text_view_grid_event_description)).setText(multimediaElement.getDescription());
+            ((TextView)view.findViewById(R.id.text_view_grid_event_description)).setText(event.getDescription());
             return view;
         }
         else {
@@ -83,9 +82,9 @@ public class EventGridAdapter extends BaseAdapter {
         }
     }
 
-    private Bitmap resizeBitMap(View view, MultimediaElement multimediaElement) {
+    private Bitmap resizeBitMap(View view, Event event) {
 
-        File imgFile = new File(multimediaElement.getPath());
+        File imgFile = new File(event.getPath());
         Bitmap bitmapImage = null;
         if(imgFile.exists()){
             bitmapImage = BitmapFactory.decodeFile(imgFile.getAbsolutePath());

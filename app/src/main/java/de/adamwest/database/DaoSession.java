@@ -12,14 +12,12 @@ import de.greenrobot.dao.internal.DaoConfig;
 import de.adamwest.database.Route;
 import de.adamwest.database.RouteLocation;
 import de.adamwest.database.Event;
-import de.adamwest.database.MultimediaElement;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.ActiveHoliday;
 
 import de.adamwest.database.RouteDao;
 import de.adamwest.database.RouteLocationDao;
 import de.adamwest.database.EventDao;
-import de.adamwest.database.MultimediaElementDao;
 import de.adamwest.database.HolidayDao;
 import de.adamwest.database.ActiveHolidayDao;
 
@@ -35,14 +33,12 @@ public class DaoSession extends AbstractDaoSession {
     private final DaoConfig routeDaoConfig;
     private final DaoConfig routeLocationDaoConfig;
     private final DaoConfig eventDaoConfig;
-    private final DaoConfig multimediaElementDaoConfig;
     private final DaoConfig holidayDaoConfig;
     private final DaoConfig activeHolidayDaoConfig;
 
     private final RouteDao routeDao;
     private final RouteLocationDao routeLocationDao;
     private final EventDao eventDao;
-    private final MultimediaElementDao multimediaElementDao;
     private final HolidayDao holidayDao;
     private final ActiveHolidayDao activeHolidayDao;
 
@@ -59,9 +55,6 @@ public class DaoSession extends AbstractDaoSession {
         eventDaoConfig = daoConfigMap.get(EventDao.class).clone();
         eventDaoConfig.initIdentityScope(type);
 
-        multimediaElementDaoConfig = daoConfigMap.get(MultimediaElementDao.class).clone();
-        multimediaElementDaoConfig.initIdentityScope(type);
-
         holidayDaoConfig = daoConfigMap.get(HolidayDao.class).clone();
         holidayDaoConfig.initIdentityScope(type);
 
@@ -71,14 +64,12 @@ public class DaoSession extends AbstractDaoSession {
         routeDao = new RouteDao(routeDaoConfig, this);
         routeLocationDao = new RouteLocationDao(routeLocationDaoConfig, this);
         eventDao = new EventDao(eventDaoConfig, this);
-        multimediaElementDao = new MultimediaElementDao(multimediaElementDaoConfig, this);
         holidayDao = new HolidayDao(holidayDaoConfig, this);
         activeHolidayDao = new ActiveHolidayDao(activeHolidayDaoConfig, this);
 
         registerDao(Route.class, routeDao);
         registerDao(RouteLocation.class, routeLocationDao);
         registerDao(Event.class, eventDao);
-        registerDao(MultimediaElement.class, multimediaElementDao);
         registerDao(Holiday.class, holidayDao);
         registerDao(ActiveHoliday.class, activeHolidayDao);
     }
@@ -87,7 +78,6 @@ public class DaoSession extends AbstractDaoSession {
         routeDaoConfig.getIdentityScope().clear();
         routeLocationDaoConfig.getIdentityScope().clear();
         eventDaoConfig.getIdentityScope().clear();
-        multimediaElementDaoConfig.getIdentityScope().clear();
         holidayDaoConfig.getIdentityScope().clear();
         activeHolidayDaoConfig.getIdentityScope().clear();
     }
@@ -102,10 +92,6 @@ public class DaoSession extends AbstractDaoSession {
 
     public EventDao getEventDao() {
         return eventDao;
-    }
-
-    public MultimediaElementDao getMultimediaElementDao() {
-        return multimediaElementDao;
     }
 
     public HolidayDao getHolidayDao() {

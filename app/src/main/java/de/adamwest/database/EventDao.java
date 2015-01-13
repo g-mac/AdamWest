@@ -31,8 +31,11 @@ public class EventDao extends AbstractDao<Event, Long> {
         public final static Property Id = new Property(0, Long.class, "id", true, "_id");
         public final static Property Name = new Property(1, String.class, "name", false, "NAME");
         public final static Property Description = new Property(2, String.class, "description", false, "DESCRIPTION");
-        public final static Property LocationId = new Property(3, Long.class, "locationId", false, "LOCATION_ID");
-        public final static Property RouteId = new Property(4, Long.class, "routeId", false, "ROUTE_ID");
+        public final static Property Type = new Property(3, String.class, "type", false, "TYPE");
+        public final static Property Path = new Property(4, String.class, "path", false, "PATH");
+        public final static Property CreatedAt = new Property(5, java.util.Date.class, "createdAt", false, "CREATED_AT");
+        public final static Property LocationId = new Property(6, Long.class, "locationId", false, "LOCATION_ID");
+        public final static Property RouteId = new Property(7, Long.class, "routeId", false, "ROUTE_ID");
     };
 
     private DaoSession daoSession;
@@ -55,8 +58,11 @@ public class EventDao extends AbstractDao<Event, Long> {
                 "'_id' INTEGER PRIMARY KEY ," + // 0: id
                 "'NAME' TEXT," + // 1: name
                 "'DESCRIPTION' TEXT," + // 2: description
-                "'LOCATION_ID' INTEGER," + // 3: locationId
-                "'ROUTE_ID' INTEGER);"); // 4: routeId
+                "'TYPE' TEXT," + // 3: type
+                "'PATH' TEXT," + // 4: path
+                "'CREATED_AT' INTEGER," + // 5: createdAt
+                "'LOCATION_ID' INTEGER," + // 6: locationId
+                "'ROUTE_ID' INTEGER);"); // 7: routeId
     }
 
     /** Drops the underlying database table. */
@@ -85,14 +91,29 @@ public class EventDao extends AbstractDao<Event, Long> {
             stmt.bindString(3, description);
         }
  
+        String type = entity.getType();
+        if (type != null) {
+            stmt.bindString(4, type);
+        }
+ 
+        String path = entity.getPath();
+        if (path != null) {
+            stmt.bindString(5, path);
+        }
+ 
+        java.util.Date createdAt = entity.getCreatedAt();
+        if (createdAt != null) {
+            stmt.bindLong(6, createdAt.getTime());
+        }
+ 
         Long locationId = entity.getLocationId();
         if (locationId != null) {
-            stmt.bindLong(4, locationId);
+            stmt.bindLong(7, locationId);
         }
  
         Long routeId = entity.getRouteId();
         if (routeId != null) {
-            stmt.bindLong(5, routeId);
+            stmt.bindLong(8, routeId);
         }
     }
 
@@ -115,8 +136,11 @@ public class EventDao extends AbstractDao<Event, Long> {
             cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // name
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // description
-            cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3), // locationId
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // routeId
+            cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // type
+            cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // path
+            cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // createdAt
+            cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // locationId
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // routeId
         );
         return entity;
     }
@@ -127,8 +151,11 @@ public class EventDao extends AbstractDao<Event, Long> {
         entity.setId(cursor.isNull(offset + 0) ? null : cursor.getLong(offset + 0));
         entity.setName(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setDescription(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
-        entity.setLocationId(cursor.isNull(offset + 3) ? null : cursor.getLong(offset + 3));
-        entity.setRouteId(cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4));
+        entity.setType(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
+        entity.setPath(cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4));
+        entity.setCreatedAt(cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)));
+        entity.setLocationId(cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6));
+        entity.setRouteId(cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7));
      }
     
     /** @inheritdoc */

@@ -80,7 +80,7 @@ public final class DatabaseManager {
         Holiday holiday = getHolidayFromId(context, holidayId);
         holiday.setCurrentRouteId(routeId);
         Route route = getRouteFromId(context, routeId);
-        if(route != null) holiday.setCurrentRoute(route);
+        if(route != null) holiday.setRoute(route);
         getDaoSession(context).update(holiday);
     }
 
@@ -89,7 +89,7 @@ public final class DatabaseManager {
         holiday.setCurrentRouteId(null);
 //        Route route = getRouteFromId(context, routeId);
 //        if(route != null) holiday.setCurrentRoute(null);
-        holiday.setCurrentRoute(null);
+        holiday.setRoute(null);
         getDaoSession(context).update(holiday);
     }
 
@@ -101,9 +101,9 @@ public final class DatabaseManager {
         return getDaoSession(context).getEventDao().load(eventId);
     }
 
-    public static MultimediaElement getMultiMediaEventFromId(Context context, long elementId) {
-        return getDaoSession(context).getMultimediaElementDao().load(elementId);
-    }
+//    public static MultimediaElement getMultiMediaEventFromId(Context context, long elementId) {
+//        return getDaoSession(context).getMultimediaElementDao().load(elementId);
+//    }
 
     private static List<Route> getAllRoutes(Context context) {
         return getDaoSession(context).getRouteDao().loadAll();
@@ -114,20 +114,20 @@ public final class DatabaseManager {
         getDaoSession(context).getRouteLocationDao().deleteByKey(routeLocationId);
     }
 
-    public static void deleteMultiMediaElement(Context context, long multiMediaEventId) {
-        MultimediaElement multimediaElement = getDaoSession(context).getMultimediaElementDao().load(multiMediaEventId);
-        File file = new File(multimediaElement.getPath());
-        file.delete();
-        long eventId = multimediaElement.getEventId();
-        getDaoSession(context).getMultimediaElementDao().deleteByKey(multiMediaEventId);
-        getEventFromId(context, eventId).resetMultimediaElementList();
-    }
+//    public static void deleteMultiMediaElement(Context context, long multiMediaEventId) {
+//        MultimediaElement multimediaElement = getDaoSession(context).getMultimediaElementDao().load(multiMediaEventId);
+//        File file = new File(multimediaElement.getPath());
+//        file.delete();
+//        long eventId = multimediaElement.getEventId();
+//        getDaoSession(context).getMultimediaElementDao().deleteByKey(multiMediaEventId);
+//        getEventFromId(context, eventId).resetMultimediaElementList();
+//    }
 
     public static void deleteEvent(Context context, long eventId) {
         Event event = getDaoSession(context).getEventDao().load(eventId);
-        for(MultimediaElement multimediaElement : event.getMultimediaElementList()) {
-            deleteMultiMediaElement(context, multimediaElement.getId());
-        }
+//        for(MultimediaElement multimediaElement : event.getMultimediaElementList()) {
+//            deleteMultiMediaElement(context, multimediaElement.getId());
+//        }
         deleteRouteLocation(context, event.getLocationId());
         long routeId = event.getRouteId();
         getDaoSession(context).getEventDao().deleteByKey(eventId);
@@ -173,7 +173,7 @@ public final class DatabaseManager {
         getDaoSession(context).getRouteDao().update(route);
     }
 
-    public static long createNewEvent(Context context, long routeId, String eventName, String eventDescription, LatLng loc) {
+    public static long createNewEvent(Context context, long routeId, String eventName, String eventDescription, LatLng loc, String type, String path) {
         Route route = getDaoSession(context).getRouteDao().load(routeId);
         if(route == null) {
             //TODO Exception handling
@@ -191,6 +191,8 @@ public final class DatabaseManager {
         if(eventDescription != null) event.setDescription(eventDescription);
         event.setRouteLocation(location);
         event.setRouteId(route.getId());
+        if(path != null) event.setPath(path);
+        event.setType(type);
 
         long eventId = getDaoSession(context).insert(event);
 
@@ -200,24 +202,24 @@ public final class DatabaseManager {
         return eventId;
     }
 
-    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc, String description, String eventName) {
-        String savingEventName = (eventName != null) ? eventName : "";
-        long eventId = createNewEvent(context, routeId, savingEventName, "", loc);
-        return createNewMultiMediaElement(context, type, path, eventId, description);
-    }
+//    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc, String description, String eventName) {
+//        String savingEventName = (eventName != null) ? eventName : "";
+//        long eventId = createNewEvent(context, routeId, savingEventName, "", loc);
+//        return createNewMultiMediaElement(context, type, path, eventId, description);
+//    }
 
-    public static long createNewMultiMediaElement(Context context, String type, String path, long eventId, String description) {
-        MultimediaElement multimediaElement = new MultimediaElement();
-        multimediaElement.setType(type);
-        multimediaElement.setCreatedAt(new Date());
-        if(path != null) multimediaElement.setPath(path);
-        if(description != null) multimediaElement.setDescription(description);
-        multimediaElement.setEventId(eventId);
-        Event event = getDaoSession(context).getEventDao().load(eventId);
-        event.getMultimediaElementList().add(multimediaElement);
-
-        return getDaoSession(context).insert(multimediaElement);
-    }
+//    public static long createNewMultiMediaElement(Context context, String type, String path, long eventId, String description) {
+//        MultimediaElement multimediaElement = new MultimediaElement();
+//        multimediaElement.setType(type);
+//        multimediaElement.setCreatedAt(new Date());
+//        if(path != null) multimediaElement.setPath(path);
+//        if(description != null) multimediaElement.setDescription(description);
+//        multimediaElement.setEventId(eventId);
+//        Event event = getDaoSession(context).getEventDao().load(eventId);
+//        event.getMultimediaElementList().add(multimediaElement);
+//
+//        return getDaoSession(context).insert(multimediaElement);
+//    }
 
     public static boolean setHolidayAsActive(Context context, long holidayId) {
         Holiday holiday = getDaoSession(context).getHolidayDao().load(holidayId);

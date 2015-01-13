@@ -11,7 +11,6 @@ import de.greenrobot.dao.identityscope.IdentityScopeType;
 import de.adamwest.database.RouteDao;
 import de.adamwest.database.RouteLocationDao;
 import de.adamwest.database.EventDao;
-import de.adamwest.database.MultimediaElementDao;
 import de.adamwest.database.HolidayDao;
 import de.adamwest.database.ActiveHolidayDao;
 
@@ -27,7 +26,6 @@ public class DaoMaster extends AbstractDaoMaster {
         RouteDao.createTable(db, ifNotExists);
         RouteLocationDao.createTable(db, ifNotExists);
         EventDao.createTable(db, ifNotExists);
-        MultimediaElementDao.createTable(db, ifNotExists);
         HolidayDao.createTable(db, ifNotExists);
         ActiveHolidayDao.createTable(db, ifNotExists);
     }
@@ -37,7 +35,6 @@ public class DaoMaster extends AbstractDaoMaster {
         RouteDao.dropTable(db, ifExists);
         RouteLocationDao.dropTable(db, ifExists);
         EventDao.dropTable(db, ifExists);
-        MultimediaElementDao.dropTable(db, ifExists);
         HolidayDao.dropTable(db, ifExists);
         ActiveHolidayDao.dropTable(db, ifExists);
     }
@@ -74,7 +71,6 @@ public class DaoMaster extends AbstractDaoMaster {
         registerDaoClass(RouteDao.class);
         registerDaoClass(RouteLocationDao.class);
         registerDaoClass(EventDao.class);
-        registerDaoClass(MultimediaElementDao.class);
         registerDaoClass(HolidayDao.class);
         registerDaoClass(ActiveHolidayDao.class);
     }

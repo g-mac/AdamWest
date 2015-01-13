@@ -39,39 +39,35 @@ public final class HolidayStatsCalculator {
     }
 
     public static int getAmountOfImagesForHoliday(Holiday holiday) {
-        return getAmountOfMediaFileForHoliday(holiday, Constants.TYPE_IMAGE);
+        return getAmountOfEventsForHoliday(holiday, Constants.TYPE_IMAGE);
     }
 
     public static int getAmountOfVideosForHoliday(Holiday holiday) {
-        return getAmountOfMediaFileForHoliday(holiday, Constants.TYPE_VIDEO);
+        return getAmountOfEventsForHoliday(holiday, Constants.TYPE_VIDEO);
     }
 
     public static int getAmountOfTextsForHoliday(Holiday holiday) {
-        return getAmountOfMediaFileForHoliday(holiday, Constants.TYPE_TEXT);
+        return getAmountOfEventsForHoliday(holiday, Constants.TYPE_TEXT);
     }
 
-    private static int getAmountOfMediaFileForHoliday(Holiday holiday, String type) {
+    private static int getAmountOfEventsForHoliday(Holiday holiday, String type) {
         int amount = 0;
         for(Route route : holiday.getRouteList()) {
-            amount += getAmountOfMediaFileForRoute(route, type);
+            amount += getAmountOfEventsForRoute(route, type);
         }
 
         return amount;
     }
 
-    public static int getAmountOfMediaFileForRoute(Route route, String type) {
+    public static int getAmountOfEventsForRoute(Route route, String type) {
         int amount = 0;
         for(Event event : route.getEventList()) {
-            amount+= getAmountOfMediaFileForEvent(event, type);
+            if(event.getType().equals(type)) {
+                amount += 1;
+            }
         }
-        return amount;
+        return  amount;
     }
 
-    public static int getAmountOfMediaFileForEvent(Event event, String type) {
-        int amount = 0;
-        for(MultimediaElement elem : event.getMultimediaElementList()) {
-            if(elem.getType().equals(type)) amount ++;
-        }
-        return amount;
-    }
+
 }
