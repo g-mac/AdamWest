@@ -1,4 +1,4 @@
-package de.adamwest.holiday.holiday_detail.TabFragments;
+package de.adamwest.holiday.holiday_detail.TabFragments.map;
 
 import com.google.android.gms.maps.model.LatLng;
 import com.google.maps.android.clustering.Cluster;
@@ -18,7 +18,7 @@ import java.util.*;
  * Created by philip on 13/01/15.
  */
 public class EventClusterAlgorithm<T extends ClusterItem> implements Algorithm<T> {
-    public static final int MAX_DISTANCE_AT_ZOOM = 400; // essentially 100 dp.
+    public static final int MAX_DISTANCE_AT_ZOOM = 80; // essentially 100 dp.
 
     /**
      * Any modifications should be synchronized on mQuadTree.
@@ -172,3 +172,4 @@ public class EventClusterAlgorithm<T extends ClusterItem> implements Algorithm<T
         }
     }
 }
+

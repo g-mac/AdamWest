@@ -1,8 +1,6 @@
-package de.adamwest.holiday.holiday_detail.TabFragments;
+package de.adamwest.holiday.holiday_detail.TabFragments.map;
 
 import android.graphics.Color;
-import android.graphics.drawable.Drawable;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,15 +14,10 @@ import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.MapsInitializer;
 import com.google.android.gms.maps.model.*;
 import com.google.maps.android.clustering.ClusterManager;
-import com.google.maps.android.clustering.algo.NonHierarchicalDistanceBasedAlgorithm;
 import de.adamwest.R;
 import de.adamwest.database.*;
-import de.adamwest.helper.CameraManager;
-import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
-import de.adamwest.holiday.event.EventFragment;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
-import de.adamwest.model.EventClusterItem;
 
 import java.util.HashMap;
 import java.util.List;
@@ -221,7 +214,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 //                    .snippet(event.getName())
 //                    .icon(markerIcon));
            // eventMarkerMap.put(marker, event.getId());
-        EventClusterItem eventClusterItem = new EventClusterItem(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
+        EventClusterItem eventClusterItem = new EventClusterItem(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude(), event);
         eventClusterManager.addItem(eventClusterItem );
         }
     }
@@ -259,6 +252,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     public void onMapLoaded() {
         eventClusterManager = new ClusterManager<EventClusterItem>(getActivity(), map);
         eventClusterManager.setAlgorithm(new EventClusterAlgorithm<EventClusterItem>());
+        eventClusterManager.setRenderer(new EventClusterRenderer(getActivity(),map,eventClusterManager));
         map.setOnCameraChangeListener(eventClusterManager);
         map.setOnMarkerClickListener(eventClusterManager);
         setUpMap();

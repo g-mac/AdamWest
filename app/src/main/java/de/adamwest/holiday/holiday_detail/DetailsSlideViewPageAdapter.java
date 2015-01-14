@@ -6,8 +6,7 @@ import android.support.v4.app.FragmentStatePagerAdapter;
 import de.adamwest.helper.Constants;
 import de.adamwest.holiday.holiday_detail.TabFragments.DetailFragment;
 import de.adamwest.holiday.holiday_detail.TabFragments.EventGridFragment;
-import de.adamwest.holiday.holiday_detail.TabFragments.MapFragment;
-import de.adamwest.holiday.holiday_detail.TabFragments.RouteListFragment;
+import de.adamwest.holiday.holiday_detail.TabFragments.map.MapFragment;
 
 /**
  * Created by Philip on 18.10.2014.
