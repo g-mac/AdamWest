@@ -2,6 +2,7 @@ package de.adamwest.holiday.holiday_detail;
 
 import android.app.ActionBar;
 import android.app.Activity;
+import android.app.Fragment;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,8 +15,10 @@ import android.view.View;
 import android.widget.*;
 import de.adamwest.R;
 import de.adamwest.database.DatabaseManager;
+import de.adamwest.database.Event;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
+import de.adamwest.holiday.holiday_detail.TabFragments.EventGridFragment;
 import de.adamwest.holiday.holiday_edit.*;
 
 import java.util.List;
@@ -26,7 +29,7 @@ import java.util.List;
 public class HolidayDetailActivity extends FragmentActivity {
 
     private long holidayId;
-    ViewPager viewPager;
+    public ViewPager viewPager;
     private List<Route> routes;
     public long routeId;
 
@@ -54,7 +57,6 @@ public class HolidayDetailActivity extends FragmentActivity {
                         getActionBar().setSelectedNavigationItem(position);
                     }
                 });
-
         createTabBar();
 
         TextView holidayNameInTitleBar = (TextView) findViewById(R.id.action_bar_custom_title);
@@ -77,7 +79,11 @@ public class HolidayDetailActivity extends FragmentActivity {
         });
     }
 
-
+    public void goToEventGridWithSpecificEvents(List<Event> eventList) {
+        viewPager.setCurrentItem(1);
+        EventGridFragment eventGridFragment = (EventGridFragment)((DetailsSlideViewPageAdapter) viewPager.getAdapter()).getItem(1);
+        eventGridFragment.updateWithSpecificEvents(eventList);
+    }
 //------ ActionBar Methods -----------------------------------------------------------------------------------------
 
     private void createTabBar() {

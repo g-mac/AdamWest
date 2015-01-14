@@ -12,6 +12,7 @@ import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
+import de.adamwest.helper.HelpingMethods;
 import de.adamwest.holiday.holiday_detail.EventGridAdapter;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
 import de.adamwest.holiday.holiday_detail.RouteListAdapter;
@@ -27,21 +28,23 @@ public class EventGridFragment extends Fragment {
 
     GridView gridview;
     Holiday holiday;
+    List<Event> eventList;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_event_grid, container, false);
-
+        HelpingMethods.log("init event grid");
         gridview = (GridView) view.findViewById(R.id.gridview);
         //TODO List needs to be auto gen
         holiday = DatabaseManager.getHolidayFromId(getActivity(), ((HolidayDetailActivity)getActivity()).getHolidayId());
         initGridView();
         registerForContextMenu(gridview);
+
         return view;
     }
     private void initGridView() {
         HolidayDetailActivity holidayDetailActivity = ((HolidayDetailActivity)getActivity());
-        List<Event> eventList = new ArrayList<Event>();
+        eventList = new ArrayList<Event>();
         if(holidayDetailActivity.routeId != -1) {
             for(Route route : holiday.getRouteList()) {
                 if(route.getId() == holidayDetailActivity.routeId) {
@@ -100,4 +103,9 @@ public class EventGridFragment extends Fragment {
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .show();
     }
+
+    public void updateWithSpecificEvents(List<Event> eventList) {
+        //gridview.setAdapter(new EventGridAdapter(getActivity(), eventList));
+    }
+
 }

@@ -8,17 +8,16 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapView;
-import com.google.android.gms.maps.MapsInitializer;
+import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
+import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import de.adamwest.R;
 import de.adamwest.database.*;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +30,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     static final int inactiveColor = Color.argb(155, 110, 110, 110); // -transparent gray
     static final int activeColor = Color.argb(125, 0, 255, 0); // -transparent green
-
+    private final int MAXIMUM_ZOOM_FOR_CLUSTER = 19;
     private MapView mapView;
     private GoogleMap map;
     private Bundle mBundle;
@@ -183,21 +182,21 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             options.add(latLng);
 
             //todo: start/finish marker
-            if (i == 0) {
-                map.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title("Start!")
-                        .snippet(route.getName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
-//                map.addCircle(HelpingMethods.getCircleOptions().center(latLng));
-            }
-            else if (i == routeLocationList.size() - 1) {
-                map.addMarker(new MarkerOptions()
-                        .position(latLng)
-                        .title("Finish!")
-                        .snippet(route.getName())
-                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
-            }
+//            if (i == 0) {
+//                map.addMarker(new MarkerOptions()
+//                        .position(latLng)
+//                        .title("Start!")
+//                        .snippet(route.getName())
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
+////                map.addCircle(HelpingMethods.getCircleOptions().center(latLng));
+//            }
+//            else if (i == routeLocationList.size() - 1) {
+//                map.addMarker(new MarkerOptions()
+//                        .position(latLng)
+//                        .title("Finish!")
+//                        .snippet(route.getName())
+//                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
+//            }
         }
 
         map.addPolyline(options);
@@ -229,7 +228,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     //todo: might not be needed since replaced by onInfoWindowClick()
     @Override
     public boolean onMarkerClick(Marker marker) {
-//        Toast.makeText(getActivity(), "onMarkerClick", Toast.LENGTH_SHORT).show();
+        Toast.makeText(getActivity(), "onMarkerClick", Toast.LENGTH_SHORT).show();
         return false;
     }
 
@@ -252,7 +251,31 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     public void onMapLoaded() {
         eventClusterManager = new ClusterManager<EventClusterItem>(getActivity(), map);
         eventClusterManager.setAlgorithm(new EventClusterAlgorithm<EventClusterItem>());
-        eventClusterManager.setRenderer(new EventClusterRenderer(getActivity(),map,eventClusterManager));
+        eventClusterManager.setRenderer(new EventClusterRenderer(getActivity(), map, eventClusterManager));
+        eventClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<EventClusterItem>() {
+            @Override
+            public boolean onClusterClick(Cluster<EventClusterItem> eventClusterItemCluster) {
+                if (MAXIMUM_ZOOM_FOR_CLUSTER > map.getCameraPosition().zoom) {
+                    CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom( eventClusterItemCluster.getPosition() ,MAXIMUM_ZOOM_FOR_CLUSTER);
+                    map.animateCamera(zoom);
+                }
+                else {
+                    List <Event> events = new ArrayList<Event>();
+                    for(EventClusterItem clusterItem : eventClusterItemCluster.getItems()) {
+                        events.add(clusterItem.getEvent());
+                    }
+                    ((HolidayDetailActivity)getActivity()).goToEventGridWithSpecificEvents(events);
+                }
+                return true;
+            }
+        });
+        eventClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<EventClusterItem>() {
+            @Override
+            public boolean onClusterItemClick(EventClusterItem eventClusterItem) {
+                HelpingMethods.log("Single Item Clicked");
+                return false;
+            }
+        });
         map.setOnCameraChangeListener(eventClusterManager);
         map.setOnMarkerClickListener(eventClusterManager);
         setUpMap();
