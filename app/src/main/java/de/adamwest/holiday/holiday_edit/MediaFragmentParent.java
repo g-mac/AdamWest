@@ -40,7 +40,7 @@ public class MediaFragmentParent extends Fragment {
         LatLng loc = new LatLng(getArguments().getDouble(Constants.KEY_LAT),
             getArguments().getDouble(Constants.KEY_LONG));
 
-        newCreationId = DatabaseManager.createNewEvent(getActivity(), routeId, type, path, loc, description, eventName);
+        newCreationId = DatabaseManager.createNewEvent(getActivity(), routeId, eventName, description, loc, type, path);
 
         if(-1 != newCreationId) {
             getActivity().getSupportFragmentManager().beginTransaction().remove(MediaFragmentParent.this).commit();

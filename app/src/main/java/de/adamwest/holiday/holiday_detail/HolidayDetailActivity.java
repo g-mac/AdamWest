@@ -79,11 +79,7 @@ public class HolidayDetailActivity extends FragmentActivity {
         });
     }
 
-    public void goToEventGridWithSpecificEvents(List<Event> eventList) {
-        viewPager.setCurrentItem(1);
-        EventGridFragment eventGridFragment = (EventGridFragment)((DetailsSlideViewPageAdapter) viewPager.getAdapter()).getItem(1);
-        eventGridFragment.updateWithSpecificEvents(eventList);
-    }
+
 //------ ActionBar Methods -----------------------------------------------------------------------------------------
 
     private void createTabBar() {

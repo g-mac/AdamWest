@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
@@ -15,6 +17,7 @@ import com.google.maps.android.clustering.ClusterManager;
 import de.adamwest.R;
 import de.adamwest.database.*;
 import de.adamwest.helper.HelpingMethods;
+import de.adamwest.helper.ImageHelper;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
 
 import java.util.ArrayList;
@@ -37,6 +40,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     private Map<Marker, Long> eventMarkerMap;
     private ClusterManager<EventClusterItem> eventClusterManager;
+    private EventClusterItem clickedClusterItem;
 
     private long routeId;
     private long holidayId;
@@ -256,15 +260,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             @Override
             public boolean onClusterClick(Cluster<EventClusterItem> eventClusterItemCluster) {
                 if (MAXIMUM_ZOOM_FOR_CLUSTER > map.getCameraPosition().zoom) {
-                    CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom( eventClusterItemCluster.getPosition() ,MAXIMUM_ZOOM_FOR_CLUSTER);
+                    CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(eventClusterItemCluster.getPosition(), MAXIMUM_ZOOM_FOR_CLUSTER);
                     map.animateCamera(zoom);
-                }
-                else {
-                    List <Event> events = new ArrayList<Event>();
-                    for(EventClusterItem clusterItem : eventClusterItemCluster.getItems()) {
+                } else {
+                    List<Event> events = new ArrayList<Event>();
+                    for (EventClusterItem clusterItem : eventClusterItemCluster.getItems()) {
                         events.add(clusterItem.getEvent());
                     }
-                    ((HolidayDetailActivity)getActivity()).goToEventGridWithSpecificEvents(events);
                 }
                 return true;
             }
@@ -273,14 +275,41 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             @Override
             public boolean onClusterItemClick(EventClusterItem eventClusterItem) {
                 HelpingMethods.log("Single Item Clicked");
+                clickedClusterItem = eventClusterItem;
                 return false;
             }
         });
         map.setOnCameraChangeListener(eventClusterManager);
         map.setOnMarkerClickListener(eventClusterManager);
+        map.setInfoWindowAdapter(eventClusterManager.getMarkerManager());
+        eventClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ClusterItemInfoAdapter());
         setUpMap();
     }
 
     //----------------------- Other Methods -----------------------------------
+
+
+    public class ClusterItemInfoAdapter implements GoogleMap.InfoWindowAdapter {
+
+
+        public ClusterItemInfoAdapter() {
+
+        }
+        @Override
+        public View getInfoWindow(Marker marker) {
+            //TODO check different kind of types
+            View infoView = getActivity().getLayoutInflater().inflate(R.layout.event_marker_info_popup, null);
+            ((ImageView)infoView.findViewById(R.id.image_view_event_image)).setImageBitmap(ImageHelper.resizeBitMap(getActivity(), clickedClusterItem.getEvent().getPath()));
+            ((TextView)infoView.findViewById(R.id.text_view_event_title)).setText(clickedClusterItem.getEvent().getDescription());
+            HelpingMethods.log("Info window get!!! type: " + clickedClusterItem.getEvent().getType());
+            return infoView;
+        }
+
+        @Override
+        public View getInfoContents(Marker marker) {
+            return null;
+        }
+    }
+
 
 }

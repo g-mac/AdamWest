@@ -17,6 +17,7 @@ import de.adamwest.R;
 import de.adamwest.database.Event;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
+import de.adamwest.helper.ImageHelper;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -58,7 +59,7 @@ public class EventGridAdapter extends BaseAdapter {
             View view = inflater.inflate(R.layout.item_event_grid, parent, false);
             Event event = ((Event)getItem(position));
             if(event.getType().equals(Constants.TYPE_IMAGE)) {
-                Bitmap image = resizeBitMap(view, event);
+                Bitmap image = ImageHelper.resizeBitMap(context, event.getPath());
                 if(image != null) {
                     ((ImageView)view.findViewById(R.id.image_view_grid_item)).setImageBitmap(image);
                 }
@@ -81,31 +82,4 @@ public class EventGridAdapter extends BaseAdapter {
             return convertView;
         }
     }
-
-    private Bitmap resizeBitMap(View view, Event event) {
-
-        File imgFile = new File(event.getPath());
-        Bitmap bitmapImage = null;
-        if(imgFile.exists()){
-            bitmapImage = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
-            //Drawable d = new BitmapDrawable(getResources(), myBitmap);
-
-        }
-
-        if (bitmapImage != null) {
-            DisplayMetrics displaymetrics = new DisplayMetrics();
-            ((Activity)context).getWindowManager().getDefaultDisplay().getMetrics(displaymetrics);
-            int newWidth = (displaymetrics.widthPixels -8) / 2;
-            double scaleFactor = bitmapImage.getWidth() / newWidth;
-            int newHeight = new Double(bitmapImage.getHeight() / scaleFactor).intValue();
-
-            Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmapImage, newWidth, newHeight, true);
-            return resizedBitmap;
-        }
-        else {
-            return null;
-        }
-    }
-
-
 }
