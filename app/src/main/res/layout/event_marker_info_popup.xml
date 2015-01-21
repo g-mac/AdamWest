@@ -1,25 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:background="@color/background_selected"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+<LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
 
+<RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="190dp">
 
     <ImageView
+            android:layout_alignParentTop="true"
             android:id="@+id/image_view_event_image"
             android:src="@drawable/example"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="10dp"
+            android:layout_width="190dp"
+            android:layout_height="190dp"
             android:scaleType="centerCrop"/>
 
-    <TextView
-            android:id="@+id/text_view_event_title"
-            android:text="TEST TEST"
-            android:layout_width="170dp"
-            android:ellipsize="end"
+    <ImageView
+            android:id="@+id/image_view_video_play"
+            android:src="@drawable/play_overlay"
+            android:layout_centerInParent="true"
+            android:visibility="gone"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+    <TextView
+            android:id="@+id/text_view_grid_event_description"
+            android:background="@color/black_with_opacity"
+            android:padding="16dp"
+            android:layout_alignParentBottom="true"
+            android:textSize="14sp"
+            android:textColor="@android:color/white"
+            android:lines="2"
+            android:text="test beschreibung test beschreibung test beschreibung test beschreibung test beschreibung"
+            android:ellipsize="end"
+            android:layout_width="190dp"
+            android:layout_height="68dp"/>
+
+</RelativeLayout>
 
 </LinearLayout>

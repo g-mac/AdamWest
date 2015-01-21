@@ -26,7 +26,6 @@ public final class Constants {
     public static final String TYPE_VIDEO = "type_video";
     public static final String TYPE_TEXT = "type_text";
 
-
     public static final String TAG_EVENT_FRAGMENT = "tag_event_fragment";
 
     public static final int NUMBER_OF_DETAIL_TABS = 3;

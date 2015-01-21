@@ -44,7 +44,10 @@
                 android:name=".holiday.holiday_detail.HolidayDetailActivity"
                 android:label="@string/title_activity_map">
         </activity>
-
+        <activity
+                android:name=".holiday.holiday_detail.event_display.ShowEventActivity"
+                android:label="">
+        </activity>
         <meta-data
                 android:name="com.google.android.gms.version"
                 android:value="@integer/google_play_services_version"/>

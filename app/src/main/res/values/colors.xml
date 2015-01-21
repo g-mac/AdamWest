@@ -20,4 +20,7 @@
 
     <color name="route_list_dividercolor">#9bd1d1d1</color>
 
+    <color name="overlay_background">#88757575</color>
+
+
 </resources>

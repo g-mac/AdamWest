@@ -1,5 +1,6 @@
 package de.adamwest.holiday.holiday_detail.TabFragments.map;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -16,9 +17,14 @@ import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import de.adamwest.R;
 import de.adamwest.database.*;
+import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.helper.ImageHelper;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
+import de.adamwest.holiday.holiday_detail.event_display.ShowEventActivity;
+import de.adamwest.holiday.holiday_detail.event_display.ShowPictureFragment;
+import de.adamwest.holiday.holiday_edit.MapActivity;
+import de.adamwest.holidaylist.HolidayListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -263,10 +269,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                     CameraUpdate zoom = CameraUpdateFactory.newLatLngZoom(eventClusterItemCluster.getPosition(), MAXIMUM_ZOOM_FOR_CLUSTER);
                     map.animateCamera(zoom);
                 } else {
-                    List<Event> events = new ArrayList<Event>();
+                    ArrayList<Event> events = new ArrayList<Event>();
                     for (EventClusterItem clusterItem : eventClusterItemCluster.getItems()) {
                         events.add(clusterItem.getEvent());
                     }
+                    ((HolidayDetailActivity) getActivity()).setClusterEventList(events);
+                    Fragment clusterItemsOverlayFragment = new ClusterItemsOverlayFragment();
+                    getActivity().getSupportFragmentManager().beginTransaction().add(R.id.map_view, clusterItemsOverlayFragment).addToBackStack("").commit();
+
                 }
                 return true;
             }
@@ -283,6 +293,14 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         map.setOnMarkerClickListener(eventClusterManager);
         map.setInfoWindowAdapter(eventClusterManager.getMarkerManager());
         eventClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ClusterItemInfoAdapter());
+        map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+            @Override
+            public void onInfoWindowClick(Marker marker) {
+                Intent intent = new Intent(getActivity().getApplicationContext(), ShowEventActivity.class);
+                intent.putExtra(Constants.KEY_EVENT_ID, clickedClusterItem.getEvent().getId());
+                startActivity(intent);
+            }
+        });
         setUpMap();
     }
 
@@ -299,8 +317,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         public View getInfoWindow(Marker marker) {
             //TODO check different kind of types
             View infoView = getActivity().getLayoutInflater().inflate(R.layout.event_marker_info_popup, null);
-            ((ImageView)infoView.findViewById(R.id.image_view_event_image)).setImageBitmap(ImageHelper.resizeBitMap(getActivity(), clickedClusterItem.getEvent().getPath()));
-            ((TextView)infoView.findViewById(R.id.text_view_event_title)).setText(clickedClusterItem.getEvent().getDescription());
+            //((ImageView)infoView.findViewById(R.id.image_view_event_image)).setImageBitmap(ImageHelper.resizeBitMap(getActivity(), clickedClusterItem.getEvent().getPath()));
+            //((TextView)infoView.findViewById(R.id.text_view_event_description)).setText(clickedClusterItem.getEvent().getDescription());
             HelpingMethods.log("Info window get!!! type: " + clickedClusterItem.getEvent().getType());
             return infoView;
         }

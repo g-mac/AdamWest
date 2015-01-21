@@ -33,6 +33,10 @@ public class HolidayDetailActivity extends FragmentActivity {
     private List<Route> routes;
     public long routeId;
 
+
+
+    private List<Event> clusterEventList;
+
 //------ Activity/Lifecycle Methods --------------------------------------------------------------------------------
 
     @Override
@@ -217,6 +221,14 @@ public class HolidayDetailActivity extends FragmentActivity {
         } else {
             routeNameInTitleBar.setText(DatabaseManager.getRouteFromId(this, routeId).getName());
         }
+    }
+
+    public List<Event> getClusterEventList() {
+        return clusterEventList;
+    }
+
+    public void setClusterEventList(List<Event> clusterEventList) {
+        this.clusterEventList = clusterEventList;
     }
 
 }
