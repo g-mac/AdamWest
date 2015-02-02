@@ -31,13 +31,13 @@ public class EventClusterRenderer extends DefaultClusterRenderer<EventClusterIte
 
         //TODO CUSTOM MARKER FOR EACH EVENT TYPE
         if(cluster.getEvent().getType().equals(Constants.TYPE_IMAGE)) {
-
+            imageId = R.drawable.map_marker_picture;
         }
         else if(cluster.getEvent().getType().equals(Constants.TYPE_VIDEO)) {
-
+            imageId = R.drawable.map_marker_video;
         }
         else if(cluster.getEvent().getType().equals(Constants.TYPE_TEXT)) {
-
+            imageId = R.drawable.map_marker_text;
         }
         markerOptions.icon(BitmapDescriptorFactory.fromResource(imageId));
 

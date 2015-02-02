@@ -19,11 +19,25 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
-    <ImageView
-            android:id="@+id/event_picture"
+    <RelativeLayout
+            android:id="@+id/layout_image_view"
             android:layout_above="@id/event_description"
-            android:src="@drawable/example"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+        <ImageView
+                android:id="@+id/event_picture"
+                android:src="@drawable/example"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        <ImageView
+                android:id="@+id/image_view_video_play"
+                android:src="@drawable/play_overlay"
+                android:layout_centerInParent="true"
+                android:visibility="gone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+    </RelativeLayout>
+
 
 </RelativeLayout>

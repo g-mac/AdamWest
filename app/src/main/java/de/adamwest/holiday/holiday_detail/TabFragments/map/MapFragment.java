@@ -1,8 +1,11 @@
 package de.adamwest.holiday.holiday_detail.TabFragments.map;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -215,14 +218,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     private void addEventMarkersToMap(Route route) {
         for (Event event : route.getEventList()) {
             LatLng pos = new LatLng(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
-            BitmapDescriptor markerIcon = BitmapDescriptorFactory.fromResource(R.drawable.map_marker_picture);
-//            Marker marker = map.addMarker(new MarkerOptions()
-//                    .position(pos)
-//                    .title("Event")
-////                    .title(event.getName())
-//                    .snippet(event.getName())
-//                    .icon(markerIcon));
-           // eventMarkerMap.put(marker, event.getId());
         EventClusterItem eventClusterItem = new EventClusterItem(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude(), event);
         eventClusterManager.addItem(eventClusterItem );
         }
@@ -315,10 +310,25 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         }
         @Override
         public View getInfoWindow(Marker marker) {
-            //TODO check different kind of types
             View infoView = getActivity().getLayoutInflater().inflate(R.layout.event_marker_info_popup, null);
-            //((ImageView)infoView.findViewById(R.id.image_view_event_image)).setImageBitmap(ImageHelper.resizeBitMap(getActivity(), clickedClusterItem.getEvent().getPath()));
-            //((TextView)infoView.findViewById(R.id.text_view_event_description)).setText(clickedClusterItem.getEvent().getDescription());
+            ImageView thumbnailView = ((ImageView)infoView.findViewById(R.id.image_view_event_image));
+
+            String eventType = clickedClusterItem.getEvent().getType();
+            if(eventType.equals(Constants.TYPE_IMAGE)) {
+                thumbnailView.setImageBitmap(ImageHelper.resizeBitMap(getActivity(), clickedClusterItem.getEvent().getPath()));
+            }
+            else if(eventType.equals(Constants.TYPE_VIDEO)) {
+                Bitmap thumb = ThumbnailUtils.createVideoThumbnail(clickedClusterItem.getEvent().getPath(),
+                        MediaStore.Images.Thumbnails.MINI_KIND);
+                thumbnailView.setImageBitmap(thumb);
+                infoView.findViewById(R.id.image_view_video_play).setVisibility(View.VISIBLE);
+
+            }
+            else if(eventType.equals(Constants.TYPE_TEXT)) {
+                thumbnailView.setVisibility(View.GONE);
+            }
+            //TODO check different kind of types
+            ((TextView)infoView.findViewById(R.id.text_view_event_description)).setText(clickedClusterItem.getEvent().getDescription());
             HelpingMethods.log("Info window get!!! type: " + clickedClusterItem.getEvent().getType());
             return infoView;
         }

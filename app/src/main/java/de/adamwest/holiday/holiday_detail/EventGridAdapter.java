@@ -2,6 +2,7 @@ package de.adamwest.holiday.holiday_detail;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
@@ -18,6 +19,7 @@ import de.adamwest.database.Event;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.helper.ImageHelper;
+import de.adamwest.holiday.holiday_detail.event_display.ShowEventActivity;
 import org.w3c.dom.Text;
 
 import java.io.File;
@@ -57,7 +59,7 @@ public class EventGridAdapter extends BaseAdapter {
         if (convertView == null) {
             LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = inflater.inflate(R.layout.item_event_grid, parent, false);
-            Event event = ((Event)getItem(position));
+            final Event event = ((Event)getItem(position));
             if(event.getType().equals(Constants.TYPE_IMAGE)) {
                 Bitmap image = ImageHelper.resizeBitMap(context, event.getPath());
                 if(image != null) {
@@ -76,6 +78,14 @@ public class EventGridAdapter extends BaseAdapter {
                 }
             }
             ((TextView)view.findViewById(R.id.text_view_grid_event_description)).setText(event.getDescription());
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(context.getApplicationContext(), ShowEventActivity.class);
+                    intent.putExtra(Constants.KEY_EVENT_ID, event.getId());
+                    context.startActivity(intent);
+                }
+            });
             return view;
         }
         else {
