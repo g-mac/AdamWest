@@ -28,7 +28,7 @@ public class HolidayListActivity extends Activity {
     private ActionMode actionMode;
     private List<Holiday> holidayList;
 
-//------ Activity/Lifecycle Methods --------------------------------------------------------------------------------
+//------ Activity/Lifecycle Methods ------------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +93,7 @@ public class HolidayListActivity extends Activity {
     }
 
 
-//------ ActionBar Methods -----------------------------------------------------------------------------------------
+//------ ActionBar Methods ---------------------------------------------------------------------------------------------
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -118,7 +118,7 @@ public class HolidayListActivity extends Activity {
     }
 
 
-//------ Data Methods ---------------------------------------------------------------------------------------------
+//------ Data Methods --------------------------------------------------------------------------------------------------
 
     public void deleteHoliday(long holidayId) {
         DatabaseManager.deleteHoliday(this, holidayId);
@@ -127,8 +127,9 @@ public class HolidayListActivity extends Activity {
     }
 
 
-//------ Other Methods ---------------------------------------------------------------------------------------------
-//------ UI Methods -----------------------------------------------------------------------------------------------
+//------ Other Methods -------------------------------------------------------------------------------------------------
+
+//------ UI Methods ----------------------------------------------------------------------------------------------------
 
     public void updateList() {
         holidayListView.setAdapter(new HolidayListAdapter(holidayList, this));

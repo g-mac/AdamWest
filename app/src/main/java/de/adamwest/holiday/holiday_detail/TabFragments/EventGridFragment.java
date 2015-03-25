@@ -29,6 +29,7 @@ public class EventGridFragment extends Fragment {
     GridView gridview;
     Holiday holiday;
     List<Event> eventList;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,25 +37,25 @@ public class EventGridFragment extends Fragment {
         HelpingMethods.log("init event grid");
         gridview = (GridView) view.findViewById(R.id.gridview);
         //TODO List needs to be auto gen
-        holiday = DatabaseManager.getHolidayFromId(getActivity(), ((HolidayDetailActivity)getActivity()).getHolidayId());
+        holiday = DatabaseManager.getHolidayFromId(getActivity(), ((HolidayDetailActivity) getActivity()).getHolidayId());
         initGridView();
         registerForContextMenu(gridview);
 
         return view;
     }
+
     private void initGridView() {
-        HolidayDetailActivity holidayDetailActivity = ((HolidayDetailActivity)getActivity());
+        HolidayDetailActivity holidayDetailActivity = ((HolidayDetailActivity) getActivity());
         eventList = new ArrayList<Event>();
-        if(holidayDetailActivity.routeId != -1) {
-            for(Route route : holiday.getRouteList()) {
-                if(route.getId() == holidayDetailActivity.routeId) {
+        if (holidayDetailActivity.routeId != -1) {
+            for (Route route : holiday.getRouteList()) {
+                if (route.getId() == holidayDetailActivity.routeId) {
                     eventList = route.getEventList();
                     break;
                 }
             }
-        }
-        else {
-            for(Route route : holiday.getRouteList()) {
+        } else {
+            for (Route route : holiday.getRouteList()) {
                 eventList.addAll(route.getEventList());
             }
         }
@@ -62,6 +63,7 @@ public class EventGridFragment extends Fragment {
         if (eventList != null && !eventList.isEmpty())
             gridview.setAdapter(new EventGridAdapter(getActivity(), eventList));
     }
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v,
                                     ContextMenu.ContextMenuInfo menuInfo) {
@@ -73,7 +75,7 @@ public class EventGridFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
-        Event event = (Event)gridview.getAdapter().getItem(info.position);
+        Event event = (Event) gridview.getAdapter().getItem(info.position);
         switch (item.getItemId()) {
             case R.id.menu_delete_event:
                 confirmDeletion(event.getId());
@@ -91,7 +93,7 @@ public class EventGridFragment extends Fragment {
                 .setMessage(getString(R.string.confirm_event_delete_text))
                 .setPositiveButton(getString(R.string.yes), new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        DatabaseManager.deleteEvent(getActivity(),eventId);
+                        DatabaseManager.deleteEvent(getActivity(), eventId);
                         initGridView();
 
                     }

@@ -1,10 +1,7 @@
 package de.adamwest.holiday.holiday_detail;
 
 import android.app.ActionBar;
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.FragmentTransaction;
-import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentActivity;
@@ -18,8 +15,6 @@ import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
-import de.adamwest.holiday.holiday_detail.TabFragments.EventGridFragment;
-import de.adamwest.holiday.holiday_edit.*;
 
 import java.util.List;
 
@@ -48,7 +43,7 @@ public class HolidayDetailActivity extends FragmentActivity {
         //Remove notification bar
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_layout_detail);
+        setContentView(R.layout.activity_holiday_detail);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new DetailsSlideViewPageAdapter(getSupportFragmentManager()));

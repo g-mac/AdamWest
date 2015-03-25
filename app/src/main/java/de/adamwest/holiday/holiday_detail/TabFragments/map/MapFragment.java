@@ -123,7 +123,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
         Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
 
-        boolean holidayHasRoutes = (holiday != null && holiday.getRouteList()!=null && holiday.getRouteList().size()>0);
+        boolean holidayHasRoutes = (holiday != null && holiday.getRouteList() != null && holiday.getRouteList().size() > 0);
 
         if (holidayHasRoutes) {
             addRoutesToMap(holiday);
@@ -218,8 +218,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     private void addEventMarkersToMap(Route route) {
         for (Event event : route.getEventList()) {
             LatLng pos = new LatLng(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
-        EventClusterItem eventClusterItem = new EventClusterItem(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude(), event);
-        eventClusterManager.addItem(eventClusterItem );
+            EventClusterItem eventClusterItem = new EventClusterItem(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude(), event);
+            eventClusterManager.addItem(eventClusterItem);
         }
     }
 
@@ -243,7 +243,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         if (eventMarkerMap != null && eventMarkerMap.containsKey(marker)) {
             long eventId = eventMarkerMap.get(marker);
             Log.i("prose", "clicked on event");
-            Toast.makeText(getActivity(), "Marker Click succesful, eventID: "+eventId, Toast.LENGTH_SHORT).show();
+            Toast.makeText(getActivity(), "Marker Click succesful, eventID: " + eventId, Toast.LENGTH_SHORT).show();
 //            android.support.v4.app.Fragment eventFragment = new EventFragment();
 //            Bundle args = new Bundle();
 //            args.putLong(Constants.KEY_EVENT_ID, eventId);
@@ -308,27 +308,26 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         public ClusterItemInfoAdapter() {
 
         }
+
         @Override
         public View getInfoWindow(Marker marker) {
             View infoView = getActivity().getLayoutInflater().inflate(R.layout.event_marker_info_popup, null);
-            ImageView thumbnailView = ((ImageView)infoView.findViewById(R.id.image_view_event_image));
+            ImageView thumbnailView = ((ImageView) infoView.findViewById(R.id.image_view_event_image));
 
             String eventType = clickedClusterItem.getEvent().getType();
-            if(eventType.equals(Constants.TYPE_IMAGE)) {
+            if (eventType.equals(Constants.TYPE_IMAGE)) {
                 thumbnailView.setImageBitmap(ImageHelper.resizeBitMap(getActivity(), clickedClusterItem.getEvent().getPath()));
-            }
-            else if(eventType.equals(Constants.TYPE_VIDEO)) {
+            } else if (eventType.equals(Constants.TYPE_VIDEO)) {
                 Bitmap thumb = ThumbnailUtils.createVideoThumbnail(clickedClusterItem.getEvent().getPath(),
                         MediaStore.Images.Thumbnails.MINI_KIND);
                 thumbnailView.setImageBitmap(thumb);
                 infoView.findViewById(R.id.image_view_video_play).setVisibility(View.VISIBLE);
 
-            }
-            else if(eventType.equals(Constants.TYPE_TEXT)) {
+            } else if (eventType.equals(Constants.TYPE_TEXT)) {
                 thumbnailView.setVisibility(View.GONE);
             }
             //TODO check different kind of types
-            ((TextView)infoView.findViewById(R.id.text_view_event_description)).setText(clickedClusterItem.getEvent().getDescription());
+            ((TextView) infoView.findViewById(R.id.text_view_event_description)).setText(clickedClusterItem.getEvent().getDescription());
             HelpingMethods.log("Info window get!!! type: " + clickedClusterItem.getEvent().getType());
             return infoView;
         }
