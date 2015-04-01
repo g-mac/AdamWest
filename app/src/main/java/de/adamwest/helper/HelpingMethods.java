@@ -25,7 +25,6 @@ public final class HelpingMethods {
         Log.d(DEBUG_TAG, msg);
     }
 
-
     public static String convertDateToFormattedString(Date date) {
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
         return df.format(date);
