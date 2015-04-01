@@ -23,12 +23,12 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.model.*;
+import de.adamwest.DatabaseManager;
 import de.adamwest.R;
 import de.adamwest.database.*;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
-import de.adamwest.holiday.event.EventFragment;
 import de.adamwest.holiday.holiday_detail.TabFragments.EventGridFragment;
 
 import java.util.HashMap;

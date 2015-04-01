@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;

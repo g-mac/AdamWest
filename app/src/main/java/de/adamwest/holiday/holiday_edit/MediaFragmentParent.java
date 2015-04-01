@@ -8,7 +8,7 @@ import android.view.View;
 import android.widget.EditText;
 import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.database.Route;
 import de.adamwest.helper.CameraManager;

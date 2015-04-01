@@ -1,12 +1,10 @@
 package de.adamwest.holiday.holiday_detail.event_display;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.helper.Constants;
 

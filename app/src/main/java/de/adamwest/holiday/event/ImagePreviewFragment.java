@@ -3,9 +3,7 @@ package de.adamwest.holiday.event;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ThumbnailUtils;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.DisplayMetrics;
@@ -15,12 +13,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.helper.Constants;
 
 import java.io.File;
-import java.io.FileOutputStream;
 
 /**
  * Created by philip on 05/10/14.

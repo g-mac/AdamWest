@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.holidaylist.CreateNewHolidayFragment;
 

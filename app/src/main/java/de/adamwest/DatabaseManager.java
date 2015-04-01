@@ -1,10 +1,11 @@
-package de.adamwest.database;
+package de.adamwest;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.net.Uri;
 import com.google.android.gms.maps.model.LatLng;
+import de.adamwest.database.*;
 import de.adamwest.helper.HelpingMethods;
 
 import java.io.File;

@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.helper.Constants;
 

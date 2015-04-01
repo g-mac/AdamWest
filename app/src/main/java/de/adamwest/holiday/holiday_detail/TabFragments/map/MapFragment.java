@@ -18,6 +18,7 @@ import com.google.android.gms.maps.*;
 import com.google.android.gms.maps.model.*;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.R;
 import de.adamwest.database.*;
 import de.adamwest.helper.Constants;
@@ -25,9 +26,6 @@ import de.adamwest.helper.HelpingMethods;
 import de.adamwest.helper.ImageHelper;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
 import de.adamwest.holiday.holiday_detail.event_display.ShowEventActivity;
-import de.adamwest.holiday.holiday_detail.event_display.ShowPictureFragment;
-import de.adamwest.holiday.holiday_edit.MapActivity;
-import de.adamwest.holidaylist.HolidayListActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -7,12 +7,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.database.Holiday;
 import de.adamwest.helper.HelpingMethods;
 
-import java.text.DateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**

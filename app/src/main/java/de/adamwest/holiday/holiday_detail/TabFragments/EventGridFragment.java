@@ -8,15 +8,13 @@ import android.view.*;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import de.adamwest.R;
-import de.adamwest.database.DatabaseManager;
+import de.adamwest.DatabaseManager;
 import de.adamwest.database.Event;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.holiday.holiday_detail.EventGridAdapter;
 import de.adamwest.holiday.holiday_detail.HolidayDetailActivity;
-import de.adamwest.holiday.holiday_detail.RouteListAdapter;
-import de.adamwest.holidaylist.HolidayListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
