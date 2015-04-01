@@ -2,6 +2,8 @@
 
 <RelativeLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context="de.adamwest.HolidayDetailActivity"
         android:id="@+id/main_layout"
         android:layout_height="match_parent"
         android:layout_width="match_parent"
@@ -21,6 +23,7 @@
                 android:padding="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_camera"
+                android:onClick="onAddPhoto"
                 android:background="@drawable/simple_button_selector_very_dark"/>
 
         <ImageButton
@@ -30,6 +33,7 @@
                 android:padding="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_film"
+                android:onClick="onAddVideo"
                 android:background="@drawable/simple_button_selector_very_dark"/>
 
         <ImageButton
@@ -39,6 +43,7 @@
                 android:padding="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_text"
+                android:onClick="onAddText"
                 android:background="@drawable/simple_button_selector_very_dark"/>
 
     </LinearLayout>

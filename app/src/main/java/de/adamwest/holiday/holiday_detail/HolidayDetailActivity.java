@@ -3,18 +3,20 @@ package de.adamwest.holiday.holiday_detail;
 import android.app.ActionBar;
 import android.app.FragmentTransaction;
 import android.os.Bundle;
-
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
-import de.adamwest.R;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.TextView;
 import de.adamwest.DatabaseManager;
+import de.adamwest.R;
 import de.adamwest.database.Event;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
+import de.adamwest.helper.HelpingMethods;
 
 import java.util.List;
 
@@ -27,7 +29,6 @@ public class HolidayDetailActivity extends FragmentActivity {
     public ViewPager viewPager;
     private List<Route> routes;
     public long routeId;
-
 
 
     private List<Event> clusterEventList;
@@ -169,6 +170,18 @@ public class HolidayDetailActivity extends FragmentActivity {
     public void onTitleBarClick(View view) {
 //        Toast.makeText(this, "select holiday/route", Toast.LENGTH_SHORT).show();
         toggleRouteListDropdown();
+    }
+
+    public void onAddPhoto(View view) {
+        HelpingMethods.toast(this, "onAddPhoto clicked.");
+    }
+
+    public void onAddVideo(View view) {
+        HelpingMethods.toast(this, "onAddVideo clicked.");
+    }
+
+    public void onAddText(View view) {
+        HelpingMethods.toast(this, "onAddText clicked.");
     }
 
     public void onTestButtonClick(View view) {

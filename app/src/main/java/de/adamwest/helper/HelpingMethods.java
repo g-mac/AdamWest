@@ -3,6 +3,7 @@ package de.adamwest.helper;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.widget.Toast;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -23,6 +24,10 @@ public final class HelpingMethods {
 
     public static void log(String msg) {
         Log.d(DEBUG_TAG, msg);
+    }
+
+    public static void toast(Context context, String msg) {
+        Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
 
     public static String convertDateToFormattedString(Date date) {
