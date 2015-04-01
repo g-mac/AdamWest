@@ -12,8 +12,8 @@ import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.R;
-import de.adamwest.holiday.ConfirmMediaFragment;
-import de.adamwest.holiday.holiday_edit.MapActivity;
+import de.adamwest.activities_fragments.holiday_edit.ConfirmMediaFragment;
+import de.adamwest.activities_fragments.holiday_edit.MapActivity;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

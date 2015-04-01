@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/background"
     android:id="@+id/start_activity_layout"
-    tools:context="de.adamwest.StartActivity">
+    tools:context="de.adamwest.activities_fragments.StartActivity">
 
     <!--<TextView-->
         <!--android:text="@string/hello_world"-->

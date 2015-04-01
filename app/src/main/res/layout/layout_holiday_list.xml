@@ -6,7 +6,7 @@
     android:paddingTop="?android:attr/actionBarSize"
     android:id="@+id/main_layout"
     android:background="@drawable/background"
-    tools:context="de.adamwest.holidaylist.HolidayListActivity">
+    tools:context="de.adamwest.activities_fragments.holidaylist.HolidayListActivity">
 
     <TextView
         android:text="@string/holiday_list_header"

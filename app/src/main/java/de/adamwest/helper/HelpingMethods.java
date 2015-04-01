@@ -75,6 +75,14 @@ public final class HelpingMethods {
         return builder.build();
     }
 
+    //------------ test data -------------------------------------------------------------------------------------------
+
+    public static void createTestData(){
+        log("creating test data...");
+    }
+
+    //------------ trash -----------------------------------------------------------------------------------------------
+
 //    public static CircleOptions getCircleOptions() {
 //        CircleOptions co = new CircleOptions();
 ////        co.center(latlng);

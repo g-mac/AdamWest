@@ -19,7 +19,7 @@
             android:largeHeap="true"
             android:theme="@style/AppTheme">
         <activity
-                android:name=".StartActivity"
+                android:name=".activities_fragments.StartActivity"
                 android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
@@ -28,7 +28,7 @@
             </intent-filter>
         </activity>
         <activity
-                android:name=".holidaylist.HolidayListActivity"
+                android:name=".activities_fragments.holidaylist.HolidayListActivity"
                 android:label="@string/app_name">
             <!--<intent-filter>-->
                 <!--<action android:name="android.intent.action.MAIN"/>-->
@@ -37,15 +37,15 @@
             <!--</intent-filter>-->
         </activity>
         <activity
-                android:name=".holiday.holiday_edit.MapActivity"
+                android:name=".activities_fragments.holiday_edit.MapActivity"
                 android:label="@string/title_activity_map">
         </activity>
         <activity
-                android:name=".holiday.holiday_detail.HolidayDetailActivity"
+                android:name=".activities_fragments.holiday_detail.HolidayDetailActivity"
                 android:label="@string/title_activity_map">
         </activity>
         <activity
-                android:name=".holiday.holiday_detail.event_display.ShowEventActivity"
+                android:name=".activities_fragments.holiday_detail.event_display.ShowEventActivity"
                 android:label="">
         </activity>
         <meta-data
