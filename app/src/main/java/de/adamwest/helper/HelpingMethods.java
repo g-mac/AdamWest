@@ -19,8 +19,12 @@ import java.util.List;
  * Created by philip on 22/09/14.
  */
 public final class HelpingMethods {
+
     private HelpingMethods() {}
+
     private static String DEBUG_TAG = "prose";
+
+    //------------------------------------------------------------------------------------------------------------------
 
     public static void log(String msg) {
         Log.d(DEBUG_TAG, msg);
@@ -29,6 +33,8 @@ public final class HelpingMethods {
     public static void toast(Context context, String msg) {
         Toast.makeText(context, msg, Toast.LENGTH_LONG).show();
     }
+
+    //----------- arithmetic and stuff ---------------------------------------------------------------------------------
 
     public static String convertDateToFormattedString(Date date) {
         DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT);
