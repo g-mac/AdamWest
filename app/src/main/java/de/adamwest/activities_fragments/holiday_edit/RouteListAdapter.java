@@ -63,7 +63,7 @@ public class RouteListAdapter extends BaseAdapter {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if(0 == routes.size() || position == routes.size()) {
-            View view = inflater.inflate(R.layout.list_item_new_holiday, parent, false);
+            View view = inflater.inflate(R.layout.holiday_list_item_new, parent, false);
             ((TextView)view.findViewById(R.id.text_view_new_holiday_item)).setText(context.getString(R.string.create_new_route));
             view.setOnClickListener(new View.OnClickListener() {
                 @Override

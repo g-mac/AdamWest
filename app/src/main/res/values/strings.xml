@@ -24,6 +24,7 @@
     <string name="tab_map">Karte</string>
     <string name="holiday_list_header">Eingetragene Urlaube</string>
     <string name="add_new_holiday">Neues Abenteuer starten...</string>
+    <string name="no_entries">Keine Einträge vorhanden</string>
     <string name="insert_holiday_name">Urlaubsziel/Namen eingeben</string>
     <string name="insert_holiday_description">Beschreibung(optional)</string>
     <string name="abort">Abbrechen</string>
@@ -62,5 +63,6 @@
     <string name="video_count">Videos:</string>
     <string name="text_count">Texte:</string>
     <string name="title_activity_start">StartActivity</string>
+    <string name="other_holidays">Sonstige</string>
 
 </resources>

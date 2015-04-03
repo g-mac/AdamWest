@@ -8,6 +8,7 @@ import android.view.View;
 import de.adamwest.R;
 import de.adamwest.activities_fragments.holidaylist.CreateNewHolidayFragment;
 import de.adamwest.activities_fragments.holidaylist.HolidayListActivity;
+import de.adamwest.helper.HelpingMethods;
 
 
 //------ Activity/Lifecycle Methods --------------------------------------------------------------------------------
@@ -19,6 +20,7 @@ public class StartActivity extends Activity {
         super.onCreate(savedInstanceState);
         getActionBar().hide();
         setContentView(R.layout.activity_start);
+        HelpingMethods.createTestData(this);
     }
 
 

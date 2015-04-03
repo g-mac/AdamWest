@@ -16,12 +16,13 @@
                 android:id="@+id/text_view_date"
                 android:layout_alignParentRight="true"
                 android:layout_width="wrap_content"
+                android:textColor="@color/white"
                 android:layout_height="wrap_content" android:layout_centerVertical="true"/>
         <TextView
                 android:id="@+id/text_view_holiday_name"
                 android:singleLine="true"
                 style="@style/listview_large_text"
-
+                android:textColor="@color/white"
                 android:layout_toLeftOf="@id/text_view_date"
                 android:layout_alignParentLeft="true"
                 android:layout_width="match_parent"
@@ -33,6 +34,7 @@
             android:lines="2"
             android:paddingBottom="5dp"
             android:ellipsize="end"
+            android:textColor="@color/white"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
 
@@ -44,6 +46,7 @@
                 android:id="@+id/text_view_routes"
                 android:layout_alignParentLeft="true"
                 android:text="@string/amount_of_routes"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"/>
@@ -52,6 +55,7 @@
                 android:id="@+id/text_view_route_counter"
                 android:layout_toRightOf="@id/text_view_routes"
                 android:paddingLeft="5dp"
+                android:textColor="@color/white"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
     </RelativeLayout>

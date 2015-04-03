@@ -7,6 +7,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import de.adamwest.DatabaseManager;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.database.RouteLocation;
@@ -77,8 +78,18 @@ public final class HelpingMethods {
 
     //------------ test data -------------------------------------------------------------------------------------------
 
-    public static void createTestData(){
+    public static void createTestData(Context context){
+        if(!DatabaseManager.getAllHoliday(context).isEmpty())
+            return;
+
         log("creating test data...");
+        long id1 = DatabaseManager.createNewHoliday(context, "Test Holiday 1", "description of test holiday one.");
+        long id2 = DatabaseManager.createNewHoliday(context, "Test Holiday 2", "description of test holiday two.");
+        long id3 = DatabaseManager.createNewHoliday(context, "Test Holiday 3", "description of test holiday three.");
+        long id4 = DatabaseManager.createNewHoliday(context, "Test Holiday 4", "description of test holiday four.");
+        long id5 = DatabaseManager.createNewHoliday(context, "Test Holiday 5", "description of test holiday five.");
+
+        DatabaseManager.setHolidayAsActive(context, id3);
     }
 
     //------------ trash -----------------------------------------------------------------------------------------------

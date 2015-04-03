@@ -3,8 +3,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
             android:state_activated="true"
-            android:drawable="@color/list_view_active_color" />
+            android:drawable="@color/black_with_opacity" />
     <item
-            android:drawable="@color/list_view_normal_color" />
+            android:drawable="@color/no_colour" />
 
 </selector>

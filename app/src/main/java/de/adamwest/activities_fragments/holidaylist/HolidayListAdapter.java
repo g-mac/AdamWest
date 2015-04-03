@@ -26,8 +26,8 @@ public class HolidayListAdapter extends BaseAdapter {
     }
     @Override
     public int getCount() {
-
-        return holidays.size() + 1;
+//        return holidays.size() + 1;
+        return holidays.size();
     }
 
     @Override
@@ -54,12 +54,14 @@ public class HolidayListAdapter extends BaseAdapter {
     public View getView(int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-        if(0 == holidays.size() || position == holidays.size()) {
-            View view = inflater.inflate(R.layout.list_item_new_holiday, parent, false);
+        if(0 == holidays.size()){
+//        if(0 == holidays.size() || position == holidays.size()) {
+            View view = inflater.inflate(R.layout.holiday_list_item_new, parent, false);
             return view;
         }
+
         else {
-            View view = inflater.inflate(R.layout.list_item_holiday, parent, false);
+            View view = inflater.inflate(R.layout.holiday_list_item, parent, false);
             Holiday holiday = holidays.get(position);
             if(DatabaseManager.getActiveHolidayId(context) ==  holiday.getId()) {
                 //active Holiday

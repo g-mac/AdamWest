@@ -1,0 +1,61 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                tools:context="de.adamwest.activities_fragments.holidaylist.HolidayListActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:paddingTop="?android:attr/actionBarSize"
+                android:id="@+id/main_layout"
+                android:padding="40dp"
+                android:background="@drawable/background">
+
+    <Button
+            android:id="@+id/holiday_list_new_button"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            android:text="new holiday"
+            android:background="@drawable/simple_button_selector"
+            android:onClick="onNewHolidayClick"/>
+
+    <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/holiday_list_new_button"
+            android:layout_marginTop="20dp"
+            android:background="@color/simple_button_normal_dark">
+
+        <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+            <include layout="@layout/holiday_list_item_active"
+                     android:id="@+id/holliday_list_active_holiday"/>
+
+            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:text="@string/other_holidays"
+                    android:gravity="center"
+                    android:background="@color/white_with_opacity"/>
+
+            <ListView
+                    android:id="@+id/listview_route_list"
+                    android:choiceMode="singleChoice"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+            </ListView>
+
+        </LinearLayout>
+
+
+        <TextView
+                android:id="@+id/holiday_list_placeholder"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:text="@string/no_entries"
+                android:gravity="center"
+                android:textColor="@color/white"
+                android:visibility="gone"/>
+
+    </RelativeLayout>
+
+
+</RelativeLayout>
