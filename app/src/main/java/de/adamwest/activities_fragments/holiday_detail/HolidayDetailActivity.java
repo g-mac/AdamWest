@@ -16,6 +16,7 @@ import de.adamwest.R;
 import de.adamwest.activities_fragments.holiday_detail.adapters.DetailsSlideViewPageAdapter;
 import de.adamwest.activities_fragments.holiday_detail.adapters.MainRouteListAdapter;
 import de.adamwest.database.Event;
+import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
@@ -31,6 +32,7 @@ public class HolidayDetailActivity extends FragmentActivity {
     public ViewPager viewPager;
     private List<Route> routes;
     public long routeId;
+    public long trackedRoute;
 
 
     private List<Event> clusterEventList;
@@ -41,6 +43,7 @@ public class HolidayDetailActivity extends FragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         holidayId = getIntent().getLongExtra(Constants.KEY_HOLIDAY_ID, -1);
         routeId = -1;
+        trackedRoute = -1;
         //Remove title bar
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Remove notification bar
@@ -79,6 +82,13 @@ public class HolidayDetailActivity extends FragmentActivity {
                 toggleRouteListDropdown();
             }
         });
+
+        // ----------
+
+        trackedRoute = DatabaseManager.getHolidayFromId(this, holidayId).getCurrentRouteId();
+
+        if(trackedRoute >= 0)
+            startTracking();
     }
 
 
@@ -187,15 +197,17 @@ public class HolidayDetailActivity extends FragmentActivity {
     }
 
     public void onStartTrackingClick(View view) {
-        HelpingMethods.toast(this, "onStartTrackingClick clicked.");
-        findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.INVISIBLE);
-        findViewById(R.id.holiday_tracking_menu).setVisibility(View.VISIBLE);
+//        HelpingMethods.toast(this, "onStartTrackingClick clicked.");
+        startTracking();
     }
 
     public void onStopTrackingClick(View view) {
-        HelpingMethods.toast(this, "onStopTrackingClick clicked.");
-        findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.VISIBLE);
-        findViewById(R.id.holiday_tracking_menu).setVisibility(View.INVISIBLE);
+//        HelpingMethods.toast(this, "onStopTrackingClick clicked.");
+        stopTracking();
+    }
+
+    public void onAddRouteClick(View view) {
+        HelpingMethods.toast(this, "onAddRouteClick clicked.");
     }
 
     public void onTestButtonClick(View view) {
@@ -211,13 +223,46 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     public void startTracking() {
 
+        if(routeId==-1){
+            HelpingMethods.toast(this, "select or create route first");
+            return;
+        }
+
+        trackedRoute = routeId;
+        DatabaseManager.getHolidayFromId(this, holidayId).setCurrentRouteId(trackedRoute);
+        HelpingMethods.toast(this,"tracking route: '"+DatabaseManager.getRouteFromId(this, trackedRoute).getName()+"'");
+        findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.INVISIBLE);
+        findViewById(R.id.holiday_tracking_menu).setVisibility(View.VISIBLE);
+
+        //start actual tracking
+
     }
 
     public void stopTracking() {
 
+        if(trackedRoute==-1)
+            return;
+
+        HelpingMethods.toast(this,"stopped tracking for route: '"+DatabaseManager.getRouteFromId(this, trackedRoute).getName()+"'");
+        DatabaseManager.removeActiveRouteForHoliday(this, holidayId);
+        trackedRoute=-1;
+
+        findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.VISIBLE);
+        findViewById(R.id.holiday_tracking_menu).setVisibility(View.INVISIBLE);
+
+        //actually stop tracking
     }
 
+
     //------ Other Methods ---------------------------------------------------------------------------------------------
+
+    public long addNewRoute(){
+        long newRouteId = -1;
+
+        DatabaseManager.createNewRoute(this, holidayId,"","");
+
+        return newRouteId;
+    }
 
     public long getHolidayId() {
         return holidayId;
