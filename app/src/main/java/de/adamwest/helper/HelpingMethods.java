@@ -1,10 +1,8 @@
 package de.adamwest.helper;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
-import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import de.adamwest.DatabaseManager;
@@ -21,7 +19,8 @@ import java.util.List;
  */
 public final class HelpingMethods {
 
-    private HelpingMethods() {}
+    private HelpingMethods() {
+    }
 
     private static String DEBUG_TAG = "prose";
 
@@ -78,18 +77,25 @@ public final class HelpingMethods {
 
     //------------ test data -------------------------------------------------------------------------------------------
 
-    public static void createTestData(Context context){
-        if(!DatabaseManager.getAllHoliday(context).isEmpty())
+    public static void createTestData(Context context) {
+
+        if (!DatabaseManager.getAllHoliday(context).isEmpty())
             return;
 
         log("creating test data...");
-        long id1 = DatabaseManager.createNewHoliday(context, "Test Holiday 1", "description of test holiday one.");
-        long id2 = DatabaseManager.createNewHoliday(context, "Test Holiday 2", "description of test holiday two.");
-        long id3 = DatabaseManager.createNewHoliday(context, "Test Holiday 3", "description of test holiday three.");
-        long id4 = DatabaseManager.createNewHoliday(context, "Test Holiday 4", "description of test holiday four.");
-        long id5 = DatabaseManager.createNewHoliday(context, "Test Holiday 5", "description of test holiday five.");
 
-        DatabaseManager.setHolidayAsActive(context, id3);
+        int holidays = 5;
+        int activeHoliday = 3;
+        int routes = 8;
+
+        for (int i = 0; i < holidays; i++) {
+            long id = DatabaseManager.createNewHoliday(context, "Test Holiday " + i, "description of test holiday number " + i + ".");
+
+            if (i == activeHoliday)
+                DatabaseManager.setHolidayAsActive(context, id);
+            for (int j = 0; j < routes; j++)
+                DatabaseManager.createNewRoute(context, id, "Test Route " + j, "description of test route number " + j + ".");
+        }
     }
 
     //------------ trash -----------------------------------------------------------------------------------------------
