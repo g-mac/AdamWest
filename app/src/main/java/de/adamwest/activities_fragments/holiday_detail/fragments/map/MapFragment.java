@@ -15,17 +15,23 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.*;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import de.adamwest.DatabaseManager;
 import de.adamwest.R;
-import de.adamwest.database.*;
+import de.adamwest.activities_fragments.holiday_detail.HolidayDetailActivity;
+import de.adamwest.activities_fragments.holiday_detail.event_display.ShowEventActivity;
+import de.adamwest.database.Event;
+import de.adamwest.database.Holiday;
+import de.adamwest.database.Route;
+import de.adamwest.database.RouteLocation;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 import de.adamwest.helper.ImageHelper;
-import de.adamwest.activities_fragments.holiday_detail.HolidayDetailActivity;
-import de.adamwest.activities_fragments.holiday_detail.event_display.ShowEventActivity;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -121,21 +127,26 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
         Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
 
-        boolean holidayHasRoutes = (holiday != null && holiday.getRouteList() != null && holiday.getRouteList().size() > 0);
+//        boolean holidayHasRoutes = (holiday != null && holiday.getRouteList() != null && holiday.getRouteList().size() > 0);
+        boolean holidayHasLocationPoints = HelpingMethods.holidayHasLocationPoints(holiday);
+        HelpingMethods.log("holidayHasLocationPoints: " + holidayHasLocationPoints);
 
-        if (holidayHasRoutes) {
+        if (holidayHasLocationPoints) {
             addRoutesToMap(holiday);
         }
 
         //Zoom map to correct holidaybounds OR routebounds
         if (routeId != -1) {
             Route route = DatabaseManager.getRouteFromId(getActivity(), routeId);
-            if (route != null)
+            if (route != null && HelpingMethods.routeHasLocationPoints(route))
+//            if (route != null)
                 zoomMapToBounds(HelpingMethods.getRouteBoundaries(route));
+//            else zoomMapToCurrentPostition();
         } else {
 //            Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
-            if (holidayHasRoutes)
+            if (holidayHasLocationPoints)
                 zoomMapToBounds(HelpingMethods.getHolidayBoundaries(holiday));
+//            else zoomMapToCurrentPostition();
         }
 
 //        //go to current position

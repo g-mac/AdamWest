@@ -75,6 +75,23 @@ public final class HelpingMethods {
         return builder.build();
     }
 
+    //todo: implement check differently? in databasemanger? performance?
+    public static boolean holidayHasLocationPoints(Holiday holiday) {
+        boolean result = false;
+
+        for (Route route : holiday.getRouteList())
+            result = result || routeHasLocationPoints(route);
+
+        return result;
+    }
+
+    //todo: implement check differently? in databasemanger? performance?
+    public static boolean routeHasLocationPoints(Route route) {
+        boolean result = false;
+        result = !(route.getRouteLocationList().isEmpty());
+        return result;
+    }
+
     //------------ test data -------------------------------------------------------------------------------------------
 
     public static void createTestData(Context context) {
