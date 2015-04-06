@@ -299,7 +299,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     //----------------------- Other Methods -----------------------------------
 
-
     public class ClusterItemInfoAdapter implements GoogleMap.InfoWindowAdapter {
 
 

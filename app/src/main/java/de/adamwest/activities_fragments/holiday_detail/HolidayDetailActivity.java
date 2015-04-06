@@ -186,6 +186,18 @@ public class HolidayDetailActivity extends FragmentActivity {
         HelpingMethods.toast(this, "onAddText clicked.");
     }
 
+    public void onStartTracking(View view) {
+        HelpingMethods.toast(this, "onStartTracking clicked.");
+        findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.INVISIBLE);
+        findViewById(R.id.holiday_tracking_menu).setVisibility(View.VISIBLE);
+    }
+
+    public void onStopTracking(View view) {
+        HelpingMethods.toast(this, "onStopTracking clicked.");
+        findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.VISIBLE);
+        findViewById(R.id.holiday_tracking_menu).setVisibility(View.INVISIBLE);
+    }
+
     public void onTestButtonClick(View view) {
         final ActionBar actionBar = getActionBar();
 //        if (actionBar.isShowing())

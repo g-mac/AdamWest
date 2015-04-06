@@ -440,6 +440,7 @@ public class MapActivity extends FragmentActivity implements
     protected void onResume() {
         super.onResume();
     }
+
     @Override
     public void onLocationChanged(Location location) {
         HelpingMethods.log("LOCATION: " + location);
