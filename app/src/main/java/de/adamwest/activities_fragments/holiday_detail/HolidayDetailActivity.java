@@ -13,12 +13,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import de.adamwest.DatabaseManager;
 import de.adamwest.R;
+import de.adamwest.activities_fragments.holiday_detail.adapters.DetailsSlideViewPageAdapter;
+import de.adamwest.activities_fragments.holiday_detail.adapters.MainRouteListAdapter;
 import de.adamwest.database.Event;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
-import de.adamwest.activities_fragments.holiday_detail.adapters.DetailsSlideViewPageAdapter;
-import de.adamwest.activities_fragments.holiday_detail.adapters.MainRouteListAdapter;
 
 import java.util.List;
 
@@ -35,7 +35,7 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     private List<Event> clusterEventList;
 
-//------ Activity/Lifecycle Methods --------------------------------------------------------------------------------
+    //------ Activity/Lifecycle Methods --------------------------------------------------------------------------------
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,7 +82,7 @@ public class HolidayDetailActivity extends FragmentActivity {
     }
 
 
-//------ ActionBar Methods -----------------------------------------------------------------------------------------
+    //------ ActionBar Methods -----------------------------------------------------------------------------------------
 
     private void createTabBar() {
         final ActionBar actionBar = getActionBar();
@@ -160,7 +160,7 @@ public class HolidayDetailActivity extends FragmentActivity {
         }
     }
 
-//------ OnClick Methods -------------------------------------------------------------------------------------------
+    //------ OnClick Methods -------------------------------------------------------------------------------------------
 
     public void onHolidayListItemClick(View view) {
         routeId = -1;
@@ -174,26 +174,26 @@ public class HolidayDetailActivity extends FragmentActivity {
         toggleRouteListDropdown();
     }
 
-    public void onAddPhoto(View view) {
-        HelpingMethods.toast(this, "onAddPhoto clicked.");
+    public void onAddPhotoClick(View view) {
+        HelpingMethods.toast(this, "onAddPhotoClick clicked.");
     }
 
-    public void onAddVideo(View view) {
-        HelpingMethods.toast(this, "onAddVideo clicked.");
+    public void onAddVideoClick(View view) {
+        HelpingMethods.toast(this, "onAddVideoClick clicked.");
     }
 
-    public void onAddText(View view) {
-        HelpingMethods.toast(this, "onAddText clicked.");
+    public void onAddTextClick(View view) {
+        HelpingMethods.toast(this, "onAddTextClick clicked.");
     }
 
-    public void onStartTracking(View view) {
-        HelpingMethods.toast(this, "onStartTracking clicked.");
+    public void onStartTrackingClick(View view) {
+        HelpingMethods.toast(this, "onStartTrackingClick clicked.");
         findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.VISIBLE);
     }
 
-    public void onStopTracking(View view) {
-        HelpingMethods.toast(this, "onStopTracking clicked.");
+    public void onStopTrackingClick(View view) {
+        HelpingMethods.toast(this, "onStopTrackingClick clicked.");
         findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.VISIBLE);
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.INVISIBLE);
     }
@@ -207,7 +207,17 @@ public class HolidayDetailActivity extends FragmentActivity {
 //        Toast.makeText(this, "showing/hiding Action Bar", Toast.LENGTH_SHORT).show();
     }
 
-//------ Other Methods ---------------------------------------------------------------------------------------------
+    //------ Tracking/Location Methods ---------------------------------------------------------------------------------
+
+    public void startTracking() {
+
+    }
+
+    public void stopTracking() {
+
+    }
+
+    //------ Other Methods ---------------------------------------------------------------------------------------------
 
     public long getHolidayId() {
         return holidayId;

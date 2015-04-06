@@ -23,7 +23,7 @@
                 android:padding="7dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_record"
-                android:onClick="onStartTracking"
+                android:onClick="onStartTrackingClick"
                 android:background="@drawable/simple_button_selector_very_dark"/>
 
     </LinearLayout>
@@ -43,7 +43,7 @@
                 android:padding="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_camera"
-                android:onClick="onAddPhoto"
+                android:onClick="onAddPhotoClick"
                 android:background="@drawable/simple_button_selector_very_dark"/>
 
         <ImageButton
@@ -53,7 +53,7 @@
                 android:padding="10dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_film"
-                android:onClick="onAddVideo"
+                android:onClick="onAddVideoClick"
                 android:background="@drawable/simple_button_selector_very_dark"/>
 
         <ImageButton
@@ -63,7 +63,7 @@
                 android:padding="6dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/ic_write"
-                android:onClick="onAddText"
+                android:onClick="onAddTextClick"
                 android:background="@drawable/simple_button_selector_very_dark"/>
 
         <ImageButton
@@ -73,7 +73,7 @@
                 android:padding="7dp"
                 android:scaleType="centerInside"
                 android:src="@drawable/map_marker_start_finish"
-                android:onClick="onStopTracking"
+                android:onClick="onStopTrackingClick"
                 android:background="@drawable/simple_button_selector"/>
 
     </LinearLayout>
