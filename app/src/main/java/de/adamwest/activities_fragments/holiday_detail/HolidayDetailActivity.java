@@ -97,6 +97,25 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     //------ ActionBar Methods -----------------------------------------------------------------------------------------
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                // app icon in action bar clicked; goto parent activity.
+                this.finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
     private void createTabBar() {
         final ActionBar actionBar = getActionBar();
         actionBar.setIcon(R.drawable.ic_overview_bright);
@@ -154,22 +173,35 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+    private void toggleRouteListDropdown() {
+
+        final ActionBar actionBar = getActionBar();
+
+        View routeListView = findViewById(R.id.main_route_list_view);
+        //todo: line might not be needed
+        View viewPager = findViewById(R.id.pager);
+
+//        actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS
+        if (routeListView.getVisibility() != View.VISIBLE) {
+            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            routeListView.setVisibility(View.VISIBLE);
+            //todo: line might not be needed
+            viewPager.setVisibility(View.GONE);
+
+        } else {
+            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+            routeListView.setVisibility(View.GONE);
+            //todo: line might not be needed
+            viewPager.setVisibility(View.VISIBLE);
+        }
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case android.R.id.home:
-                // app icon in action bar clicked; goto parent activity.
-                this.finish();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+    private void updateActionBar() {
+        TextView routeNameInTitleBar = (TextView) findViewById(R.id.action_bar_custom_subtitle);
+        if (routeId == -1) {
+            routeNameInTitleBar.setText("All Routes");
+        } else {
+            routeNameInTitleBar.setText(DatabaseManager.getRouteFromId(this, routeId).getName());
         }
     }
 
@@ -261,7 +293,7 @@ public class HolidayDetailActivity extends FragmentActivity {
         //actually stop tracking
     }
 
-//------ Other Methods ---------------------------------------------------------------------------------------------
+    //------ Other Methods ---------------------------------------------------------------------------------------------
 
     public void promptNewRoute() {
 //        LayoutInflater li = LayoutInflater.from(this);
@@ -297,7 +329,14 @@ public class HolidayDetailActivity extends FragmentActivity {
     public long addNewRoute(String name, String description) {
         HelpingMethods.toast(this, "Creating new Route: " + name);
         long newRouteId = -1;
-//        DatabaseManager.createNewRoute(this, holidayId, name, description);
+        newRouteId = DatabaseManager.createNewRoute(this, holidayId, name, description);
+
+        if(newRouteId!=-1){
+            routeId = newRouteId;
+            viewPager.getAdapter().notifyDataSetChanged();
+            updateActionBar();
+        }
+
         return newRouteId;
     }
 
@@ -305,37 +344,7 @@ public class HolidayDetailActivity extends FragmentActivity {
         return holidayId;
     }
 
-    private void toggleRouteListDropdown() {
-
-        final ActionBar actionBar = getActionBar();
-
-        View routeListView = findViewById(R.id.main_route_list_view);
-        //todo: line might not be needed
-        View viewPager = findViewById(R.id.pager);
-
-//        actionBar.getNavigationMode() == ActionBar.NAVIGATION_MODE_TABS
-        if (routeListView.getVisibility() != View.VISIBLE) {
-            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
-            routeListView.setVisibility(View.VISIBLE);
-            //todo: line might not be needed
-            viewPager.setVisibility(View.GONE);
-
-        } else {
-            getActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
-            routeListView.setVisibility(View.GONE);
-            //todo: line might not be needed
-            viewPager.setVisibility(View.VISIBLE);
-        }
-    }
-
-    private void updateActionBar() {
-        TextView routeNameInTitleBar = (TextView) findViewById(R.id.action_bar_custom_subtitle);
-        if (routeId == -1) {
-            routeNameInTitleBar.setText("All Routes");
-        } else {
-            routeNameInTitleBar.setText(DatabaseManager.getRouteFromId(this, routeId).getName());
-        }
-    }
+    //------ Map -------------------------------------------------------------------------------------------------------
 
     public List<Event> getClusterEventList() {
         return clusterEventList;
