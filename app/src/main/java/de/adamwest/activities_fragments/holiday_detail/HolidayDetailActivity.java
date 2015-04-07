@@ -3,8 +3,12 @@ package de.adamwest.activities_fragments.holiday_detail;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -15,12 +19,16 @@ import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.DatabaseManager;
 import de.adamwest.R;
 import de.adamwest.activities_fragments.holiday_detail.adapters.DetailsSlideViewPageAdapter;
 import de.adamwest.activities_fragments.holiday_detail.adapters.MainRouteListAdapter;
+import de.adamwest.activities_fragments.holiday_detail.fragments.map.MapFragment;
 import de.adamwest.database.Event;
+import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
+import de.adamwest.database.RouteLocation;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 
@@ -29,7 +37,7 @@ import java.util.List;
 /**
  * Created by Philip on 18.10.2014.
  */
-public class HolidayDetailActivity extends FragmentActivity {
+public class HolidayDetailActivity extends FragmentActivity implements LocationListener {
 
     private long holidayId;
     public ViewPager viewPager;
@@ -37,6 +45,13 @@ public class HolidayDetailActivity extends FragmentActivity {
     public long routeId;
     public long trackedRoute;
 
+    private LocationManager locationManager;
+    private Location currentLoc;
+    // Update frequency in milliseconds
+    private static final long UPDATE_INTERVAL = 15000;
+    private static final float MINIMUM_DISTANCE_IN_METER = 10;
+    // A fast frequency ceiling in milliseconds
+    private static final long FASTEST_INTERVAL = 1000;
 
     private List<Event> clusterEventList;
 
@@ -92,6 +107,14 @@ public class HolidayDetailActivity extends FragmentActivity {
 
         if (trackedRoute >= 0)
             startTracking();
+
+
+        // ----------
+
+
+        // Get the location manager
+        locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+
     }
 
 
@@ -275,7 +298,7 @@ public class HolidayDetailActivity extends FragmentActivity {
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.VISIBLE);
 
         //start actual tracking
-
+        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, new Float(Constants.MINIMUM_DISTANCE_BETWEEN_LOCATIONS), this);
     }
 
     public void stopTracking() {
@@ -291,6 +314,68 @@ public class HolidayDetailActivity extends FragmentActivity {
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.INVISIBLE);
 
         //actually stop tracking
+        locationManager.removeUpdates(this);
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        HelpingMethods.log("LOCATION: " + location);
+        currentLoc = location;
+
+        LatLng loc = new LatLng(location.getLatitude(), location.getLongitude());
+
+        Holiday currentHoliday = DatabaseManager.getHolidayFromId(this, holidayId);
+
+        Route route = currentHoliday.getRoute();
+
+        if (route != null) {
+
+            if (route.getRouteLocationList().size() == 0) {
+                DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+//                    map.addMarker(new MarkerOptions().position(loc).title("Start!"));
+            } else {
+                RouteLocation lastLocation = route.getRouteLocationList().get(route.getRouteLocationList().size() - 1);
+                Location lastLoc = new Location("dummyprovider");
+                lastLoc.setLatitude(lastLocation.getLatitude());
+                lastLoc.setLongitude(lastLocation.getLongitude());
+                double distance = location.distanceTo(lastLoc);
+
+                HelpingMethods.log("Distance: " + distance);
+                if (distance > Constants.MINIMUM_DISTANCE_BETWEEN_LOCATIONS) {
+
+                    String msg = "Adding new location to route: " +
+                            Double.toString(location.getLatitude()) + "," +
+                            Double.toString(location.getLongitude());
+                    HelpingMethods.log(msg);
+
+                    DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+
+                    //todo:
+//                    (MapFragment) mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map)
+
+//                    drawRouteOnMap(currentHoliday.getRoute(), activeColor);
+//                    moveMapTo(loc);
+                }
+            }
+
+        }
+
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 
     //------ Other Methods ---------------------------------------------------------------------------------------------
@@ -331,7 +416,7 @@ public class HolidayDetailActivity extends FragmentActivity {
         long newRouteId = -1;
         newRouteId = DatabaseManager.createNewRoute(this, holidayId, name, description);
 
-        if(newRouteId!=-1){
+        if (newRouteId != -1) {
             routeId = newRouteId;
             viewPager.getAdapter().notifyDataSetChanged();
             updateActionBar();
