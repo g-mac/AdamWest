@@ -96,6 +96,8 @@ public final class HelpingMethods {
 
     public static void createTestData(Context context) {
 
+        LatLng location = new LatLng(0, 0);
+
         if (!DatabaseManager.getAllHoliday(context).isEmpty())
             return;
 
@@ -106,13 +108,20 @@ public final class HelpingMethods {
         int routes = 8;
 
         for (int i = 0; i < holidays; i++) {
+
             long id = DatabaseManager.createNewHoliday(context, "Test Holiday " + i, "description of test holiday number " + i + ".");
 
             if (i == activeHoliday)
                 DatabaseManager.setHolidayAsActive(context, id);
-            for (int j = 0; j < routes; j++)
-                DatabaseManager.createNewRoute(context, id, "Test Route " + j, "description of test route number " + j + ".");
+            for (int j = 0; j < routes; j++) {
+                long routeId = DatabaseManager.createNewRoute(context, id, "Test Route " + j, "description of test route number " + j + ".");
+                DatabaseManager.createNewEvent(context, routeId, "Test event " + j + ".1", "description", location, Constants.TYPE_VIDEO, "");
+                DatabaseManager.createNewEvent(context, routeId, "Test event " + j + ".2", "description", location, Constants.TYPE_IMAGE, "");
+                DatabaseManager.createNewEvent(context, routeId, "Test event " + j + ".3", "description", location, Constants.TYPE_TEXT, "");
+            }
         }
+
+
     }
 
     //------------ trash -----------------------------------------------------------------------------------------------
