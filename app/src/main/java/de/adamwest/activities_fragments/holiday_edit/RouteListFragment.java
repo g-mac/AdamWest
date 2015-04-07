@@ -1,4 +1,4 @@
-package de.adamwest.activities_fragments.holiday_detail.fragments;
+package de.adamwest.activities_fragments.holiday_edit;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;

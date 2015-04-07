@@ -1,13 +1,17 @@
 package de.adamwest.activities_fragments.holiday_detail;
 
 import android.app.ActionBar;
+import android.app.Dialog;
 import android.app.FragmentTransaction;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -16,7 +20,6 @@ import de.adamwest.R;
 import de.adamwest.activities_fragments.holiday_detail.adapters.DetailsSlideViewPageAdapter;
 import de.adamwest.activities_fragments.holiday_detail.adapters.MainRouteListAdapter;
 import de.adamwest.database.Event;
-import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
@@ -87,7 +90,7 @@ public class HolidayDetailActivity extends FragmentActivity {
 
         trackedRoute = DatabaseManager.getHolidayFromId(this, holidayId).getCurrentRouteId();
 
-        if(trackedRoute >= 0)
+        if (trackedRoute >= 0)
             startTracking();
     }
 
@@ -197,7 +200,7 @@ public class HolidayDetailActivity extends FragmentActivity {
     }
 
     public void onStartTrackingClick(View view) {
-//        HelpingMethods.toast(this, "onStartTrackingClick clicked.");
+//        HelpingMethods.toast(this, "onStartTracking-Click clicked.");
         startTracking();
     }
 
@@ -207,7 +210,12 @@ public class HolidayDetailActivity extends FragmentActivity {
     }
 
     public void onAddRouteClick(View view) {
-        HelpingMethods.toast(this, "onAddRouteClick clicked.");
+//        HelpingMethods.toast(this, "onAddRouteClick clicked.");
+        promptNewRoute();
+
+//        Fragment newRouteFragment = new NewRouteFragment();
+////        getFragmentManager().beginTransaction().add(R.id.main_layout, newRouteFragment).commit();
+//        getFragmentManager().beginTransaction().add(android.R.id.content, newRouteFragment).commit();
     }
 
     public void onTestButtonClick(View view) {
@@ -223,14 +231,14 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     public void startTracking() {
 
-        if(routeId==-1){
+        if (routeId == -1) {
             HelpingMethods.toast(this, "select or create route first");
             return;
         }
 
         trackedRoute = routeId;
         DatabaseManager.getHolidayFromId(this, holidayId).setCurrentRouteId(trackedRoute);
-        HelpingMethods.toast(this,"tracking route: '"+DatabaseManager.getRouteFromId(this, trackedRoute).getName()+"'");
+        HelpingMethods.toast(this, "tracking route: '" + DatabaseManager.getRouteFromId(this, trackedRoute).getName() + "'");
         findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.VISIBLE);
 
@@ -240,12 +248,12 @@ public class HolidayDetailActivity extends FragmentActivity {
 
     public void stopTracking() {
 
-        if(trackedRoute==-1)
+        if (trackedRoute == -1)
             return;
 
-        HelpingMethods.toast(this,"stopped tracking for route: '"+DatabaseManager.getRouteFromId(this, trackedRoute).getName()+"'");
+        HelpingMethods.toast(this, "stopped tracking for route: '" + DatabaseManager.getRouteFromId(this, trackedRoute).getName() + "'");
         DatabaseManager.removeActiveRouteForHoliday(this, holidayId);
-        trackedRoute=-1;
+        trackedRoute = -1;
 
         findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.VISIBLE);
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.INVISIBLE);
@@ -253,14 +261,43 @@ public class HolidayDetailActivity extends FragmentActivity {
         //actually stop tracking
     }
 
+//------ Other Methods ---------------------------------------------------------------------------------------------
 
-    //------ Other Methods ---------------------------------------------------------------------------------------------
+    public void promptNewRoute() {
+//        LayoutInflater li = LayoutInflater.from(this);
+//        View promptsView = li.inflate(R.layout.prompt_create_new_route, null);
 
-    public long addNewRoute(){
+//        Dialog dialog = new Dialog(this,android.R.style.Theme_Translucent_NoTitleBar);
+        final Dialog dialog = new Dialog(this);
+        dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        dialog.setContentView(R.layout.prompt_create_new_route);
+
+        final TextView name = (TextView) dialog.findViewById(R.id.prompt_new_route_name);
+        final TextView description = (TextView) dialog.findViewById(R.id.prompt_new_route_description);
+
+        dialog.findViewById(R.id.prompt_new_route_cancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+        dialog.findViewById(R.id.prompt_new_route_create).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                addNewRoute(name.getText() + "", description.getText() + "");
+                dialog.dismiss();
+            }
+        });
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    public long addNewRoute(String name, String description) {
+        HelpingMethods.toast(this, "Creating new Route: " + name);
         long newRouteId = -1;
-
-        DatabaseManager.createNewRoute(this, holidayId,"","");
-
+//        DatabaseManager.createNewRoute(this, holidayId, name, description);
         return newRouteId;
     }
 

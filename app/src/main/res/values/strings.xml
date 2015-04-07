@@ -65,4 +65,12 @@
     <string name="title_activity_start">StartActivity</string>
     <string name="other_holidays">Sonstige</string>
 
+    //prompts
+    <string name="prompt_new_route_title">Neue Route</string>
+    <string name="prompt_new_route_create">Erstellen</string>
+    <string name="prompt_new_route_cancel">Abbrechen</string>
+    <string name="prompt_new_route_hint_title">Routen Name</string>
+    <string name="prompt_new_route_hint_description">Beschreibung...</string>
+
+
 </resources>
