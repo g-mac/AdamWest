@@ -4,8 +4,9 @@
                 xmlns:tools="http://schemas.android.com/tools"
                 tools:context="de.adamwest.activities_fragments.holiday_detail.HolidayDetailActivity"
                 android:orientation="vertical"
+                android:layout_marginTop="30dp"
+                android:layout_marginBottom="20dp"
                 android:background="@color/black_with_opacity"
-                android:layout_margin="15dp"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
@@ -17,8 +18,8 @@
             android:background="@color/black_with_opacity"
             android:text="@string/prompt_new_route_title"
             android:gravity="center"
-            android:textColor="@color/white"
-            android:textSize="24dp"/>
+            android:textColor="@color/grey_light"
+            android:textSize="@dimen/prompt_title_textsize"/>
 
     <LinearLayout
             android:id="@+id/prompt_new_route_buttons"
@@ -33,19 +34,23 @@
                 android:id="@+id/prompt_new_route_create"
                 android:layout_margin="5dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/prompt_new_route_create"
-                android:background="@drawable/simple_button_selector"/>
+                android:textColor="@color/grey_light"
+                android:textSize="@dimen/prompt_button_textsize"
+                android:background="@drawable/simple_button_selector_dark"/>
 
         <Button
                 android:id="@+id/prompt_new_route_cancel"
                 android:layout_margin="5dp"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/prompt_new_route_cancel"
-                android:background="@drawable/simple_button_selector"/>
+                android:textColor="@color/grey_light"
+                android:textSize="@dimen/prompt_button_textsize"
+                android:background="@drawable/simple_button_selector_dark"/>
 
     </LinearLayout>
 
@@ -53,24 +58,28 @@
             android:layout_below="@id/prompt_new_route_title"
             android:layout_above="@id/prompt_new_route_buttons"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical">
 
         <EditText
                 android:id="@+id/prompt_new_route_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textColor="@color/white"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/grey_light"
                 android:textColorHint="@color/grey"
+                android:textSize="@dimen/prompt_description_textsize"
                 android:hint="@string/prompt_new_route_hint_title"/>
 
         <EditText
                 android:id="@+id/prompt_new_route_description"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
                 android:gravity="top"
-                android:textColor="@color/white"
+                android:textColor="@color/grey_light"
                 android:textColorHint="@color/grey"
+                android:textSize="@dimen/prompt_description_textsize"
                 android:hint="@string/prompt_new_route_hint_description"/>
 
     </LinearLayout>

@@ -21,7 +21,8 @@
     <color name="white_with_opacity">#B0FFFFFF</color>
     <color name="no_colour">#00FFFFFF</color>
 
-    <color name="grey">#ffc9c9c9</color>
+    <color name="grey_light">#ffc9c9c9</color>
+    <color name="grey">#ffa3a3a3</color>
 
     <color name="route_list_dividercolor">#9bd1d1d1</color>
 
