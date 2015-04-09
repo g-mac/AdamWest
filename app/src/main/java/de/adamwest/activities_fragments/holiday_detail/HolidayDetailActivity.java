@@ -74,7 +74,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new DetailsSlideViewPageAdapter(getSupportFragmentManager()));
-//        viewPager.setOffscreenPageLimit(3); //todo: check performance?!
+        viewPager.setOffscreenPageLimit(3); //todo: check performance?!
         viewPager.setOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener() {
                     @Override
