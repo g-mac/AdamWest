@@ -15,10 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import com.google.android.gms.maps.*;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.PolylineOptions;
+import com.google.android.gms.maps.model.*;
 import com.google.maps.android.clustering.Cluster;
 import com.google.maps.android.clustering.ClusterManager;
 import de.adamwest.DatabaseManager;
@@ -60,9 +57,20 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     //----------------------- Activity (LifeCycle) Methods --------------------
 
+
+    // Fragment is created in the following order (all right after each other)
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        HelpingMethods.log("MapFragment onCreate()");
+        super.onCreate(savedInstanceState);
+        mBundle = savedInstanceState;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        HelpingMethods.log("MapFragment onCreateView()");
 
         View inflatedView = inflater.inflate(R.layout.fragment_map, container, false);
 
@@ -86,38 +94,40 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mBundle = savedInstanceState;
+    public void onStart() {
+        HelpingMethods.log("MapFragment onStart()");
+        super.onStart();
     }
 
     @Override
     public void onResume() {
+        HelpingMethods.log("MapFragment onResume()");
         super.onResume();
         mapView.onResume();
     }
 
+    // Fragment is destroyed in the following order (all right after each other)
+
     @Override
     public void onPause() {
+        HelpingMethods.log("MapFragment onPause()");
         super.onPause();
         mapView.onPause();
     }
 
     @Override
+    public void onStop() {
+        HelpingMethods.log("MapFragment onStop()");
+        super.onStop();
+    }
+
+    @Override
     public void onDestroy() {
+        HelpingMethods.log("MapFragment onDestroy()");
         mapView.onDestroy();
         super.onDestroy();
     }
 
-    @Override
-    public void onStart() {
-        super.onStart();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-    }
 
     //----------------------- Map Methods -------------------------------------
 
@@ -128,7 +138,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
         Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
 
-//        boolean holidayHasRoutes = (holiday != null && holiday.getRouteList() != null && holiday.getRouteList().size() > 0);
         boolean holidayHasLocationPoints = HelpingMethods.holidayHasLocationPoints(holiday);
         HelpingMethods.log("holidayHasLocationPoints: " + holidayHasLocationPoints);
 
@@ -238,6 +247,100 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
     }
 
+    // not in use
+
+    private void drawActiveRoute(Holiday holiday) {
+
+        if (holiday.getRoute() != null)
+            drawRouteOnMap(holiday, holiday.getRoute(), activeColor);
+    }
+
+    private void drawInactiveRoutes(Holiday holiday) {
+        List<Route> routeList = holiday.getRouteList();
+        for (Route route : routeList) {
+            if (route.getId() != holiday.getCurrentRouteId())
+                drawRouteOnMap(holiday, route, inactiveColor);
+        }
+    }
+
+    private void drawRouteOnMap(Holiday holiday, Route route, int lineColor) {
+
+//        List<RouteLocation> routeLocationList = currentHoliday.getCurrentRoute().getRouteLocationList();
+        List<RouteLocation> routeLocationList = route.getRouteLocationList();
+
+        PolylineOptions options = new PolylineOptions()
+                .width(22)
+                .color(lineColor);
+
+        for (int i = 0; i < routeLocationList.size(); i++) {
+            Double latitude = routeLocationList.get(i).getLatitude();
+            Double longitude = routeLocationList.get(i).getLongitude();
+            LatLng latLng = new LatLng(latitude, longitude);
+            options.add(latLng);
+            if (i == 0) {
+                map.addMarker(new MarkerOptions()
+                        .position(latLng)
+                        .title("Start!")
+                        .snippet(route.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
+
+            } //todo: finish marker
+            else if (i == routeLocationList.size() - 1) {
+                if (route.getId() != holiday.getCurrentRouteId())
+                    map.addMarker(new MarkerOptions()
+                            .position(latLng)
+                            .title("Finish!")
+                            .snippet(route.getName())
+                            .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_start_finish)));
+            }
+        }
+
+
+        //TODO implement some button to show/hide the events for each map
+//        if (holiday.getRoute() != null) {
+        if (route != null) {
+            eventMarkerMap = new HashMap<Marker, Long>();
+//            for (Event event : holiday.getRoute().getEventList()) {
+            for (Event event : route.getEventList()) {
+                LatLng pos = new LatLng(event.getRouteLocation().getLatitude(), event.getRouteLocation().getLongitude());
+                Marker marker = map.addMarker(new MarkerOptions()
+                        .position(pos)
+                        .title("Event")
+                        .snippet(event.getName())
+                        .icon(BitmapDescriptorFactory.fromResource(R.drawable.map_marker_picture)));
+                eventMarkerMap.put(marker, event.getId());
+            }
+        }
+
+        map.addPolyline(options);
+
+    }
+
+    public void zoomMapToRoute(Route route) {
+        LatLngBounds bounds = HelpingMethods.getRouteBoundaries(route);
+//        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+    }
+
+    public void zoomMapToHoliday(Holiday holiday) {
+        LatLngBounds bounds = HelpingMethods.getHolidayBoundaries(holiday);
+//        map.moveCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+        map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
+    }
+
+    private void moveMapTo(LatLng latLng) {
+        map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
+    }
+
+//    public void onToggleMapClick(View view) {
+    public void toggleMap() {
+        if (map.getMapType() == GoogleMap.MAP_TYPE_HYBRID) {
+            map.setMapType(GoogleMap.MAP_TYPE_NORMAL); //set map type: normal
+        } else {
+            map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
+        }
+    }
+
     //----------------------- Implemented Methods -----------------------------
 
     //todo: might not be needed since replaced by onInfoWindowClick()
@@ -262,8 +365,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         }
     }
 
+    // only loaded once visible. onCreate, onCreateView, onStart and onResume are called beforehand.
     @Override
     public void onMapLoaded() {
+        HelpingMethods.log("MapFragment onMapLoaded()");
         eventClusterManager = new ClusterManager<EventClusterItem>(getActivity(), map);
         eventClusterManager.setAlgorithm(new EventClusterAlgorithm<EventClusterItem>());
         eventClusterManager.setRenderer(new EventClusterRenderer(getActivity(), map, eventClusterManager));

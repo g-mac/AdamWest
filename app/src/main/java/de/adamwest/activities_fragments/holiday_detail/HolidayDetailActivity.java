@@ -10,6 +10,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
@@ -33,6 +34,8 @@ import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 
 import java.util.List;
+
+//import android.app.Fragment;
 
 /**
  * Created by Philip on 18.10.2014.
@@ -71,6 +74,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new DetailsSlideViewPageAdapter(getSupportFragmentManager()));
+//        viewPager.setOffscreenPageLimit(3); //todo: check performance?!
         viewPager.setOnPageChangeListener(
                 new ViewPager.SimpleOnPageChangeListener() {
                     @Override
@@ -257,6 +261,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     public void onStartTrackingClick(View view) {
 //        HelpingMethods.toast(this, "onStartTracking-Click clicked.");
         startTracking();
+//        onTestButtonClick(view);
     }
 
     public void onStopTrackingClick(View view) {
@@ -274,7 +279,10 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     }
 
     public void onTestButtonClick(View view) {
-        final ActionBar actionBar = getActionBar();
+        MapFragment mapFragment = getMapFragment();
+        if (mapFragment != null)
+            mapFragment.toggleMap();
+//        final ActionBar actionBar = getActionBar();
 //        if (actionBar.isShowing())
 //            actionBar.hide();
 //        else
@@ -315,6 +323,8 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
         //actually stop tracking
         locationManager.removeUpdates(this);
+
+        //inform mapfragment to redraw ?????
     }
 
     @Override
@@ -430,6 +440,21 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     }
 
     //------ Map -------------------------------------------------------------------------------------------------------
+
+    private MapFragment getMapFragment() {
+        //todo: this solution might be a little dirty.
+        MapFragment mapFragment = null;
+//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.pager);
+        try {
+            Fragment fragment = getSupportFragmentManager().getFragments().get(2);
+            mapFragment = (MapFragment) fragment;
+            HelpingMethods.log("succesfully found MapFragment.");
+        } catch (Exception e) {
+            HelpingMethods.log("Error getting MapFragment: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return mapFragment;
+    }
 
     public List<Event> getClusterEventList() {
         return clusterEventList;
