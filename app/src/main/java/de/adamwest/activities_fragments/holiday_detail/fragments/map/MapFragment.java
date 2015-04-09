@@ -241,7 +241,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     // not in use
 
-    private void moveMapTo(LatLng latLng) {
+    public void moveMapTo(LatLng latLng) {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
     }
 

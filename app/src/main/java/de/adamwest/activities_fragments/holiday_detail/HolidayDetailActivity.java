@@ -309,7 +309,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, new Float(Constants.MINIMUM_DISTANCE_BETWEEN_LOCATIONS), this);
 
         //inform mapfragment to redraw ?????
-        getMapFragment().setUpMap();
+//        getMapFragment().setUpMap();
     }
 
     public void stopTracking() {
@@ -328,7 +328,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         locationManager.removeUpdates(this);
 
         //inform mapfragment to redraw ?????
-        getMapFragment().setUpMap();
+//        getMapFragment().setUpMap();
     }
 
     @Override
@@ -341,15 +341,15 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
         Holiday currentHoliday = DatabaseManager.getHolidayFromId(this, holidayId);
 
-        Route route = currentHoliday.getRoute();
+        Route trackedRoute = currentHoliday.getRoute();
 
-        if (route != null) {
+        if (trackedRoute != null) {
 
-            if (route.getRouteLocationList().size() == 0) {
-                DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+            if (trackedRoute.getRouteLocationList().size() == 0) {
+                DatabaseManager.addLocationToRoute(getApplicationContext(), trackedRoute.getId(), loc);
 //                    map.addMarker(new MarkerOptions().position(loc).title("Start!"));
             } else {
-                RouteLocation lastLocation = route.getRouteLocationList().get(route.getRouteLocationList().size() - 1);
+                RouteLocation lastLocation = trackedRoute.getRouteLocationList().get(trackedRoute.getRouteLocationList().size() - 1);
                 Location lastLoc = new Location("dummyprovider");
                 lastLoc.setLatitude(lastLocation.getLatitude());
                 lastLoc.setLongitude(lastLocation.getLongitude());
@@ -363,11 +363,13 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
                             Double.toString(location.getLongitude());
                     HelpingMethods.log(msg);
 
-                    DatabaseManager.addLocationToRoute(getApplicationContext(), route.getId(), loc);
+                    DatabaseManager.addLocationToRoute(getApplicationContext(), trackedRoute.getId(), loc);
 
                     //todo:
-//                    (MapFragment) mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map)
 
+                    getMapFragment().moveMapTo(loc); //only if fragment is visible?
+
+//                    (MapFragment) mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map)
 //                    drawRouteOnMap(currentHoliday.getRoute(), activeColor);
 //                    moveMapTo(loc);
                 }
