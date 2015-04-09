@@ -30,7 +30,7 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
         public final static Property Latitude = new Property(1, Double.class, "latitude", false, "LATITUDE");
         public final static Property Longitude = new Property(2, Double.class, "longitude", false, "LONGITUDE");
         public final static Property CreatedAt = new Property(3, java.util.Date.class, "createdAt", false, "CREATED_AT");
-        public final static Property RouteId = new Property(4, Long.class, "routeId", false, "ROUTE_ID");
+        public final static Property RouteId = new Property(4, Long.class, "selectedRouteId", false, "ROUTE_ID");
     };
 
     private Query<RouteLocation> route_RouteLocationListQuery;
@@ -51,7 +51,7 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
                 "'LATITUDE' REAL," + // 1: latitude
                 "'LONGITUDE' REAL," + // 2: longitude
                 "'CREATED_AT' INTEGER," + // 3: createdAt
-                "'ROUTE_ID' INTEGER);"); // 4: routeId
+                "'ROUTE_ID' INTEGER);"); // 4: selectedRouteId
     }
 
     /** Drops the underlying database table. */
@@ -105,7 +105,7 @@ public class RouteLocationDao extends AbstractDao<RouteLocation, Long> {
             cursor.isNull(offset + 1) ? null : cursor.getDouble(offset + 1), // latitude
             cursor.isNull(offset + 2) ? null : cursor.getDouble(offset + 2), // longitude
             cursor.isNull(offset + 3) ? null : new java.util.Date(cursor.getLong(offset + 3)), // createdAt
-            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // routeId
+            cursor.isNull(offset + 4) ? null : cursor.getLong(offset + 4) // selectedRouteId
         );
         return entity;
     }

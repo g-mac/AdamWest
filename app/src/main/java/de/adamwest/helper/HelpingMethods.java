@@ -1,6 +1,7 @@
 package de.adamwest.helper;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
@@ -13,6 +14,7 @@ import de.adamwest.database.RouteLocation;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 /**
  * Created by philip on 22/09/14.
@@ -92,6 +94,11 @@ public final class HelpingMethods {
         return result;
     }
 
+    public static int getRandomColor(){
+        Random rnd = new Random();
+        int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+        return color;
+    }
     //------------ test data -------------------------------------------------------------------------------------------
 
     public static void createTestData(Context context) {

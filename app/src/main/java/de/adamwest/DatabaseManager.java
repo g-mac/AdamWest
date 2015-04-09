@@ -150,7 +150,7 @@ public final class DatabaseManager {
     public static void removeActiveRouteForHoliday(Context context, long holidayId) {
         Holiday holiday = getHolidayFromId(context, holidayId);
         holiday.setCurrentRouteId(null);
-//        Route route = getRouteFromId(context, routeId);
+//        Route route = getRouteFromId(context, selectedRouteId);
 //        if(route != null) holiday.setCurrentRoute(null);
         holiday.setRoute(null);
         getDaoSession(context).update(holiday);
@@ -246,9 +246,9 @@ public final class DatabaseManager {
 //        getEventFromId(context, eventId).resetMultimediaElementList();
 //    }
 
-//    public static long createNewEventWithMultiMediaElement(Context context, long routeId, String type, String path, LatLng loc, String description, String eventName) {
+//    public static long createNewEventWithMultiMediaElement(Context context, long selectedRouteId, String type, String path, LatLng loc, String description, String eventName) {
 //        String savingEventName = (eventName != null) ? eventName : "";
-//        long eventId = createNewEvent(context, routeId, savingEventName, "", loc);
+//        long eventId = createNewEvent(context, selectedRouteId, savingEventName, "", loc);
 //        return createNewMultiMediaElement(context, type, path, eventId, description);
 //    }
 

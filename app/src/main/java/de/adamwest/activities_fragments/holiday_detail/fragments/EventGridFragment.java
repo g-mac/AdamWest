@@ -45,9 +45,9 @@ public class EventGridFragment extends Fragment {
     private void initGridView() {
         HolidayDetailActivity holidayDetailActivity = ((HolidayDetailActivity) getActivity());
         eventList = new ArrayList<Event>();
-        if (holidayDetailActivity.routeId != -1) {
+        if (holidayDetailActivity.selectedRouteId != -1) {
             for (Route route : holiday.getRouteList()) {
-                if (route.getId() == holidayDetailActivity.routeId) {
+                if (route.getId() == holidayDetailActivity.selectedRouteId) {
                     eventList = route.getEventList();
                     break;
                 }

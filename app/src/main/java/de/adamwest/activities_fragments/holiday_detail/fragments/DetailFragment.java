@@ -22,10 +22,10 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
 
-        long routeId = ((HolidayDetailActivity) getActivity()).routeId;
+        long routeId = ((HolidayDetailActivity) getActivity()).selectedRouteId;
         long holidayId = ((HolidayDetailActivity) getActivity()).getHolidayId();
 
-//        Toast.makeText(getActivity().getApplicationContext(), "routeId: "+routeId,Toast.LENGTH_SHORT).show();
+//        Toast.makeText(getActivity().getApplicationContext(), "selectedRouteId: "+selectedRouteId,Toast.LENGTH_SHORT).show();
 
         View view;
 

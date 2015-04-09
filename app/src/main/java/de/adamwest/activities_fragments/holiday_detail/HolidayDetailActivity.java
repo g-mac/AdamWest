@@ -45,8 +45,8 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     private long holidayId;
     public ViewPager viewPager;
     private List<Route> routes;
-    public long routeId;
-    public long trackedRoute;
+    public long selectedRouteId;
+    public long trackedRouteId;
 
     private LocationManager locationManager;
     private Location currentLoc;
@@ -63,8 +63,8 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         holidayId = getIntent().getLongExtra(Constants.KEY_HOLIDAY_ID, -1);
-        routeId = -1;
-        trackedRoute = -1;
+        selectedRouteId = -1;
+        trackedRouteId = -1;
         //Remove title bar
         //this.requestWindowFeature(Window.FEATURE_NO_TITLE);
         //Remove notification bar
@@ -98,7 +98,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
             public void onItemClick(AdapterView<?> adapter, View view, int position, long id) {
 //                Toast.makeText(getApplicationContext(),selectedRoute.getName(),Toast.LENGTH_SHORT).show();
                 Route selectedRoute = (Route) adapter.getItemAtPosition(position);
-                routeId = selectedRoute.getId();
+                selectedRouteId = selectedRoute.getId();
                 viewPager.getAdapter().notifyDataSetChanged();
                 updateActionBar();
                 toggleRouteListDropdown();
@@ -107,9 +107,9 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
         // ----------
 
-        trackedRoute = DatabaseManager.getHolidayFromId(this, holidayId).getCurrentRouteId();
+        trackedRouteId = DatabaseManager.getHolidayFromId(this, holidayId).getCurrentRouteId();
 
-        if (trackedRoute >= 0)
+        if (trackedRouteId >= 0)
             startTracking();
 
 
@@ -225,17 +225,17 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
     private void updateActionBar() {
         TextView routeNameInTitleBar = (TextView) findViewById(R.id.action_bar_custom_subtitle);
-        if (routeId == -1) {
+        if (selectedRouteId == -1) {
             routeNameInTitleBar.setText("All Routes");
         } else {
-            routeNameInTitleBar.setText(DatabaseManager.getRouteFromId(this, routeId).getName());
+            routeNameInTitleBar.setText(DatabaseManager.getRouteFromId(this, selectedRouteId).getName());
         }
     }
 
     //------ OnClick Methods -------------------------------------------------------------------------------------------
 
     public void onHolidayListItemClick(View view) {
-        routeId = -1;
+        selectedRouteId = -1;
         viewPager.getAdapter().notifyDataSetChanged();
         updateActionBar();
         toggleRouteListDropdown();
@@ -294,29 +294,32 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
     public void startTracking() {
 
-        if (routeId == -1) {
+        if (selectedRouteId == -1) {
             HelpingMethods.toast(this, "select or create route first");
             return;
         }
 
-        trackedRoute = routeId;
-        DatabaseManager.getHolidayFromId(this, holidayId).setCurrentRouteId(trackedRoute);
-        HelpingMethods.toast(this, "tracking route: '" + DatabaseManager.getRouteFromId(this, trackedRoute).getName() + "'");
+        trackedRouteId = selectedRouteId;
+        DatabaseManager.getHolidayFromId(this, holidayId).setCurrentRouteId(trackedRouteId);
+        HelpingMethods.toast(this, "tracking route: '" + DatabaseManager.getRouteFromId(this, trackedRouteId).getName() + "'");
         findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.INVISIBLE);
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.VISIBLE);
 
         //start actual tracking
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, UPDATE_INTERVAL, new Float(Constants.MINIMUM_DISTANCE_BETWEEN_LOCATIONS), this);
+
+        //inform mapfragment to redraw ?????
+        getMapFragment().setUpMap();
     }
 
     public void stopTracking() {
 
-        if (trackedRoute == -1)
+        if (trackedRouteId == -1)
             return;
 
-        HelpingMethods.toast(this, "stopped tracking for route: '" + DatabaseManager.getRouteFromId(this, trackedRoute).getName() + "'");
+        HelpingMethods.toast(this, "stopped tracking for route: '" + DatabaseManager.getRouteFromId(this, trackedRouteId).getName() + "'");
         DatabaseManager.removeActiveRouteForHoliday(this, holidayId);
-        trackedRoute = -1;
+        trackedRouteId = -1;
 
         findViewById(R.id.holiday_no_tracking_menu).setVisibility(View.VISIBLE);
         findViewById(R.id.holiday_tracking_menu).setVisibility(View.INVISIBLE);
@@ -325,6 +328,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         locationManager.removeUpdates(this);
 
         //inform mapfragment to redraw ?????
+        getMapFragment().setUpMap();
     }
 
     @Override
@@ -427,7 +431,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         newRouteId = DatabaseManager.createNewRoute(this, holidayId, name, description);
 
         if (newRouteId != -1) {
-            routeId = newRouteId;
+            selectedRouteId = newRouteId;
             viewPager.getAdapter().notifyDataSetChanged();
             updateActionBar();
         }

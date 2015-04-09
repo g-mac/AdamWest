@@ -35,7 +35,7 @@ public class EventDao extends AbstractDao<Event, Long> {
         public final static Property Path = new Property(4, String.class, "path", false, "PATH");
         public final static Property CreatedAt = new Property(5, java.util.Date.class, "createdAt", false, "CREATED_AT");
         public final static Property LocationId = new Property(6, Long.class, "locationId", false, "LOCATION_ID");
-        public final static Property RouteId = new Property(7, Long.class, "routeId", false, "ROUTE_ID");
+        public final static Property RouteId = new Property(7, Long.class, "selectedRouteId", false, "ROUTE_ID");
     };
 
     private DaoSession daoSession;
@@ -62,7 +62,7 @@ public class EventDao extends AbstractDao<Event, Long> {
                 "'PATH' TEXT," + // 4: path
                 "'CREATED_AT' INTEGER," + // 5: createdAt
                 "'LOCATION_ID' INTEGER," + // 6: locationId
-                "'ROUTE_ID' INTEGER);"); // 7: routeId
+                "'ROUTE_ID' INTEGER);"); // 7: selectedRouteId
     }
 
     /** Drops the underlying database table. */
@@ -140,7 +140,7 @@ public class EventDao extends AbstractDao<Event, Long> {
             cursor.isNull(offset + 4) ? null : cursor.getString(offset + 4), // path
             cursor.isNull(offset + 5) ? null : new java.util.Date(cursor.getLong(offset + 5)), // createdAt
             cursor.isNull(offset + 6) ? null : cursor.getLong(offset + 6), // locationId
-            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // routeId
+            cursor.isNull(offset + 7) ? null : cursor.getLong(offset + 7) // selectedRouteId
         );
         return entity;
     }
