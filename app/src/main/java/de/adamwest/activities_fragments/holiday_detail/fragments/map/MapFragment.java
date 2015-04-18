@@ -6,6 +6,7 @@ import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,8 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         map.setOnMarkerClickListener(this);
         map.setOnInfoWindowClickListener(this);
         map.setOnMapLoadedCallback(this);
-        map.setPadding(0, HelpingMethods.getActionBarHeight(getActivity()), 0, 0);
+//        map.setPadding(0, HelpingMethods.getActionBarHeight(getActivity()), 0, 0);
+        map.setPadding(0, HelpingMethods.getActionBarHeight(getActivity()), 0, HelpingMethods.getMenuHeight(getActivity()));
 
 
         return inflatedView;

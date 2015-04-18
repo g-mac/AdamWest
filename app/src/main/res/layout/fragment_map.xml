@@ -11,16 +11,22 @@
     <com.google.android.gms.maps.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"/>
 
-    <Button android:id="@+id/toggle_map_button"
-            android:layout_width="100dp"
-            android:layout_height="35dp"
-            android:text="toggle"
-            android:background="@drawable/simple_button_selector"
-            android:layout_alignParentBottom="true"
-            android:layout_margin="@dimen/fragment_map_button_padding"
-            android:onClick="onToggleMapClick"/>
+    <RelativeLayout android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginBottom="@dimen/activity_main_menu_height">
+
+        <Button android:id="@+id/toggle_map_button"
+                android:layout_width="100dp"
+                android:layout_height="35dp"
+                android:text="toggle"
+                android:background="@drawable/simple_button_selector"
+                android:layout_alignParentBottom="true"
+                android:layout_margin="@dimen/fragment_map_button_padding"
+                android:onClick="onToggleMapClick"/>
+
+    </RelativeLayout>
 
 
     <!--<TextView android:layout_width="match_parent"-->

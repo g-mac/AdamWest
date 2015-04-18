@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import de.adamwest.DatabaseManager;
+import de.adamwest.R;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.database.RouteLocation;
@@ -110,6 +111,14 @@ public final class HelpingMethods {
             actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
         }
         return actionBarHeight;
+    }
+
+    public static int getMenuHeight(Context context){
+        //todo: not quite working yet?
+        int menuHeight = Math.round(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,
+                context.getResources().getDimension(R.dimen.activity_main_menu_height),
+                context.getResources().getDisplayMetrics()));
+        return menuHeight;
     }
 
     //------------ test data -------------------------------------------------------------------------------------------
