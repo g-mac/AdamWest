@@ -3,6 +3,7 @@ package de.adamwest.helper;
 import android.content.Context;
 import android.graphics.Color;
 import android.util.Log;
+import android.util.TypedValue;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
@@ -99,6 +100,18 @@ public final class HelpingMethods {
         int color = Color.argb(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
         return color;
     }
+
+    public static int getActionBarHeight(Context context){
+        // Calculate ActionBar height
+        int actionBarHeight = 0;
+        TypedValue tv = new TypedValue();
+        if (context.getTheme().resolveAttribute(android.R.attr.actionBarSize, tv, true))
+        {
+            actionBarHeight = TypedValue.complexToDimensionPixelSize(tv.data, context.getResources().getDisplayMetrics());
+        }
+        return actionBarHeight;
+    }
+
     //------------ test data -------------------------------------------------------------------------------------------
 
     public static void createTestData(Context context) {

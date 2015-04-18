@@ -87,12 +87,15 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         mapView = (MapView) inflatedView.findViewById(R.id.map_view);
         mapView.onCreate(mBundle);
 
+//        mapView.getMap().getMyLocation();
+
 //        map = ((MapView) inflatedView.findViewById(R.id.map_view)).getMap();
         map = mapView.getMap();
         map.setMyLocationEnabled(true); // Enable MyLocation Layer of Google Map
         map.setOnMarkerClickListener(this);
         map.setOnInfoWindowClickListener(this);
         map.setOnMapLoadedCallback(this);
+        map.setPadding(0, HelpingMethods.getActionBarHeight(getActivity()),0,0);
 
 
         return inflatedView;
