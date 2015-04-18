@@ -448,18 +448,31 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     //------ Map -------------------------------------------------------------------------------------------------------
 
     private MapFragment getMapFragment() {
-        //todo: this solution might be a little dirty.
+
         MapFragment mapFragment = null;
-//        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.pager);
         try {
-            Fragment fragment = getSupportFragmentManager().getFragments().get(2);
+            Fragment fragment = ((DetailsSlideViewPageAdapter) viewPager.getAdapter()).getFragment(2);
             mapFragment = (MapFragment) fragment;
             HelpingMethods.log("succesfully found MapFragment.");
         } catch (Exception e) {
             HelpingMethods.log("Error getting MapFragment: " + e.getMessage());
             e.printStackTrace();
         }
+
         return mapFragment;
+
+//        //todo: this solution might be a little dirty.
+//        MapFragment mapFragment = null;
+////        Fragment fragment = getSupportFragmentManager().findFragmentById(R.id.pager);
+//        try {
+//            Fragment fragment = getSupportFragmentManager().getFragments().get(2);
+//            mapFragment = (MapFragment) fragment;
+//            HelpingMethods.log("succesfully found MapFragment.");
+//        } catch (Exception e) {
+//            HelpingMethods.log("Error getting MapFragment: " + e.getMessage());
+//            e.printStackTrace();
+//        }
+//        return mapFragment;
     }
 
     public List<Event> getClusterEventList() {

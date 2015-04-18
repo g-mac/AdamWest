@@ -1,13 +1,11 @@
 package de.adamwest.activities_fragments.holiday_detail.fragments.map;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +19,6 @@ import com.google.maps.android.clustering.ClusterManager;
 import de.adamwest.DatabaseManager;
 import de.adamwest.R;
 import de.adamwest.activities_fragments.holiday_detail.HolidayDetailActivity;
-import de.adamwest.activities_fragments.holiday_detail.event_display.ShowEventActivity;
 import de.adamwest.database.Event;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
@@ -31,7 +28,6 @@ import de.adamwest.helper.HelpingMethods;
 import de.adamwest.helper.ImageHelper;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -95,7 +91,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         map.setOnMarkerClickListener(this);
         map.setOnInfoWindowClickListener(this);
         map.setOnMapLoadedCallback(this);
-        map.setPadding(0, HelpingMethods.getActionBarHeight(getActivity()),0,0);
+        map.setPadding(0, HelpingMethods.getActionBarHeight(getActivity()), 0, 0);
 
 
         return inflatedView;
@@ -135,7 +131,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         mapView.onDestroy();
         super.onDestroy();
     }
-
 
     //----------------------- Map Methods -------------------------------------
 
@@ -180,12 +175,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             Route route = DatabaseManager.getRouteFromId(getActivity(), selectedRouteId);
             if (route != null && HelpingMethods.routeHasLocationPoints(route))
                 zoomMapToBounds(HelpingMethods.getRouteBoundaries(route));
-//            else zoomMapToCurrentPostition();
+            else zoomMapToCurrentPostition();
         } else { //if all routes /the whole holiday is selected, draw all routes
 //            Holiday holiday = DatabaseManager.getHolidayFromId(getActivity(), holidayId);
             if (holidayHasLocationPoints)
                 zoomMapToBounds(HelpingMethods.getHolidayBoundaries(holiday));
-//            else zoomMapToCurrentPostition();
+            else zoomMapToCurrentPostition();
         }
     }
 
@@ -242,6 +237,10 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         map.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 150));
     }
 
+    public void zoomMapToCurrentPostition() {
+//        LatLng myLocation = new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude());
+//        moveMapTo(myLocation);
+    }
     // not in use
 
     public void moveMapTo(LatLng latLng) {
