@@ -278,10 +278,14 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 //        getFragmentManager().beginTransaction().add(android.R.id.content, newRouteFragment).commit();
     }
 
-    public void onTestButtonClick(View view) {
+    public void onToggleMapClick(View view) {
         MapFragment mapFragment = getMapFragment();
         if (mapFragment != null)
             mapFragment.toggleMap();
+    }
+
+    public void onTestButtonClick(View view) {
+
 //        final ActionBar actionBar = getActionBar();
 //        if (actionBar.isShowing())
 //            actionBar.hide();
@@ -365,7 +369,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
                     DatabaseManager.addLocationToRoute(getApplicationContext(), trackedRoute.getId(), loc);
 
-                    //todo:
+                    //todo: implement a "follow" button, so that tracking only follows current location if user chooses so.
 
                     getMapFragment().moveMapTo(loc); //only if fragment is visible?
 
@@ -450,6 +454,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     private MapFragment getMapFragment() {
 
         MapFragment mapFragment = null;
+
         try {
             Fragment fragment = ((DetailsSlideViewPageAdapter) viewPager.getAdapter()).getFragment(2);
             mapFragment = (MapFragment) fragment;

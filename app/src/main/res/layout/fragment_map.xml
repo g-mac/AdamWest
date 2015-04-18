@@ -3,13 +3,25 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                xmlns:tools="http://schemas.android.com/tools"
+                tools:context=".MapFragment">
 
 
     <com.google.android.gms.maps.MapView
             android:id="@+id/map_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+    <Button android:id="@+id/toggle_map_button"
+            android:layout_width="100dp"
+            android:layout_height="35dp"
+            android:text="toggle"
+            android:background="@drawable/simple_button_selector"
+            android:layout_alignParentBottom="true"
+            android:layout_margin="@dimen/fragment_map_button_padding"
+            android:onClick="onToggleMapClick"/>
+
 
     <!--<TextView android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->

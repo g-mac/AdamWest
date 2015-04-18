@@ -14,9 +14,10 @@
 
     <dimen name="route_list_divider_height">20dp</dimen>
 
-
     <dimen name="prompt_title_textsize">20sp</dimen>
     <dimen name="prompt_description_textsize">16sp</dimen>
     <dimen name="prompt_button_textsize">18sp</dimen>
+
+    <dimen name="fragment_map_button_padding">10dp</dimen>
 
 </resources>

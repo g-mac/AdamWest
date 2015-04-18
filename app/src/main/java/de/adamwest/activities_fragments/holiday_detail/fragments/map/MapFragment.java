@@ -241,13 +241,11 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 //        LatLng myLocation = new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude());
 //        moveMapTo(myLocation);
     }
-    // not in use
 
     public void moveMapTo(LatLng latLng) {
         map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 17));
     }
 
-    //    public void onToggleMapClick(View view) {
     public void toggleMap() {
         if (map.getMapType() == GoogleMap.MAP_TYPE_HYBRID) {
             map.setMapType(GoogleMap.MAP_TYPE_NORMAL); //set map type: normal
