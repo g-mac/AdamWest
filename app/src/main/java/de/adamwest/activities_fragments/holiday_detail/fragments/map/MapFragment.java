@@ -2,6 +2,7 @@ package de.adamwest.activities_fragments.holiday_detail.fragments.map;
 
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.location.Location;
 import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -254,6 +255,11 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         } else {
             map.setMapType(GoogleMap.MAP_TYPE_HYBRID); //set map type: satellite
         }
+    }
+
+    public void onLocationAdded(LatLng latLng){
+        setUpMap();
+        moveMapTo(latLng);
     }
 
     //----------------------- Implemented Methods -----------------------------

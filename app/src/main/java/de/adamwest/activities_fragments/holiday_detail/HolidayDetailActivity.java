@@ -314,6 +314,9 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
         //inform mapfragment to redraw ?????
 //        getMapFragment().setUpMap();
+        MapFragment mapFragment = getMapFragment();
+        if (mapFragment != null)
+            mapFragment.setUpMap();
     }
 
     public void stopTracking() {
@@ -333,6 +336,9 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
         //inform mapfragment to redraw ?????
 //        getMapFragment().setUpMap();
+        MapFragment mapFragment = getMapFragment();
+        if (mapFragment != null)
+            mapFragment.setUpMap();
     }
 
     @Override
@@ -371,7 +377,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
                     //todo: implement a "follow" button, so that tracking only follows current location if user chooses so.
 
-                    getMapFragment().moveMapTo(loc); //only if fragment is visible?
+                    getMapFragment().onLocationAdded(loc); //only if fragment is visible?
 
 //                    (MapFragment) mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.map)
 //                    drawRouteOnMap(currentHoliday.getRoute(), activeColor);
@@ -458,7 +464,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         try {
             Fragment fragment = ((DetailsSlideViewPageAdapter) viewPager.getAdapter()).getFragment(2);
             mapFragment = (MapFragment) fragment;
-            HelpingMethods.log("succesfully found MapFragment.");
+//            HelpingMethods.log("succesfully found MapFragment.");
         } catch (Exception e) {
             HelpingMethods.log("Error getting MapFragment: " + e.getMessage());
             e.printStackTrace();
