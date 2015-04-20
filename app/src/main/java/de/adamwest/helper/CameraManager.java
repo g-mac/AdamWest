@@ -12,6 +12,7 @@ import android.util.Log;
 import android.widget.Toast;
 import com.google.android.gms.maps.model.LatLng;
 import de.adamwest.R;
+import de.adamwest.activities_fragments.holiday_detail.HolidayDetailActivity;
 import de.adamwest.activities_fragments.holiday_edit.ConfirmMediaFragment;
 import de.adamwest.activities_fragments.holiday_edit.MapActivity;
 
@@ -38,10 +39,12 @@ public class CameraManager {
     public void setContext(Context context) {
         this.context = context;
     }
+
     private CameraManager(Context context) {
 
         this.context = context;
     }
+
     public static CameraManager getCameraManager(Context context){
         if(instance == null) {
             instance = new CameraManager(context);
@@ -51,6 +54,7 @@ public class CameraManager {
         }
         return instance;
     }
+
     public void startCameraForPicture(LatLng latLng) {
         currentLoc = latLng;
         currentEventId = -1;
@@ -70,13 +74,13 @@ public class CameraManager {
         startCameraForPicture(CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE);
     }
 
-
     public void startCameraForVideo(int code) {
         Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
         fileUri = getOutputMediaFileUri(MEDIA_TYPE_VIDEO); // create a file to save the image
         intent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri); // set the image file name
         ((Activity)context).startActivityForResult(intent, code);
     }
+
     public void startCameraForVideo(long eventId) {
         currentEventId = eventId;
         currentLoc = null;
@@ -129,9 +133,10 @@ public class CameraManager {
     private void openConfirmFragment(String type) {
         Fragment confirmFragment = new ConfirmMediaFragment();
 
-        MapActivity mapActivity = (MapActivity)context;
+//        MapActivity mapActivity = (MapActivity)context;
+        HolidayDetailActivity holidayDetailActivity = (HolidayDetailActivity)context;
         Bundle args = new Bundle();
-        args.putLong(Constants.KEY_HOLIDAY_ID, mapActivity.getCurrentHolidayId());
+        args.putLong(Constants.KEY_HOLIDAY_ID, holidayDetailActivity.getHolidayId());
         args.putString(Constants.KEY_CAMERA_TYPE, type);
         if(currentLoc != null) {
             args.putDouble(Constants.KEY_LAT, currentLoc.latitude);
@@ -141,8 +146,9 @@ public class CameraManager {
             //args.putLong(Constants.KEY_EVENT_ID, currentEventId);
         //}
         confirmFragment.setArguments(args);
-        mapActivity.getSupportFragmentManager().beginTransaction().add(R.id.activity_map_layout, confirmFragment).commitAllowingStateLoss();
+        holidayDetailActivity.getSupportFragmentManager().beginTransaction().add(R.id.main_layout, confirmFragment).commitAllowingStateLoss();
     }
+
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE) {
             if (resultCode == Activity.RESULT_OK) {

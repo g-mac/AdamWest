@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Dialog;
 import android.app.FragmentTransaction;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
@@ -30,6 +31,7 @@ import de.adamwest.database.Event;
 import de.adamwest.database.Holiday;
 import de.adamwest.database.Route;
 import de.adamwest.database.RouteLocation;
+import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
 import de.adamwest.helper.HelpingMethods;
 
@@ -47,6 +49,7 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
     private List<Route> routes;
     public long selectedRouteId;
     public long trackedRouteId;
+    private CameraManager cameraManager;
 
     private LocationManager locationManager;
     private Location currentLoc;
@@ -71,6 +74,8 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         //this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_holiday_detail);
+
+        cameraManager = CameraManager.getCameraManager( this);
 
         viewPager = (ViewPager) findViewById(R.id.pager);
         viewPager.setAdapter(new DetailsSlideViewPageAdapter(getSupportFragmentManager()));
@@ -248,6 +253,10 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
 
     public void onAddPhotoClick(View view) {
         HelpingMethods.toast(this, "onAddPhotoClick clicked.");
+        if (currentLoc != null)
+            cameraManager.startCameraForPicture(new LatLng(currentLoc.getLatitude(), currentLoc.getLongitude()));
+        else
+            HelpingMethods.log("currentLoc == null");
     }
 
     public void onAddVideoClick(View view) {
@@ -339,6 +348,14 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         MapFragment mapFragment = getMapFragment();
         if (mapFragment != null)
             mapFragment.setUpMap();
+    }
+
+    public Location getCurrentLocation() {
+        Location currentLocation = currentLoc;
+        if (currentLoc == null)
+            currentLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+//        return currentLoc;
+        return currentLocation;
     }
 
     @Override
@@ -494,4 +511,10 @@ public class HolidayDetailActivity extends FragmentActivity implements LocationL
         this.clusterEventList = clusterEventList;
     }
 
+    //
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        cameraManager.onActivityResult(requestCode, resultCode, data);
+    }
 }

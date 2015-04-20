@@ -7,7 +7,6 @@ import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -139,7 +138,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 
     public void setUpMap() {
         //GENERAL SETUP
-
+        setupMapCluster();
         map.clear();
 //        eventMarkerMap = new HashMap<Marker, Long>(); // todo: check if needed
 //        eventMarkerMap.clear(); //todo: checks if this works instead of the above?!
@@ -241,8 +240,9 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
     }
 
     public void zoomMapToCurrentPostition() {
-//        LatLng myLocation = new LatLng(map.getMyLocation().getLatitude(), map.getMyLocation().getLongitude());
-//        moveMapTo(myLocation);
+        Location currentLocation = ((HolidayDetailActivity) getActivity()).getCurrentLocation();
+        if (currentLocation != null)
+            moveMapTo(new LatLng(currentLocation.getLatitude(), currentLocation.getLongitude()));
     }
 
     public void moveMapTo(LatLng latLng) {
@@ -257,27 +257,26 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
         }
     }
 
-    public void onLocationAdded(LatLng latLng){
+    public void onLocationAdded(LatLng latLng) {
         setUpMap();
         moveMapTo(latLng);
     }
 
-    //----------------------- Implemented Methods -----------------------------
-
-    //todo: might not be needed since replaced by onInfoWindowClick()
-    @Override
-    public boolean onMarkerClick(Marker marker) {
-        Toast.makeText(getActivity(), "onMarkerClick", Toast.LENGTH_SHORT).show();
-        return false;
-    }
+    //------------------------------------------------------------------------------------------------------------------
 
     // only loaded once visible. onCreate, onCreateView, onStart and onResume are called beforehand.
     @Override
     public void onMapLoaded() {
         HelpingMethods.log("MapFragment onMapLoaded()");
+        setUpMap();
+    }
+
+    public void setupMapCluster() {
+
         eventClusterManager = new ClusterManager<EventClusterItem>(getActivity(), map);
         eventClusterManager.setAlgorithm(new EventClusterAlgorithm<EventClusterItem>());
         eventClusterManager.setRenderer(new EventClusterRenderer(getActivity(), map, eventClusterManager));
+
         eventClusterManager.setOnClusterClickListener(new ClusterManager.OnClusterClickListener<EventClusterItem>() {
             @Override
             public boolean onClusterClick(Cluster<EventClusterItem> eventClusterItemCluster) {
@@ -297,6 +296,7 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                 return true;
             }
         });
+
         eventClusterManager.setOnClusterItemClickListener(new ClusterManager.OnClusterItemClickListener<EventClusterItem>() {
             @Override
             public boolean onClusterItemClick(EventClusterItem eventClusterItem) {
@@ -305,10 +305,12 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
                 return false;
             }
         });
+
         map.setOnCameraChangeListener(eventClusterManager);
         map.setOnMarkerClickListener(eventClusterManager);
         map.setInfoWindowAdapter(eventClusterManager.getMarkerManager());
         eventClusterManager.getMarkerCollection().setOnInfoWindowAdapter(new ClusterItemInfoAdapter());
+
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             //todo: compare with outside override
             @Override
@@ -318,7 +320,13 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
 //                startActivity(intent);
             }
         });
-        setUpMap();
+    }
+
+    //    //todo: might not be needed since replaced by onInfoWindowClick()
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+//        Toast.makeText(getActivity(), "onMarkerClick", Toast.LENGTH_SHORT).show();
+        return false;
     }
 
     @Override
@@ -381,7 +389,6 @@ public class MapFragment extends Fragment implements GoogleMap.OnMarkerClickList
             return null;
         }
     }
-
 
 }
 

@@ -11,7 +11,6 @@ import android.widget.VideoView;
 import de.adamwest.R;
 import de.adamwest.helper.CameraManager;
 import de.adamwest.helper.Constants;
-import de.adamwest.activities_fragments.holiday_edit.MediaFragmentParent;
 
 /**
  * Created by philip on 26/09/14.
@@ -19,6 +18,7 @@ import de.adamwest.activities_fragments.holiday_edit.MediaFragmentParent;
 public class ConfirmMediaFragment extends MediaFragmentParent {
 
     private View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -31,17 +31,16 @@ public class ConfirmMediaFragment extends MediaFragmentParent {
             @Override
             public void onClick(View v) {
                 String eventName = eventNameEditText.getText().toString();
-                String description = ((EditText)view.findViewById(R.id.edit_text_media_description)).getText().toString();
+                String description = ((EditText) view.findViewById(R.id.edit_text_media_description)).getText().toString();
                 storeMediaElementInDatabase(type, path, description, holidayId, eventName);
             }
         });
 
 
-        ImageView imagePreview = (ImageView)view.findViewById(R.id.imageview_preview);
-        if(getArguments().getString(Constants.KEY_CAMERA_TYPE).equals(Constants.TYPE_IMAGE)) {
+        ImageView imagePreview = (ImageView) view.findViewById(R.id.imageview_preview);
+        if (getArguments().getString(Constants.KEY_CAMERA_TYPE).equals(Constants.TYPE_IMAGE)) {
             imagePreview.setImageURI(Uri.parse(CameraManager.currentFile.getAbsolutePath()));
-        }
-        else {
+        } else {
             imagePreview.setVisibility(View.GONE);
             VideoView videoView = (VideoView) view.findViewById(R.id.videoview);
             videoView.setVisibility(View.VISIBLE);
